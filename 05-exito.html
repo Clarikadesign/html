@@ -1,0 +1,993 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Sipssa · Éxito</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+    --green-700:#02873d;
+    --green-600:#00a85f;
+    --green-500:#22b573;
+    --green-50:#e6f4eb;
+    --green-100:#dcefe1;
+    --mint:#dff0e4;
+    --mint-2:#e8f5ec;
+    --ink:#1a2b22;
+    --ink-2:#2b3a32;
+    --muted:#6b7280;
+    --muted-2:#9aa3a9;
+    --divider:#eaecef;
+    --line:#e5e7eb;
+    --pink-bg:#fde7e7;
+    --pink:#c53030;
+    --amber-bg:#fff3d4;
+    --amber:#a16500;
+    --blue-bg:#e0eefc;
+    --blue:#1a5fb4;
+    --gray-bg:#eef0f2;
+    --bg-app:#ffffff;
+    --bg-shell:#f0f2f3;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:var(--bg-shell);font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased}
+  body{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px 16px}
+  #root{width:100%;display:flex;justify-content:center}
+
+  /* phone frame */
+  .phone{
+    width:380px;height:800px;
+    background:#000;
+    border-radius:42px;
+    padding:8px;
+    box-shadow: 0 30px 60px -20px rgba(0,0,0,.28), 0 0 0 1px rgba(0,0,0,.06);
+    position:relative;
+  }
+  .phone-screen{
+    width:100%;height:100%;
+    background:var(--bg-app);
+    border-radius:34px;
+    overflow:hidden;
+    position:relative;
+    display:flex;flex-direction:column;
+  }
+  /* status bar */
+  .statusbar{
+    height:28px;padding:0 18px 0 18px;
+    display:flex;align-items:center;justify-content:space-between;
+    font-size:12px;font-weight:600;color:var(--ink);
+    flex-shrink:0;
+    position:relative;
+  }
+  .statusbar .dot{
+    position:absolute;left:50%;top:6px;transform:translateX(-50%);
+    width:6px;height:6px;border-radius:50%;background:#e84d4d;
+  }
+  .statusbar .right{display:flex;align-items:center;gap:5px;font-size:11px;letter-spacing:.2px}
+
+  /* dark statusbar variant for camera */
+  .phone-screen.dark{background:#0c0c0c}
+  .phone-screen.dark .statusbar{color:#fff}
+
+  /* app header */
+  .app-header{
+    padding:8px 20px 14px;
+    display:flex;align-items:center;gap:12px;
+    background:#fff;flex-shrink:0;
+    border-bottom:1px solid var(--divider);
+  }
+  .app-header h1{
+    font-size:22px;font-weight:700;letter-spacing:-.3px;margin:0;color:var(--ink);
+  }
+  .back-btn{
+    width:32px;height:32px;display:flex;align-items:center;justify-content:center;
+    margin-left:-6px;cursor:pointer;color:var(--ink);
+    background:transparent;border:0;padding:0;
+  }
+  /* content */
+  .scroll{flex:1;overflow:auto;background:#fff;-webkit-overflow-scrolling:touch}
+  .scroll::-webkit-scrollbar{width:0}
+
+  /* list rows (cartilla style) */
+  .list{padding:6px 16px 24px}
+  .row{
+    display:flex;align-items:center;gap:14px;
+    padding:14px 6px;
+    border-bottom:1px solid var(--divider);
+    cursor:pointer;
+    transition:background .15s;
+  }
+  .row:active{background:#f8faf9}
+  .row:last-child{border-bottom:0}
+  .row .icon-wrap{
+    width:42px;height:42px;border-radius:12px;background:var(--mint-2);
+    display:flex;align-items:center;justify-content:center;flex-shrink:0;
+    color:var(--green-600);
+  }
+  .row .label{flex:1;font-size:16px;font-weight:600;color:var(--ink);letter-spacing:-.1px}
+  .row .meta{font-size:13px;color:var(--muted);font-weight:500}
+  .row .chev{color:var(--green-600);flex-shrink:0;display:flex;align-items:center}
+  .row.with-sub .label{display:flex;flex-direction:column;align-items:flex-start;gap:2px}
+  .row.with-sub .label small{font-size:13px;color:var(--muted);font-weight:500;letter-spacing:0}
+
+  /* badges */
+  .badge{
+    font-size:11px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;
+    padding:3px 9px;border-radius:999px;display:inline-flex;align-items:center;gap:5px;
+    white-space:nowrap;
+  }
+  .badge.pendiente{background:var(--amber-bg);color:var(--amber)}
+  .badge.proceso{background:var(--blue-bg);color:var(--blue)}
+  .badge.autorizada{background:var(--green-50);color:var(--green-700)}
+  .badge.rechazada{background:var(--pink-bg);color:var(--pink)}
+  .badge.vencida{background:var(--gray-bg);color:var(--muted)}
+
+  /* historial bar */
+  .historial-bar{
+    margin:12px 16px 4px;
+    background:linear-gradient(135deg,#f3faf5 0%,#eaf5ee 100%);
+    border:1px solid var(--green-100);
+    border-radius:16px;
+    padding:14px 16px;
+    display:flex;align-items:center;gap:12px;
+    cursor:pointer;
+  }
+  .historial-bar .icon-wrap{
+    width:38px;height:38px;border-radius:11px;background:#fff;display:flex;align-items:center;justify-content:center;color:var(--green-600);flex-shrink:0;
+  }
+  .historial-bar .text{flex:1}
+  .historial-bar .text strong{display:block;font-size:14px;font-weight:700;color:var(--ink)}
+  .historial-bar .text small{font-size:12px;color:var(--muted);font-weight:500}
+
+  /* section title */
+  .section-title{
+    padding:18px 22px 6px;font-size:12px;text-transform:uppercase;letter-spacing:.8px;
+    color:var(--muted);font-weight:700;
+  }
+  .helper-text{
+    padding:0 22px 10px;font-size:13px;color:var(--muted);line-height:1.5;
+  }
+
+  /* bottom nav */
+  .bottom-nav{
+    height:62px;background:#fff;border-top:1px solid var(--divider);
+    display:flex;align-items:center;justify-content:space-around;
+    padding:6px 8px 4px;flex-shrink:0;
+  }
+  .nav-item{
+    display:flex;flex-direction:column;align-items:center;gap:3px;
+    color:var(--muted);font-size:11px;font-weight:600;
+    cursor:pointer;flex:1;
+  }
+  .nav-item.active{color:var(--green-600)}
+  .nav-item .dots{display:flex;flex-direction:column;gap:2px}
+  .nav-item .dots span{width:3px;height:3px;border-radius:50%;background:currentColor}
+  .home-indicator{
+    height:18px;background:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  }
+  .home-indicator::after{
+    content:'';display:block;width:108px;height:4px;border-radius:2px;background:#bcbfc2;
+  }
+
+  /* android 3-button nav (matches screenshots) */
+  .nav3{
+    height:32px;background:#fff;border-top:0;display:flex;align-items:center;justify-content:center;gap:60px;flex-shrink:0;
+  }
+  .nav3 .b-back, .nav3 .b-home, .nav3 .b-rec{color:#9aa3a9}
+  .nav3 svg{display:block}
+
+  /* CAMERA SCREEN */
+  .cam-stage{
+    flex:1;background:#0c0c0c;position:relative;overflow:hidden;
+    display:flex;flex-direction:column;
+  }
+  .cam-header{
+    padding:14px 18px;display:flex;align-items:center;justify-content:space-between;
+    color:#fff;
+  }
+  .cam-header h2{font-size:16px;font-weight:600;margin:0}
+  .cam-header .x{width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;cursor:pointer;border:0;color:#fff}
+  .cam-view{
+    flex:1;display:flex;align-items:center;justify-content:center;
+    background:
+      radial-gradient(ellipse at center, rgba(255,255,255,.04) 0%, rgba(0,0,0,0) 60%),
+      linear-gradient(180deg,#161616 0%,#0c0c0c 100%);
+    position:relative;
+  }
+  /* document outline mock */
+  .doc-outline{
+    width:64%;aspect-ratio: 3/4;
+    border:2px dashed rgba(255,255,255,.35);
+    border-radius:10px;
+    background:
+      linear-gradient(180deg,
+        rgba(255,255,255,.04) 0%,
+        rgba(255,255,255,.07) 30%,
+        rgba(255,255,255,.04) 100%);
+    display:flex;align-items:center;justify-content:center;
+    position:relative;
+  }
+  .doc-outline .corner{position:absolute;width:22px;height:22px;border:3px solid #fff;border-radius:3px}
+  .doc-outline .c-tl{top:-3px;left:-3px;border-right:0;border-bottom:0}
+  .doc-outline .c-tr{top:-3px;right:-3px;border-left:0;border-bottom:0}
+  .doc-outline .c-bl{bottom:-3px;left:-3px;border-right:0;border-top:0}
+  .doc-outline .c-br{bottom:-3px;right:-3px;border-left:0;border-top:0}
+  .doc-hint{
+    position:absolute;top:18px;left:0;right:0;text-align:center;
+    color:rgba(255,255,255,.75);font-size:13px;font-weight:500;
+  }
+  .cam-controls{
+    padding:18px 22px 26px;
+    display:flex;flex-direction:column;align-items:center;gap:18px;
+    background:#0c0c0c;
+  }
+  .shutter-wrap{display:flex;align-items:center;justify-content:center;gap:40px;width:100%}
+  .shutter{
+    width:72px;height:72px;border-radius:50%;background:transparent;
+    border:4px solid #fff;display:flex;align-items:center;justify-content:center;cursor:pointer;
+    flex-shrink:0;
+  }
+  .shutter::after{
+    content:'';display:block;width:58px;height:58px;border-radius:50%;background:#fff;
+    transition:transform .1s;
+  }
+  .shutter:active::after{transform:scale(.92)}
+  .cam-side{
+    width:48px;height:48px;border-radius:14px;background:rgba(255,255,255,.1);
+    display:flex;align-items:center;justify-content:center;color:#fff;cursor:pointer;border:0;
+    flex-shrink:0;
+  }
+  .cam-upload{
+    width:100%;
+    height:48px;border-radius:14px;
+    background:rgba(255,255,255,.08);
+    border:1px solid rgba(255,255,255,.18);
+    color:#fff;font-size:15px;font-weight:600;
+    display:flex;align-items:center;justify-content:center;gap:10px;
+    cursor:pointer;
+  }
+
+  /* file card (preview screen) */
+  .preview-body{padding:18px 18px 0}
+  .file-card{
+    background:#fff;border:1px solid var(--line);border-radius:16px;
+    padding:14px;display:flex;align-items:center;gap:14px;
+    box-shadow:0 2px 8px rgba(15,30,20,.04);
+  }
+  .file-thumb{
+    width:64px;height:64px;border-radius:12px;flex-shrink:0;
+    background:
+      linear-gradient(135deg,#c8dccf 0%,#b6cdbc 50%,#a4beaa 100%);
+    position:relative;overflow:hidden;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .file-thumb svg{filter:drop-shadow(0 1px 1px rgba(0,0,0,.15))}
+  .file-info{flex:1;min-width:0}
+  .file-info strong{font-size:14px;font-weight:600;color:var(--ink);display:block;
+    overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .file-info small{font-size:12px;color:var(--muted);font-weight:500;display:block;margin-top:3px}
+  .file-x{
+    width:32px;height:32px;border-radius:50%;background:#f4f5f6;
+    display:flex;align-items:center;justify-content:center;cursor:pointer;
+    color:var(--muted);border:0;flex-shrink:0;
+  }
+  .file-x:hover{background:#eef0f2;color:var(--ink)}
+  .add-more{
+    display:flex;gap:10px;margin-top:14px;
+  }
+  .add-more .btn-outline{
+    flex:1;height:46px;border-radius:13px;border:1px dashed var(--green-500);
+    background:#fff;color:var(--green-700);font-weight:600;font-size:14px;
+    display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;
+  }
+  .add-more .btn-outline:hover{background:var(--green-50)}
+
+  /* buttons */
+  .btn-primary{
+    height:52px;border-radius:14px;background:var(--green-600);color:#fff;
+    border:0;font-size:15px;font-weight:700;width:100%;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;gap:8px;
+    box-shadow:0 8px 20px -8px rgba(0,168,95,.55);
+    transition:filter .12s;letter-spacing:.1px;
+  }
+  .btn-primary:hover{filter:brightness(1.04)}
+  .btn-primary:disabled{background:#cfd5d2;box-shadow:none;cursor:not-allowed;color:#fff}
+  .btn-ghost{
+    height:48px;border-radius:14px;background:transparent;color:var(--green-700);
+    border:0;font-size:14px;font-weight:600;width:100%;cursor:pointer;
+  }
+
+  .footer-actions{
+    padding:14px 18px 18px;background:#fff;border-top:1px solid var(--divider);
+    flex-shrink:0;
+  }
+
+  /* success */
+  .success-wrap{
+    flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    padding:24px 28px;text-align:center;
+  }
+  .success-icon{
+    width:88px;height:88px;border-radius:50%;background:var(--green-50);
+    display:flex;align-items:center;justify-content:center;
+    margin-bottom:22px;position:relative;
+  }
+  .success-icon::before{
+    content:'';position:absolute;inset:-8px;border-radius:50%;
+    border:1px solid var(--green-100);
+  }
+  .success-wrap h2{
+    font-size:20px;font-weight:700;color:var(--ink);margin:0 0 10px;letter-spacing:-.2px;
+    line-height:1.25;
+  }
+  .success-wrap p{
+    font-size:14px;color:var(--muted);line-height:1.55;margin:0;max-width:280px;
+  }
+  .success-info{
+    margin-top:22px;background:var(--green-50);border-radius:14px;padding:14px 16px;
+    display:flex;align-items:flex-start;gap:12px;text-align:left;
+  }
+  .success-info svg{flex-shrink:0;margin-top:1px}
+  .success-info span{font-size:13px;color:var(--green-700);font-weight:500;line-height:1.5}
+
+  /* historial list */
+  .hist-list{padding:8px 16px 24px}
+  .hist-card{
+    background:#fff;border:1px solid var(--line);border-radius:16px;
+    padding:14px;margin-bottom:10px;display:flex;flex-direction:column;gap:10px;
+    cursor:pointer;
+  }
+  .hist-card:active{background:#fafbfb}
+  .hist-top{display:flex;align-items:center;justify-content:space-between;gap:10px}
+  .hist-type{display:flex;align-items:center;gap:10px;min-width:0}
+  .hist-type .icon-wrap{
+    width:36px;height:36px;border-radius:10px;background:var(--mint-2);color:var(--green-600);
+    display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  }
+  .hist-type strong{font-size:14px;font-weight:600;color:var(--ink);
+    overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:block}
+  .hist-type small{font-size:12px;color:var(--muted);font-weight:500}
+  .hist-bottom{
+    display:flex;align-items:center;justify-content:space-between;
+    border-top:1px dashed var(--divider);padding-top:10px;
+  }
+  .hist-bottom .num{font-size:12px;color:var(--muted);font-weight:500}
+  .hist-bottom .num b{color:var(--ink-2);font-weight:600}
+
+  /* detail */
+  .det-body{padding:16px 18px 22px;display:flex;flex-direction:column;gap:14px}
+  .det-hero{
+    background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px;
+    display:flex;flex-direction:column;gap:10px;
+  }
+  .det-hero .top{display:flex;align-items:center;justify-content:space-between}
+  .det-hero h3{font-size:16px;font-weight:700;margin:0;color:var(--ink)}
+  .det-meta{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:6px}
+  .det-meta .item small{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;font-weight:600;display:block;margin-bottom:3px}
+  .det-meta .item span{font-size:13px;color:var(--ink);font-weight:600}
+  .det-card{
+    background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px 16px;
+  }
+  .det-card h4{font-size:13px;font-weight:700;margin:0 0 10px;color:var(--ink);letter-spacing:-.1px}
+  .doc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+  .doc-grid .file-thumb{width:100%;height:auto;aspect-ratio:1}
+  .obs{font-size:13px;color:var(--ink-2);line-height:1.5;background:var(--pink-bg);padding:10px 12px;border-radius:10px;color:var(--pink)}
+
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<script type="text/babel">
+// icons.jsx — line icons matching Sipssa cartilla style (stroke 1.8, rounded)
+// All use currentColor so they inherit from parent
+
+const S = ({children, size=22, stroke=1.8}) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none"
+    stroke="currentColor" strokeWidth={stroke}
+    strokeLinecap="round" strokeLinejoin="round">{children}</svg>
+);
+
+// chevron
+const IconChevron = ({size=18}) => (
+  <S size={size} stroke={2.2}><path d="M9 6l6 6-6 6"/></S>
+);
+const IconChevronLeft = ({size=22}) => (
+  <S size={size} stroke={2.2}><path d="M15 6l-6 6 6 6"/></S>
+);
+
+// category icons
+const IconPill = () => ( // Medicamentos
+  <S><rect x="3.5" y="9.5" width="17" height="5" rx="2.5" transform="rotate(-30 12 12)"/><line x1="9" y1="7" x2="14" y2="17"/></S>
+);
+const IconStethoscope = () => ( // Prácticas ambulatorias
+  <S><path d="M6 4v6a4 4 0 0 0 8 0V4"/><path d="M6 4h-1"/><path d="M14 4h1"/><path d="M10 14v3a4 4 0 0 0 8 0v-2"/><circle cx="18" cy="13" r="1.6"/></S>
+);
+const IconImage = () => ( // Imágenes
+  <S><rect x="3" y="4.5" width="18" height="15" rx="2.5"/><circle cx="9" cy="10" r="1.8"/><path d="M3.5 17l5-4.5 4.5 4 3.5-3 4 3.5"/></S>
+);
+const IconLab = () => ( // Laboratorio
+  <S><path d="M10 3v6.5L5 18a2 2 0 0 0 1.8 3h10.4A2 2 0 0 0 19 18l-5-8.5V3"/><line x1="8.5" y1="3" x2="15.5" y2="3"/><path d="M7.5 14.5h9"/></S>
+);
+const IconShield = () => ( // Medicación alto costo
+  <S><path d="M12 3l8 3v6c0 5-3.5 8.2-8 9-4.5-.8-8-4-8-9V6l8-3z"/><path d="M9 12l2 2 4-4"/></S>
+);
+const IconProsthesis = () => ( // Prótesis (bone)
+  <S><path d="M7 7a2.5 2.5 0 0 0-2.5 2.5C4.5 11 5.5 11.5 5.5 13s-1 1.5-1 3a2.5 2.5 0 0 0 4 2L17 9.5a2.5 2.5 0 0 0 2-4 2.5 2.5 0 0 0-4-2L6.5 11a2.5 2.5 0 0 0-2-1 2.5 2.5 0 0 0 2.5-3z"/></S>
+);
+
+// history / list extras
+const IconHistory = () => (
+  <S><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v4h4"/><path d="M12 7v5l3 2"/></S>
+);
+
+// Más menu icons (just the new one — Autorizaciones)
+const IconAuth = () => ( // doc with check
+  <S><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/><path d="M8.5 14.5l2 2 4.5-4.5"/></S>
+);
+
+// camera
+const IconCamera = () => (
+  <S size={22}><path d="M3 8.5A2.5 2.5 0 0 1 5.5 6h1.7l1.3-1.8A2 2 0 0 1 10.1 3.4h3.8c.66 0 1.27.32 1.66.86L16.8 6h1.7A2.5 2.5 0 0 1 21 8.5v9A2.5 2.5 0 0 1 18.5 20h-13A2.5 2.5 0 0 1 3 17.5z"/><circle cx="12" cy="13" r="3.5"/></S>
+);
+const IconFlash = () => (
+  <S size={20}><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></S>
+);
+const IconGallery = () => (
+  <S size={20}><rect x="3" y="3" width="18" height="18" rx="2.5"/><circle cx="8.5" cy="9" r="1.5"/><path d="M3.5 17l5-4.5 4.5 4 3-2.5 4.5 4"/></S>
+);
+const IconUpload = () => (
+  <S size={18}><path d="M12 16V4"/><path d="M7 9l5-5 5 5"/><path d="M4 16v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/></S>
+);
+
+// X / close
+const IconX = ({size=18}) => (
+  <S size={size} stroke={2.2}><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></S>
+);
+const IconXCircle = () => (
+  <S size={18} stroke={2.2}><line x1="7" y1="7" x2="17" y2="17"/><line x1="17" y1="7" x2="7" y2="17"/></S>
+);
+
+const IconPlus = ({size=18}) => (
+  <S size={size} stroke={2.2}><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></S>
+);
+
+const IconCheck = ({size=42}) => (
+  <S size={size} stroke={2.4}><path d="M5 13l4 4 10-10"/></S>
+);
+
+const IconInfo = ({size=18}) => (
+  <S size={size}><circle cx="12" cy="12" r="9"/><line x1="12" y1="11" x2="12" y2="16"/><circle cx="12" cy="8" r=".6" fill="currentColor"/></S>
+);
+
+// jpg / pdf badges (icons inside thumbnail)
+const IconImageGlyph = () => (
+  <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+    <rect x="3" y="4.5" width="18" height="15" rx="2.5"/>
+    <circle cx="9" cy="10" r="1.8" fill="#fff"/>
+    <path d="M3.5 17l5-4.5 4.5 4 3.5-3 4 3.5"/>
+  </svg>
+);
+
+// home, book, $, dots — bottom nav
+const IconHome = () => (
+  <S size={22}><path d="M3 11l9-7 9 7"/><path d="M5 10v9a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1v-9"/></S>
+);
+const IconBook = () => (
+  <S size={22}><path d="M4 4.5A1.5 1.5 0 0 1 5.5 3H11v17H5.5A1.5 1.5 0 0 1 4 18.5z"/><path d="M20 4.5A1.5 1.5 0 0 0 18.5 3H13v17h5.5a1.5 1.5 0 0 0 1.5-1.5z"/></S>
+);
+const IconBill = () => (
+  <S size={22}><path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"/><path d="M9 8h6"/><path d="M9 12h6"/><path d="M9 16h4"/></S>
+);
+const IconDots = () => (
+  <div className="dots"><span></span><span></span><span></span></div>
+);
+
+Object.assign(window, {
+  IconChevron, IconChevronLeft, IconPill, IconStethoscope, IconImage, IconLab, IconShield,
+  IconProsthesis, IconHistory, IconAuth, IconCamera, IconFlash, IconGallery, IconUpload,
+  IconX, IconXCircle, IconPlus, IconCheck, IconInfo, IconImageGlyph,
+  IconHome, IconBook, IconBill, IconDots,
+});
+
+</script>
+<script type="text/babel">
+// screens.jsx — individual screens for the Autorizaciones flow
+
+// ─── shared chrome ────────────────────────────────────────────
+function StatusBar({ dark = false }) {
+  return (
+    <div className="statusbar" style={dark ? {color:'#fff'} : null}>
+      <span></span>
+      <span className="dot"></span>
+      <div className="right">
+        <span style={{marginRight:4}}>10:03 PM</span>
+        <SignalIcon dark={dark}/>
+        <BatteryIcon dark={dark}/>
+        <span style={{marginLeft:2}}>39%</span>
+      </div>
+    </div>
+  );
+}
+function SignalIcon({dark}){
+  return (<svg width="14" height="10" viewBox="0 0 14 10" fill={dark?'#fff':'#1a2b22'}>
+    <rect x="0" y="6" width="2" height="4" rx=".5"/>
+    <rect x="3" y="4" width="2" height="6" rx=".5"/>
+    <rect x="6" y="2" width="2" height="8" rx=".5"/>
+    <rect x="9" y="0" width="2" height="10" rx=".5"/>
+  </svg>);
+}
+function BatteryIcon({dark}){
+  return (<svg width="20" height="10" viewBox="0 0 20 10" fill="none">
+    <rect x="0.5" y="0.5" width="17" height="9" rx="2" stroke={dark?'#fff':'#1a2b22'}/>
+    <rect x="18.2" y="3.2" width="1.4" height="3.6" rx=".7" fill={dark?'#fff':'#1a2b22'}/>
+    <rect x="2" y="2" width="6" height="6" rx="1" fill={dark?'#fff':'#1a2b22'}/>
+  </svg>);
+}
+
+function AppHeader({title, onBack}){
+  return (
+    <div className="app-header">
+      {onBack && (
+        <button className="back-btn" onClick={onBack} aria-label="Volver">
+          <IconChevronLeft/>
+        </button>
+      )}
+      <h1>{title}</h1>
+    </div>
+  );
+}
+
+function Nav3() {
+  return (
+    <div className="nav3">
+      <span className="b-back"><svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M11 2L5 8l6 6z"/></svg></span>
+      <span className="b-home"><svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5"><circle cx="8" cy="8" r="6"/></svg></span>
+      <span className="b-rec"><svg width="11" height="11" viewBox="0 0 16 16" fill="currentColor"><rect width="16" height="16" rx="1.5"/></svg></span>
+    </div>
+  );
+}
+
+function BottomNav({active, onGo}){
+  const items = [
+    {id:'inicio', label:'Inicio', icon:<IconHome/>},
+    {id:'cartilla', label:'Cartilla', icon:<IconBook/>},
+    {id:'facturas', label:'Facturas', icon:<IconBill/>},
+    {id:'mas', label:'Más', icon:<IconDots/>},
+  ];
+  return (
+    <div className="bottom-nav">
+      {items.map(it => (
+        <div key={it.id}
+          className={'nav-item' + (active===it.id ? ' active' : '')}
+          onClick={()=>onGo && onGo(it.id)}>
+          {it.icon}
+          <span>{it.label}</span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+// ─── SCREEN 1: Más menu (entry point) ─────────────────────────
+function ScreenMas({go}){
+  const items = [
+    {label:'Mi perfil', icon:'user', badge:'Afiliado Activo'},
+    {label:'Credencial', icon:'card'},
+    {label:'Mi cobertura', icon:'doc-down', action:'download'},
+    {label:'Factura electrónica', icon:'bill-e', action:'download'},
+    {label:'Autorizaciones', icon:'auth', highlight:true, onClick:()=>go('list')},
+    {label:'Cupón de Pago', icon:'cupon', badge:'Pendiente', badgeStyle:'pink'},
+    {label:'Beneficios', icon:'tag'},
+    {label:'Asistencia al viajero', icon:'briefcase'},
+    {label:'Mi embarazo', icon:'heart'},
+    {label:'Planes de Salud', icon:'planes'},
+    {label:'Contacto', icon:'chat'},
+    {label:'Teléfonos útiles', icon:'phone'},
+  ];
+
+  const renderIcon = (k) => {
+    const props = {size:22};
+    switch(k){
+      case 'user': return <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c1.5-4 5-6 8-6s6.5 2 8 6"/></svg>;
+      case 'card': return <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="5" width="18" height="14" rx="2.5"/><circle cx="9" cy="11" r="2"/><path d="M9 14.5c-2 0-3.5 1-3.5 2.5"/><line x1="13" y1="10" x2="18" y2="10"/><line x1="13" y1="13" x2="17" y2="13"/></svg>;
+      case 'doc-down': return <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/><path d="M12 11v6"/><path d="M9 14l3 3 3-3"/></svg>;
+      case 'bill-e': return <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"/><path d="M12 7v9"/><path d="M14.5 9.5C13.7 8.5 10 8 10 10.5s4 1.5 4 3-3.5 2-4.5 1"/></svg>;
+      case 'cupon': return <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="6" width="18" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/><path d="M12 9.5v.5"/><path d="M12 14v.5"/></svg>;
+      case 'tag': return <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M3 12V4h8l10 10-8 8z"/><circle cx="7.5" cy="7.5" r="1.5"/></svg>;
+      case 'briefcase': return <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2"/><path d="M12 12v2"/><path d="M10 13h4"/></svg>;
+      case 'heart': return <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M12 20s-7-4.5-7-10a4 4 0 0 1 7-2.5A4 4 0 0 1 19 10c0 5.5-7 10-7 10z"/></svg>;
+      case 'planes': return <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/><path d="M8 13h6"/><path d="M8 17h4"/></svg>;
+      case 'chat': return <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M5 5h14a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H9l-4 4V7a2 2 0 0 1 2-2z"/></svg>;
+      case 'phone': return <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.5v3a2 2 0 0 1-2.2 2A19 19 0 0 1 3 5.2 2 2 0 0 1 5 3h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.6a2 2 0 0 1-.5 2L8.5 11a16 16 0 0 0 5 5l1.7-1.6a2 2 0 0 1 2-.5c.8.3 1.7.5 2.6.6a2 2 0 0 1 1.7 2z"/></svg>;
+      case 'auth': return <IconAuth/>;
+      default: return null;
+    }
+  };
+
+  return (
+    <>
+      <AppHeader title="Más..."/>
+      <div className="scroll">
+        <div className="list" style={{padding:'4px 16px 16px'}}>
+          {items.map((it,i) => (
+            <div key={i} className="row" onClick={it.onClick}
+                 data-comment-anchor={it.label==='Autorizaciones' ? 'mas-autorizaciones' : undefined}
+                 style={it.highlight?{background:'#f6fcf8',borderRadius:12,padding:'14px 10px',marginLeft:-4,marginRight:-4}:null}>
+              <div className="icon-wrap">{renderIcon(it.icon)}</div>
+              <div className="label" style={{display:'flex',alignItems:'center',gap:8}}>
+                <span>{it.label}</span>
+                {it.badge && (
+                  <span className={'badge ' + (it.badgeStyle==='pink' ? 'rechazada' : 'autorizada')}
+                        style={it.badgeStyle!=='pink' ? {background:'#00a85f',color:'#fff'}:null}>
+                    {it.badge}
+                  </span>
+                )}
+              </div>
+              {it.action==='download'
+                ? <span style={{color:'#1a2b22',opacity:.55}}><IconUpload/></span>
+                : <span className="chev"><IconChevron/></span>}
+            </div>
+          ))}
+          <div style={{padding:'18px 6px 4px',display:'flex',alignItems:'center',gap:8,color:'#02873d',fontSize:14,fontWeight:600,textDecoration:'underline',cursor:'pointer'}}>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+            Cerrar sesión
+          </div>
+        </div>
+      </div>
+      <BottomNav active="mas" onGo={(id)=>id==='cartilla' && go('cartilla')}/>
+    </>
+  );
+}
+
+// ─── SCREEN 2: Autorizaciones list ────────────────────────────
+function ScreenList({go, setType}){
+  const cats = [
+    {id:'med', label:'Medicamentos y descartables', icon:<IconPill/>},
+    {id:'amb', label:'Prácticas ambulatorias', icon:<IconStethoscope/>},
+    {id:'img', label:'Imágenes', icon:<IconImage/>},
+    {id:'lab', label:'Laboratorio', icon:<IconLab/>},
+    {id:'alto', label:'Medicación de alto costo', icon:<IconShield/>},
+    {id:'pro', label:'Prótesis', icon:<IconProsthesis/>},
+  ];
+
+  return (
+    <>
+      <AppHeader title="Autorizaciones" onBack={()=>go('mas')}/>
+      <div className="scroll">
+        <div className="historial-bar" onClick={()=>go('historial')} data-comment-anchor="mis-autorizaciones-link">
+          <div className="icon-wrap"><IconHistory/></div>
+          <div className="text">
+            <strong>Mis autorizaciones</strong>
+            <small>Revisá el estado de tus solicitudes</small>
+          </div>
+          <span style={{color:'#00a85f'}}><IconChevron/></span>
+        </div>
+
+        <div className="section-title">Tipos de autorización</div>
+        <div className="helper-text">Elegí una opción para iniciar tu solicitud. Vas a poder adjuntar la documentación con la cámara o desde tu galería.</div>
+
+        <div className="list">
+          {cats.map(c => (
+            <div key={c.id} className="row" onClick={()=>{setType(c); go('capture')}}>
+              <div className="icon-wrap">{c.icon}</div>
+              <div className="label">{c.label}</div>
+              <span className="chev"><IconChevron/></span>
+            </div>
+          ))}
+        </div>
+      </div>
+      <BottomNav active="mas" onGo={(id)=>id==='mas' && go('mas')}/>
+    </>
+  );
+}
+
+// ─── SCREEN 3: Camera capture ─────────────────────────────────
+function ScreenCapture({go, type, onCapture}){
+  const fileInputRef = React.useRef(null);
+
+  const fakeShot = () => {
+    onCapture({
+      name: `documento_${Date.now().toString().slice(-6)}.jpg`,
+      size: '2.4 MB',
+      format: 'JPG',
+      kind: 'image'
+    });
+    go('preview');
+  };
+  const fakeUpload = () => {
+    onCapture({
+      name: 'receta_medica.pdf',
+      size: '1.1 MB',
+      format: 'PDF',
+      kind: 'pdf'
+    });
+    go('preview');
+  };
+
+  return (
+    <div className="cam-stage">
+      <div className="cam-header">
+        <button className="x" onClick={()=>go('list')}><IconX/></button>
+        <h2>{type ? type.label : 'Captura'}</h2>
+        <button className="x" aria-label="Flash"><IconFlash/></button>
+      </div>
+      <div className="cam-view">
+        <div className="doc-hint">Encuadrá el documento dentro del marco</div>
+        <div className="doc-outline">
+          <span className="corner c-tl"></span>
+          <span className="corner c-tr"></span>
+          <span className="corner c-bl"></span>
+          <span className="corner c-br"></span>
+        </div>
+      </div>
+      <div className="cam-controls">
+        <div className="shutter-wrap">
+          <button className="cam-side" aria-label="Galería"><IconGallery/></button>
+          <button className="shutter" onClick={fakeShot} aria-label="Tomar foto"></button>
+          <button className="cam-side" aria-label="Rotar" style={{visibility:'hidden'}}></button>
+        </div>
+        <button className="cam-upload" onClick={fakeUpload}>
+          <IconUpload/> Subir imagen
+        </button>
+      </div>
+    </div>
+  );
+}
+
+// ─── SCREEN 4: Preview / confirmation ─────────────────────────
+function ScreenPreview({go, type, files, removeFile, addFile}){
+  const fakeShot = () => addFile({
+    name: `documento_${Math.floor(Math.random()*900+100)}.jpg`,
+    size: (Math.random()*3+0.8).toFixed(1) + ' MB',
+    format: 'JPG', kind: 'image'
+  });
+  const fakeUpload = () => addFile({
+    name: 'orden_medica.pdf', size: '0.9 MB', format: 'PDF', kind:'pdf'
+  });
+
+  const empty = files.length === 0;
+
+  return (
+    <>
+      <AppHeader title={type ? type.label : 'Autorización'} onBack={()=>go('list')}/>
+      <div className="scroll">
+        <div className="preview-body">
+          <div style={{fontSize:13,color:'#6b7280',marginBottom:14,lineHeight:1.5}}>
+            Revisá la documentación antes de enviar. Podés agregar más archivos o eliminar y volver a sacar.
+          </div>
+
+          {files.map((f,i) => (
+            <div key={i} className="file-card" style={i>0?{marginTop:10}:null} data-comment-anchor={i===0?'file-card':undefined}>
+              <div className="file-thumb">
+                {f.kind==='pdf'
+                  ? <span style={{fontSize:11,fontWeight:800,color:'#fff',letterSpacing:.5}}>PDF</span>
+                  : <IconImageGlyph/>}
+              </div>
+              <div className="file-info">
+                <strong>{f.name}</strong>
+                <small>{f.format} · {f.size}</small>
+              </div>
+              <button className="file-x" onClick={()=>removeFile(i)} aria-label="Eliminar">
+                <IconXCircle/>
+              </button>
+            </div>
+          ))}
+
+          {empty && (
+            <div className="file-card" style={{justifyContent:'center',color:'#9aa3a9',padding:'24px 14px',borderStyle:'dashed'}}>
+              <span style={{fontSize:13,fontWeight:500}}>No hay archivos adjuntos</span>
+            </div>
+          )}
+
+          <div className="add-more">
+            <button className="btn-outline" onClick={fakeShot}>
+              <IconCamera/> Sacar foto
+            </button>
+            <button className="btn-outline" onClick={fakeUpload}>
+              <IconUpload/> Subir imagen
+            </button>
+          </div>
+
+          <div style={{marginTop:16,padding:'10px 12px',background:'#f7f9fa',borderRadius:10,
+            display:'flex',gap:8,alignItems:'flex-start',color:'#6b7280',fontSize:12,lineHeight:1.5}}>
+            <span style={{color:'#9aa3a9',flexShrink:0,marginTop:1}}><IconInfo/></span>
+            Formatos aceptados: JPG, PNG, PDF. Tamaño máx. 10 MB por archivo.
+          </div>
+        </div>
+      </div>
+      <div className="footer-actions">
+        <button className="btn-primary" disabled={empty} onClick={()=>go('success')}>
+          Enviar solicitud
+        </button>
+      </div>
+    </>
+  );
+}
+
+// ─── SCREEN 5: Success ────────────────────────────────────────
+function ScreenSuccess({go, type}){
+  return (
+    <>
+      <AppHeader title={type ? type.label : 'Autorización'}/>
+      <div className="scroll">
+        <div className="success-wrap">
+          <div className="success-icon" style={{color:'#00a85f'}}>
+            <IconCheck size={44}/>
+          </div>
+          <h2>Tu solicitud fue enviada<br/>correctamente</h2>
+          <p>Recibimos tu documentación y ya está siendo procesada por nuestro equipo.</p>
+
+          <div className="success-info">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#02873d" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+            <span>En las próximas <b>48 hs hábiles</b> recibirás una notificación con el estado de la autorización.</span>
+          </div>
+        </div>
+      </div>
+      <div className="footer-actions" style={{display:'flex',flexDirection:'column',gap:6}}>
+        <button className="btn-primary" onClick={()=>go('historial')}>
+          Ver mis autorizaciones
+        </button>
+        <button className="btn-ghost" onClick={()=>go('list')}>
+          Volver al inicio
+        </button>
+      </div>
+    </>
+  );
+}
+
+// ─── SCREEN 6: Historial ──────────────────────────────────────
+function ScreenHistorial({go, setDetail}){
+  const items = [
+    {id:1, tipo:'Imágenes', icon:<IconImage/>, fecha:'12 May 2026', estado:'proceso', label:'En proceso', num:'AUT-2026-00481'},
+    {id:2, tipo:'Laboratorio', icon:<IconLab/>, fecha:'08 May 2026', estado:'autorizada', label:'Autorizada', num:'AUT-2026-00432'},
+    {id:3, tipo:'Medicamentos y descartables', icon:<IconPill/>, fecha:'02 May 2026', estado:'pendiente', label:'Pendiente', num:'—'},
+    {id:4, tipo:'Medicación de alto costo', icon:<IconShield/>, fecha:'24 Abr 2026', estado:'rechazada', label:'Rechazada', num:'AUT-2026-00388'},
+    {id:5, tipo:'Prácticas ambulatorias', icon:<IconStethoscope/>, fecha:'10 Abr 2026', estado:'autorizada', label:'Autorizada', num:'AUT-2026-00321'},
+    {id:6, tipo:'Prótesis', icon:<IconProsthesis/>, fecha:'14 Mar 2026', estado:'vencida', label:'Vencida', num:'AUT-2026-00210'},
+  ];
+  return (
+    <>
+      <AppHeader title="Mis autorizaciones" onBack={()=>go('list')}/>
+      <div className="scroll">
+        <div className="hist-list">
+          {items.map(it => (
+            <div key={it.id} className="hist-card" onClick={()=>{setDetail(it); go('detail')}}>
+              <div className="hist-top">
+                <div className="hist-type">
+                  <div className="icon-wrap">{it.icon}</div>
+                  <div style={{minWidth:0}}>
+                    <strong>{it.tipo}</strong>
+                    <small>Solicitada el {it.fecha}</small>
+                  </div>
+                </div>
+                <span className={'badge ' + it.estado}>{it.label}</span>
+              </div>
+              <div className="hist-bottom">
+                <span className="num">N° autorización: <b>{it.num}</b></span>
+                <span style={{color:'#00a85f'}}><IconChevron size={16}/></span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+      <BottomNav active="mas" onGo={(id)=>id==='mas' && go('mas')}/>
+    </>
+  );
+}
+
+// ─── SCREEN 7: Detail ─────────────────────────────────────────
+function ScreenDetail({go, detail}){
+  if(!detail) return null;
+  const isRej = detail.estado === 'rechazada';
+  return (
+    <>
+      <AppHeader title="Detalle" onBack={()=>go('historial')}/>
+      <div className="scroll">
+        <div className="det-body">
+          <div className="det-hero">
+            <div className="top">
+              <h3>{detail.tipo}</h3>
+              <span className={'badge ' + detail.estado}>{detail.label}</span>
+            </div>
+            <div className="det-meta">
+              <div className="item"><small>Fecha solicitud</small><span>{detail.fecha}</span></div>
+              <div className="item"><small>Fecha resolución</small><span>{detail.estado==='pendiente'?'—': detail.fecha.replace(/^\d+/,(n)=>String(parseInt(n)+2))}</span></div>
+              <div className="item" style={{gridColumn:'1 / -1'}}><small>N° de autorización</small><span style={{letterSpacing:.4}}>{detail.num}</span></div>
+            </div>
+          </div>
+
+          <div className="det-card">
+            <h4>Documentación enviada</h4>
+            <div className="doc-grid">
+              {[1,2,3].slice(0,detail.estado==='vencida'?1:2).map(i => (
+                <div key={i} className="file-thumb"><IconImageGlyph/></div>
+              ))}
+            </div>
+          </div>
+
+          {isRej && (
+            <div className="det-card">
+              <h4 style={{color:'#c53030'}}>Observaciones</h4>
+              <div className="obs">La documentación adjunta no contiene el diagnóstico del profesional. Por favor adjuntá la orden médica completa para procesar nuevamente.</div>
+            </div>
+          )}
+
+          {detail.estado==='autorizada' && (
+            <button className="btn-primary" style={{marginTop:4}}>
+              Descargar autorización
+            </button>
+          )}
+          {isRej && (
+            <button className="btn-primary" onClick={()=>go('list')} style={{marginTop:4}}>
+              Volver a solicitar
+            </button>
+          )}
+        </div>
+      </div>
+    </>
+  );
+}
+
+// ─── SCREEN 0: Cartilla — for navigation back (decorative) ────
+function ScreenCartilla({go}){
+  const items = [
+    {label:'Instituciones', icon:<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="5" y="3" width="14" height="18"/><line x1="8" y1="7" x2="10" y2="7"/><line x1="14" y1="7" x2="16" y2="7"/><line x1="8" y1="11" x2="10" y2="11"/><line x1="14" y1="11" x2="16" y2="11"/><path d="M10 21v-4h4v4"/></svg>},
+    {label:'Profesionales', icon:<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c1.5-4 5-6 8-6s6.5 2 8 6"/></svg>},
+    {label:'Urgencias', icon:<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="9" width="14" height="9" rx="1.5"/><path d="M16 12h3l3 3v3h-6"/><circle cx="6" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/><path d="M9 13.5h-3M7.5 12v3"/></svg>},
+    {label:'Farmacias', icon:<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M12 8v8M8 12h8"/></svg>},
+    {label:'Ópticas', icon:<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>},
+    {label:'Odontología', icon:<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M6 3c-2 0-3 2-3 4 0 3 1 5 1.5 8s1 6 2.5 6 1.5-3 2-5 1-2 3-2 2.5 0 3 2 .5 5 2 5 2-3 2.5-6 1.5-5 1.5-8c0-2-1-4-3-4-1 0-1.5 1-3 1H9C7.5 4 7 3 6 3z"/></svg>},
+  ];
+  return (
+    <>
+      <AppHeader title="Cartilla Médica"/>
+      <div className="scroll">
+        <div className="list">
+          {items.map((it,i) => (
+            <div key={i} className="row">
+              <div className="icon-wrap">{it.icon}</div>
+              <div className="label">{it.label}</div>
+              <span className="chev"><IconChevron/></span>
+            </div>
+          ))}
+        </div>
+      </div>
+      <BottomNav active="cartilla" onGo={(id)=>id==='mas' && go('mas')}/>
+    </>
+  );
+}
+
+Object.assign(window, {
+  StatusBar, AppHeader, BottomNav, Nav3,
+  ScreenMas, ScreenList, ScreenCapture, ScreenPreview,
+  ScreenSuccess, ScreenHistorial, ScreenDetail, ScreenCartilla,
+});
+
+</script>
+
+<script type="text/babel">
+function Screen(){
+  
+  return (
+    <div className="phone">
+      <div className={'phone-screen' + ('')}>
+        <StatusBar dark={false}/>
+        <ScreenSuccess go={()=>{}} type={{label:'Imágenes'}}/>
+        <Nav3/>
+      </div>
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById('root')).render(<Screen/>);
+</script>
+
+</body>
+</html>
