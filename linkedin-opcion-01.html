@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;600;700;800;900&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1200px; height: 627px; overflow: hidden; font-family: 'Manrope', sans-serif; background: #03080f; }
+
+  .canvas {
+    width: 1200px; height: 627px;
+    position: relative;
+    background: linear-gradient(160deg, #060e18 0%, #03080f 50%, #000000 100%);
+    overflow: hidden;
+  }
+
+  .mesh { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0.55; }
+
+  .glow-teal {
+    position: absolute; top: -80px; left: -80px; width: 520px; height: 420px;
+    background: radial-gradient(ellipse at top left, rgba(52,207,190,0.10) 0%, transparent 65%);
+    pointer-events: none;
+  }
+  .glow-blue {
+    position: absolute; top: -40px; right: -60px; width: 460px; height: 360px;
+    background: radial-gradient(ellipse at top right, rgba(13,139,255,0.07) 0%, transparent 65%);
+    pointer-events: none;
+  }
+  .glow-teal-bottom {
+    position: absolute; bottom: -60px; right: 260px; width: 400px; height: 300px;
+    background: radial-gradient(ellipse at bottom center, rgba(52,207,190,0.06) 0%, transparent 65%);
+    pointer-events: none;
+  }
+
+  .layout {
+    position: relative; z-index: 10;
+    display: flex; flex-direction: row; align-items: center;
+    width: 1200px; height: 583px;
+    padding: 40px 44px 40px 52px; gap: 36px;
+  }
+
+  /* LEFT */
+  .left { flex: 0 0 440px; display: flex; flex-direction: column; gap: 16px; }
+
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(52,207,190,0.10); border: 1px solid rgba(52,207,190,0.28);
+    border-radius: 9999px; padding: 5px 14px; width: fit-content;
+  }
+  .eyebrow-dot {
+    width: 6px; height: 6px; border-radius: 50%; background: #34CFBE;
+    box-shadow: 0 0 8px rgba(52,207,190,0.9);
+  }
+  .eyebrow-text {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.20em;
+    text-transform: uppercase; color: #34CFBE; opacity: 0.88;
+  }
+
+  .title { font-size: 44px; font-weight: 900; letter-spacing: -0.04em; line-height: 1.04; color: #ffffff; }
+  .title em { font-style: normal; color: #34CFBE; }
+
+  .subtitle {
+    font-size: 15px; font-weight: 400; line-height: 1.65;
+    letter-spacing: -0.01em; color: rgba(255,255,255,0.50); max-width: 420px;
+  }
+
+  .cta {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: #34CFBE; color: #0D1A2E; font-family: 'Manrope', sans-serif;
+    font-size: 14px; font-weight: 700; letter-spacing: 0.02em;
+    border-radius: 14px; padding: 13px 26px;
+    box-shadow: 0 0 40px rgba(52,207,190,0.28); width: fit-content; margin-top: 4px;
+  }
+
+  /* RIGHT */
+  .right { flex: 1; height: 100%; display: flex; align-items: center; }
+
+  .chat-card {
+    width: 100%;
+    background: rgba(255,255,255,0.035); border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 20px; overflow: hidden;
+  }
+  .card-top-line {
+    height: 1px;
+    background: linear-gradient(90deg, transparent 0%, rgba(52,207,190,0.75) 50%, transparent 100%);
+  }
+  .card-inner { padding: 20px 20px 18px; display: flex; flex-direction: column; gap: 14px; }
+
+  .card-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .card-header-left { display: flex; align-items: center; gap: 8px; }
+  .card-header-icon {
+    width: 26px; height: 26px; border-radius: 6px;
+    background: rgba(52,207,190,0.10); border: 1px solid rgba(52,207,190,0.28);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .card-header-title { font-size: 12px; font-weight: 700; color: rgba(255,255,255,0.80); }
+  .card-header-badge {
+    font-size: 9px; font-weight: 700; color: #34CFBE;
+    background: rgba(52,207,190,0.10); border: 1px solid rgba(52,207,190,0.25);
+    border-radius: 9999px; padding: 3px 10px; letter-spacing: 0.08em; text-transform: uppercase;
+  }
+
+  .chat-columns { display: grid; grid-template-columns: 1fr auto 1fr; align-items: start; }
+
+  .col-header { font-size: 10px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; margin-bottom: 9px; }
+  .col-header.customer { color: rgba(255,255,255,0.35); }
+  .col-header.ai-col   { color: #34CFBE; opacity: 0.88; }
+
+  .messages { display: flex; flex-direction: column; gap: 6px; }
+
+  .msg-customer {
+    background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.10);
+    border-radius: 10px 10px 10px 2px; padding: 7px 11px;
+    font-size: 12px; font-weight: 500; color: rgba(255,255,255,0.75); line-height: 1.3;
+  }
+  .msg-ai {
+    background: rgba(52,207,190,0.07); border: 1px solid rgba(52,207,190,0.35);
+    border-radius: 10px 10px 2px 10px; padding: 7px 11px;
+    font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.90); line-height: 1.3;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .check { color: #34CFBE; font-size: 11px; font-weight: 800; }
+
+  .center-divider {
+    display: flex; flex-direction: column; align-items: center;
+    justify-content: center; gap: 14px; padding: 20px 10px 0; position: relative;
+  }
+  .center-divider::before {
+    content: ''; position: absolute; top: 20px; bottom: 0; left: 50%; width: 1px;
+    background: linear-gradient(180deg, rgba(52,207,190,0.30) 0%, rgba(52,207,190,0.04) 100%);
+  }
+  .action-label {
+    font-size: 9px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
+    color: rgba(52,207,190,0.70); background: rgba(52,207,190,0.08);
+    border: 1px solid rgba(52,207,190,0.18); border-radius: 9999px; padding: 3px 8px;
+    position: relative; z-index: 1; white-space: nowrap;
+  }
+
+  /* Footer */
+  .footer-bar {
+    position: absolute; bottom: 0; left: 0; right: 0; height: 44px;
+    display: flex; align-items: center; justify-content: flex-start;
+    padding: 0 56px 56px; background: transparent; z-index: 20;
+  }
+  .footer-left { display: flex; align-items: center; gap: 12px; }
+  .footer-divider {
+    width: 1px; height: 18px; background: rgba(255,255,255,0.14);
+  }
+  .footer-sub {
+    font-size: 9px; font-weight: 600; letter-spacing: 0.18em;
+    text-transform: uppercase; color: rgba(255,255,255,0.28);
+  }
+  .footer-right { font-size: 10px; font-weight: 400; color: rgba(255,255,255,0.28); letter-spacing: 0.04em; }
+</style>
+</head>
+<body>
+<div class="canvas">
+
+  <svg class="mesh" viewBox="0 0 1200 627" xmlns="http://www.w3.org/2000/svg">
+    <line x1="80"  y1="60"  x2="210" y2="140" stroke="rgba(52,207,190,0.12)" stroke-width="0.8"/>
+    <line x1="210" y1="140" x2="380" y2="90"  stroke="rgba(52,207,190,0.08)" stroke-width="0.8"/>
+    <line x1="380" y1="90"  x2="520" y2="170" stroke="rgba(52,207,190,0.07)" stroke-width="0.8"/>
+    <line x1="80"  y1="60"  x2="160" y2="220" stroke="rgba(13,139,255,0.10)" stroke-width="0.8"/>
+    <line x1="160" y1="220" x2="300" y2="300" stroke="rgba(13,139,255,0.07)" stroke-width="0.8"/>
+    <line x1="920" y1="80"  x2="1050" y2="160" stroke="rgba(52,207,190,0.10)" stroke-width="0.8"/>
+    <line x1="1050" y1="160" x2="1150" y2="100" stroke="rgba(52,207,190,0.08)" stroke-width="0.8"/>
+    <line x1="1050" y1="160" x2="1100" y2="280" stroke="rgba(13,139,255,0.08)" stroke-width="0.8"/>
+    <line x1="850" y1="350" x2="960"  y2="440" stroke="rgba(52,207,190,0.07)" stroke-width="0.8"/>
+    <line x1="960" y1="440" x2="1100" y2="400" stroke="rgba(167,139,250,0.08)" stroke-width="0.8"/>
+    <line x1="100" y1="480" x2="220"  y2="540" stroke="rgba(52,207,190,0.07)" stroke-width="0.8"/>
+    <line x1="600" y1="30"  x2="700"  y2="90"  stroke="rgba(52,207,190,0.08)" stroke-width="0.8"/>
+    <line x1="700" y1="90"  x2="820"  y2="50"  stroke="rgba(167,139,250,0.07)" stroke-width="0.8"/>
+    <circle cx="80"   cy="60"  r="2.2" fill="#34CFBE" opacity="0.7"/>
+    <circle cx="210"  cy="140" r="1.8" fill="#34CFBE" opacity="0.5"/>
+    <circle cx="380"  cy="90"  r="2.0" fill="#34CFBE" opacity="0.6"/>
+    <circle cx="520"  cy="170" r="1.5" fill="#34CFBE" opacity="0.4"/>
+    <circle cx="160"  cy="220" r="1.8" fill="#0D8BFF" opacity="0.5"/>
+    <circle cx="300"  cy="300" r="1.5" fill="#0D8BFF" opacity="0.35"/>
+    <circle cx="920"  cy="80"  r="2.0" fill="#34CFBE" opacity="0.6"/>
+    <circle cx="1050" cy="160" r="2.2" fill="#34CFBE" opacity="0.7"/>
+    <circle cx="1150" cy="100" r="1.8" fill="#0D8BFF" opacity="0.5"/>
+    <circle cx="1100" cy="280" r="1.5" fill="#0D8BFF" opacity="0.40"/>
+    <circle cx="850"  cy="350" r="1.8" fill="#A78BFA" opacity="0.45"/>
+    <circle cx="960"  cy="440" r="2.0" fill="#34CFBE" opacity="0.5"/>
+    <circle cx="1100" cy="400" r="1.5" fill="#A78BFA" opacity="0.35"/>
+    <circle cx="100"  cy="480" r="1.8" fill="#34CFBE" opacity="0.4"/>
+    <circle cx="600"  cy="30"  r="1.5" fill="#34CFBE" opacity="0.4"/>
+    <circle cx="700"  cy="90"  r="1.8" fill="#34CFBE" opacity="0.5"/>
+    <circle cx="820"  cy="50"  r="1.5" fill="#A78BFA" opacity="0.40"/>
+    <circle cx="450"  cy="420" r="1.4" fill="#34CFBE" opacity="0.25"/>
+    <circle cx="40"   cy="340" r="1.4" fill="#A78BFA" opacity="0.28"/>
+    <circle cx="1160" cy="500" r="1.6" fill="#34CFBE" opacity="0.30"/>
+  </svg>
+
+  <div class="glow-teal"></div>
+  <div class="glow-blue"></div>
+  <div class="glow-teal-bottom"></div>
+
+  <div class="layout">
+    <div class="left">
+      <div class="eyebrow">
+        <span class="eyebrow-dot"></span>
+        <span class="eyebrow-text">AI Conversational Assistants</span>
+      </div>
+      <div class="title">Conversations<br>shouldn't stop<br>at <em>answers.</em></div>
+      <div class="subtitle">Deploy AI assistants that guide, resolve, and move work forward across your business.</div>
+      <div class="cta">→&nbsp; Book Your Free AI Session</div>
+    </div>
+
+    <div class="right">
+      <div class="chat-card">
+        <div class="card-top-line"></div>
+        <div class="card-inner">
+          <div class="card-header">
+            <div class="card-header-left">
+              <div class="card-header-icon">
+                <!-- Chat icon lineal teal -->
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="0.7" y="0.7" width="12.6" height="9.6" rx="2.3" stroke="#34CFBE" stroke-width="1.3"/>
+                  <line x1="3" y1="4" x2="11" y2="4" stroke="#34CFBE" stroke-width="1.2" stroke-linecap="round"/>
+                  <line x1="3" y1="6.5" x2="8" y2="6.5" stroke="#34CFBE" stroke-width="1.2" stroke-linecap="round"/>
+                  <path d="M2.5 13.5L4.5 10.3" stroke="#34CFBE" stroke-width="1.3" stroke-linecap="round"/>
+                </svg>
+              </div>
+              <span class="card-header-title">AI Assistant</span>
+            </div>
+            <span class="card-header-badge">Live</span>
+          </div>
+          <div class="chat-columns">
+            <div>
+              <div class="col-header customer">Customer</div>
+              <div class="messages">
+                <div class="msg-customer">I need a quote</div>
+                <div class="msg-customer">Can I schedule?</div>
+                <div class="msg-customer">Where is my order?</div>
+                <div class="msg-customer">Can you recommend?</div>
+              </div>
+            </div>
+            <div class="center-divider">
+              <div class="action-label">Answer</div>
+              <div class="action-label">Execute</div>
+              <div class="action-label">Resolve</div>
+            </div>
+            <div>
+              <div class="col-header ai-col">AI Assistant</div>
+              <div class="messages">
+                <div class="msg-ai"><span class="check">✓</span> Quote generated</div>
+                <div class="msg-ai"><span class="check">✓</span> Meeting booked</div>
+                <div class="msg-ai"><span class="check">✓</span> Order tracked</div>
+                <div class="msg-ai"><span class="check">✓</span> Recommendation delivered</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer con logo SVG real -->
+  <div class="footer-bar">
+    <div class="footer-left">
+      <svg width="130" height="46" viewBox="0 0 185 65" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M109.727 46.663H119.239V10.0011H109.727V46.663Z" fill="white"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M37.3828 46.6621H46.8963V0H37.3828V46.6621Z" fill="white"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M109.734 7.46619H119.247V0H109.734V7.46619Z" fill="white"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M97.6763 11.3105V10.0012H88.2266V46.6631H97.738V29.0092C97.738 19.8726 101.573 18.7011 104.915 18.7011H107.236V9.19848H104.915C102.245 9.19848 99.7558 9.93537 97.6763 11.3105" fill="white"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M153.873 10.0011H141.26L131.504 20.2504V10.0011H121.992V46.663H131.504V33.8601L141.824 46.663H154.15L137.717 26.7844L153.873 10.0011Z" fill="white"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M75.963 32.2052C75.4207 33.7196 74.5456 35.0094 73.4175 35.9856C72.3588 36.7799 70.8412 37.6371 68.8885 37.9443C68.5494 37.9835 68.2039 38.0045 67.8508 38.0045C65.3551 38.0045 63.3989 37.0934 62.0879 36.2123C59.9103 34.4803 58.5188 31.6811 58.5188 28.4655C58.5188 25.3087 59.7197 22.648 61.6914 20.944C62.7501 20.1484 64.2663 19.2918 66.2204 18.9853C66.5588 18.9475 66.9056 18.9258 67.2567 18.9258C69.7524 18.9258 71.7107 19.8369 73.0195 20.7166C74.3319 21.76 75.3534 23.1904 75.963 24.8636C76.3645 25.9735 76.5901 27.1863 76.5901 28.4655C76.5901 29.814 76.3666 31.0716 75.963 32.2052V32.2052ZM75.9641 12.4358C73.5763 11.2398 70.8507 10.5715 67.9108 10.5715C67.7966 10.5715 67.6817 10.5757 67.5675 10.5785C67.4259 10.5736 67.2858 10.5715 67.1422 10.5715C62.3455 10.5715 57.9096 12.4148 54.6516 15.7626C51.4153 19.0888 49.6328 23.6004 49.6328 28.4662C49.6328 38.6679 57.1873 46.3587 67.2003 46.3587C67.3159 46.3587 67.4287 46.3552 67.5415 46.3538C67.6845 46.3566 67.8246 46.3587 67.9682 46.3587C70.8192 46.3587 73.5392 45.7044 75.9641 44.4713V46.6631H85.4762V28.4662V10.0019H75.9641V12.4358Z" fill="white"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M174.759 32.2052C174.216 33.7196 173.343 35.0094 172.214 35.9856C171.155 36.7799 169.639 37.6371 167.685 37.9443C167.346 37.9835 167 38.0045 166.648 38.0045C164.151 38.0045 162.196 37.0934 160.885 36.2123C158.707 34.4803 157.316 31.6811 157.316 28.4655C157.316 25.3087 158.516 22.648 160.488 20.944C161.547 20.1484 163.063 19.2918 165.019 18.9853C165.355 18.9475 165.7 18.9258 166.054 18.9258C168.55 18.9258 170.508 19.8369 171.818 20.7166C173.128 21.76 174.152 23.1904 174.759 24.8636C175.161 25.9735 175.386 27.1863 175.386 28.4655C175.386 29.814 175.164 31.0716 174.759 32.2052V32.2052ZM174.759 10.0019V12.4358C172.372 11.2398 169.645 10.5715 166.705 10.5715C166.589 10.5715 166.476 10.5757 166.364 10.5785C166.223 10.5736 166.081 10.5715 165.938 10.5715C161.141 10.5715 156.705 12.4148 153.448 15.7626C150.212 19.0888 148.43 23.6004 148.43 28.4662C148.43 38.6679 155.98 46.3587 165.995 46.3587C166.111 46.3587 166.224 46.3552 166.337 46.3538C166.479 46.3566 166.62 46.3587 166.764 46.3587C169.613 46.3587 172.336 45.7044 174.759 44.4713V46.6631H184.272V28.4662V10.0019H174.759Z" fill="white"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M18.3992 37.6905C16.7562 37.6905 15.3415 37.3042 14.1813 36.7891C11.146 35.2195 9.0959 31.8814 9.0959 27.9282C9.0959 22.2703 12.8556 18.1646 18.0384 18.1646C19.6814 18.1646 21.096 18.5516 22.2535 19.0666C23.5623 19.7426 24.6876 20.7504 25.5438 21.9918L33.6146 17.8091C30.475 12.8034 24.979 9.6144 18.4574 9.6144C18.3782 9.6144 18.2976 9.6172 18.217 9.6193C18.1189 9.6172 18.0201 9.6144 17.9192 9.6144C13.0105 9.6144 8.47022 11.5004 5.1351 14.9287C1.8231 18.3318 0 22.9484 0 27.9282C0 38.37 7.72892 46.2421 17.9781 46.2421C18.0587 46.2421 18.1386 46.24 18.2191 46.2372C18.3186 46.24 18.4167 46.2421 18.5176 46.2421C23.4271 46.2421 27.9666 44.3554 31.3004 40.9271C32.612 39.5827 33.6847 38.0432 34.5094 36.3699L25.8058 33.6155C24.2385 36.132 21.5893 37.6905 18.3992 37.6905" fill="white"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M14.6764 61.9859C14.7773 62.9118 15.6566 63.5227 16.8806 63.5227C18.0395 63.5227 18.8831 62.9118 18.8831 62.0692C18.8831 61.3449 18.3772 60.8998 17.2253 60.6031L16.1253 60.3183C14.5453 59.9152 13.8447 59.221 13.8447 58.0572C13.8447 56.6331 15.0926 55.6366 16.875 55.6366C18.5797 55.6366 19.8157 56.645 19.8633 58.081H18.7941C18.6988 57.1615 17.9561 56.5974 16.8386 56.5974C15.7273 56.5974 14.9552 57.1734 14.9552 58.0096C14.9552 58.657 15.4303 59.0425 16.5948 59.3456L17.493 59.5828C19.2692 60.0279 19.988 60.7102 19.988 61.9383C19.988 63.5052 18.7521 64.4842 16.7797 64.4842C14.9608 64.4842 13.7018 63.4996 13.6016 61.9859H14.6764Z" fill="white"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M22.2471 60.0648C22.2471 62.1719 23.3464 63.5009 25.0994 63.5009C26.8518 63.5009 27.9511 62.1719 27.9511 60.0648C27.9511 57.9521 26.8518 56.6232 25.0994 56.6232C23.3464 56.6232 22.2471 57.9521 22.2471 60.0648M29.0504 60.0639C29.0504 62.782 27.5293 64.4853 25.0994 64.4853C22.6696 64.4853 21.1484 62.782 21.1484 60.0639C21.1484 57.3466 22.6696 55.637 25.0994 55.637C27.5293 55.637 29.0504 57.3466 29.0504 60.0639" fill="white"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M30.625 64.3426V55.7791H35.8309V56.7406H31.6949V59.684H35.491V60.6336H31.6949V64.3426H30.625Z" fill="white"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M39.5198 64.3426V56.7406H36.7578V55.7791H43.3524V56.7406H40.589V64.3426H39.5198Z" fill="white"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M47.5012 64.3426H46.4915L44.1562 55.7791H45.2724L46.9904 62.7694H47.038L48.969 55.7791H50.0502L51.9812 62.7694H52.0281L53.7454 55.7791H54.8623L52.527 64.3426H51.5173L49.5387 57.5482H49.4791L47.5012 64.3426Z" fill="white"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M57.0498 60.9844H59.8307L58.4581 57.0795H58.4223L57.0498 60.9844ZM60.145 61.8928H56.735L55.8724 64.3435H54.75L57.9107 55.78H58.9686L62.1293 64.3435H61.0061L60.145 61.8928Z" fill="white"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M64.4275 60.0105H66.5372C67.6365 60.0105 68.2608 59.4171 68.2608 58.3667C68.2608 57.3401 67.5952 56.7292 66.4888 56.7292H64.4275V60.0105ZM64.4286 64.3428H63.3594V55.78H66.6328C68.285 55.78 69.3661 56.7891 69.3661 58.3315C69.3661 59.5246 68.7187 60.4498 67.6432 60.7885L69.6274 64.3428H68.374L66.5382 60.955H64.4286V64.3428Z" fill="white"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M76.2563 64.3426H70.9453V55.7791H76.2563V56.7406H72.0145V59.488H76.037V60.4377H72.0145V63.381H76.2563V64.3426Z" fill="white"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M101.07 64.3409H102.14V55.7774H101.07V64.3409Z" fill="white"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M104.047 64.3426V55.7791H105.086L109.78 62.5028H109.834V55.7791H110.892V64.3426H109.852L105.158 57.6426H105.105V64.3426H104.047Z" fill="white"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M112.805 64.3426V55.7791H113.844L118.538 62.5028H118.593V55.7791H119.649V64.3426H118.61L113.916 57.6426H113.863V64.3426H112.805Z" fill="white"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M122.317 60.0635C122.317 62.1707 123.417 63.4996 125.169 63.4996C126.922 63.4996 128.022 62.1707 128.022 60.0635C128.022 57.9508 126.922 56.6219 125.169 56.6219C123.417 56.6219 122.317 57.9508 122.317 60.0635M129.119 60.0639C129.119 62.782 127.598 64.4853 125.168 64.4853C122.739 64.4853 121.219 62.782 121.219 60.0639C121.219 57.3466 122.739 55.637 125.168 55.637C127.598 55.637 129.119 57.3466 129.119 60.0639" fill="white"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M132.879 64.3426L129.719 55.7791H130.842L133.39 63.043H133.425L135.974 55.7791H137.098L133.937 64.3426H132.879Z" fill="white"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M139.166 60.9834H141.947L140.574 57.0785H140.539L139.166 60.9834ZM142.262 61.8917H138.851L137.99 64.3424H136.867L140.027 55.7789H141.085L144.246 64.3424H143.122L142.262 61.8917Z" fill="white"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M146.505 64.3426V56.7406H143.742V55.7791H150.338V56.7406H147.574V64.3426H146.505Z" fill="white"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M151.711 64.3409H152.78V55.7774H151.711V64.3409Z" fill="white"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M155.459 60.0635C155.459 62.1706 156.559 63.4995 158.311 63.4995C160.064 63.4995 161.162 62.1706 161.162 60.0635C161.162 57.9508 160.064 56.6218 158.311 56.6218C156.559 56.6218 155.459 57.9508 155.459 60.0635M162.262 60.0639C162.262 62.782 160.741 64.4853 158.311 64.4853C155.88 64.4853 154.359 62.782 154.359 60.0639C154.359 57.3466 155.88 55.637 158.311 55.637C160.741 55.637 162.262 57.3466 162.262 60.0639" fill="white"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M163.836 64.3426V55.7791H164.875L169.569 62.5028H169.623V55.7791H170.681V64.3426H169.641L164.947 57.6426H164.893V64.3426H163.836Z" fill="white"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M89.7365 64.7635H87.1728V61.2973H83.9141V58.8095H87.1728V55.3595H89.7365V58.8095H92.9945V61.2973H89.7365V64.7635Z" fill="white"/>
+</svg>
+
+      
+    </div>
+    
+  </div>
+
+</div>
+</body>
+</html>
