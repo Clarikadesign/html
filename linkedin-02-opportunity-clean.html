@@ -49,10 +49,10 @@ html, body { width: 1200px; height: 627px; overflow: hidden; font-family: 'Manro
 .node-center { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); background: rgba(52,207,190,0.10); border: 1px solid rgba(52,207,190,0.40); border-radius: 16px; padding: 14px 20px; display: flex; flex-direction: column; align-items: center; gap: 5px; z-index: 10; box-shadow: 0 0 40px rgba(52,207,190,0.12); min-width: 148px; text-align: center; }
 .nc-label { font-size: 13px; font-weight: 700; color: #34CFBE; letter-spacing: 0.08em; text-transform: uppercase; }
 .nc-sub { font-size: 12px; color: rgba(255,255,255,0.40); }
-.node { position: absolute; border-radius: 14px; padding: 14px 18px; min-width: 145px; z-index: 10; }
+.node { position: absolute; border-radius: 14px; padding: 14px 18px; min-width: 145px; z-index: 10; display: flex; flex-direction: row; align-items: center; gap: 10px; }
 .node-title { font-size: 14px; font-weight: 700; color: rgba(255,255,255,0.90); letter-spacing: -0.01em; }
 .node-sub { font-size: 12px; color: rgba(255,255,255,0.45); margin-top: 4px; }
-.dot { width: 5px; height: 5px; border-radius: 50%; margin-bottom: 5px; }
+.dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
 .teal { border: 1px solid rgba(52,207,190,0.35); background: rgba(52,207,190,0.06); }
 .blue { border: 1px solid rgba(13,139,255,0.35); background: rgba(13,139,255,0.06); }
 .lilac { border: 1px solid rgba(167,139,250,0.35); background: rgba(167,139,250,0.06); }
@@ -116,28 +116,23 @@ html, body { width: 1200px; height: 627px; overflow: hidden; font-family: 'Manro
         </div>
         <div class="node teal" style="top:18px;left:18px;">
           <div class="dot dt"></div>
-          <div class="node-title">Support</div>
-          <div class="node-sub">Auto-resolve tickets</div>
+          <div><div class="node-title">Support</div><div class="node-sub">Auto-resolve tickets</div></div>
         </div>
         <div class="node blue" style="top:18px;right:18px;">
           <div class="dot db"></div>
-          <div class="node-title">Sales</div>
-          <div class="node-sub">Qualify &amp; convert leads</div>
+          <div><div class="node-title">Sales</div><div class="node-sub">Qualify &amp; convert leads</div></div>
         </div>
         <div class="node teal" style="top:50%;left:8px;transform:translateY(-50%);">
           <div class="dot dt"></div>
-          <div class="node-title">Operations</div>
-          <div class="node-sub">Trigger workflows</div>
+          <div><div class="node-title">Operations</div><div class="node-sub">Trigger workflows</div></div>
         </div>
         <div class="node lilac" style="bottom:18px;left:18px;">
           <div class="dot dl"></div>
-          <div class="node-title">Scheduling</div>
-          <div class="node-sub">Book meetings instantly</div>
+          <div><div class="node-title">Scheduling</div><div class="node-sub">Book meetings instantly</div></div>
         </div>
         <div class="node blue" style="bottom:18px;right:18px;">
           <div class="dot db"></div>
-          <div class="node-title">Customer Experience</div>
-          <div class="node-sub">Personalize every touch</div>
+          <div><div class="node-title">Customer Experience</div><div class="node-sub">Personalize every touch</div></div>
         </div>
       </div>
     </div>
