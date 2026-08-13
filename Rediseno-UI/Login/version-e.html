@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Kiboo · Iniciar sesión</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --brand-green:  #22C55E;
+    --brand-green-hover: #16A34A;
+    --brand-blue:   #3b82f6;
+    --brand-violet: #8b5cf6;
+
+    --gray-50:  #F8F9FC;
+    --gray-100: #F1F3F8;
+    --gray-200: #E5E7EB;
+    --gray-300: #D1D5DB;
+    --gray-400: #9CA3AF;
+    --gray-500: #6B7280;
+    --gray-900: #111827;
+
+    --ink: var(--gray-900);
+    --ink-soft: var(--gray-500);
+    --ink-faint: var(--gray-400);
+    --surface-card: #FFFFFF;
+
+    --space-2: 8px; --space-3: 12px; --space-4: 16px;
+    --space-5: 24px; --space-6: 32px; --space-7: 48px; --space-8: 64px;
+
+    --radius-sm: 10px;
+    --radius-md: 16px;
+    --radius-lg: 24px;
+    --radius-xl: 28px;
+
+    --shadow-card: 0 1px 2px rgb(17 24 39 / 0.04), 0 10px 28px -10px rgb(17 24 39 / 0.12);
+    --shadow-float: 0 24px 60px -20px rgb(17 24 39 / 0.22);
+
+    --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; font-family: "Inter", "Segoe UI", sans-serif; color: var(--ink); }
+  h1, h2, h3 { font-family: "Manrope", "Segoe UI", sans-serif; margin: 0; }
+  button { font-family: inherit; }
+
+  body { background: var(--gray-50); }
+
+  /* ---- Manchas pastel de marca: cubren toda la página ---- */
+  .page-blobs { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+  .page-blobs .blob { position: absolute; border-radius: 50%; filter: blur(90px); }
+  .blob--violet { top: -20%; left: -12%; width: 46vw; height: 46vw; background: var(--brand-violet); opacity: 0.26; }
+  .blob--green  { bottom: -24%; left: 20%; width: 42vw; height: 42vw; background: var(--brand-green); opacity: 0.36; }
+  .blob--blue   { top: 4%; right: -14%; width: 44vw; height: 44vw; background: var(--brand-blue); opacity: 0.34; }
+
+  .layout {
+    position: relative;
+    z-index: 1;
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+  }
+
+  /* ============ Lado izquierdo: hero de producto ============ */
+  .hero {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: var(--space-8) var(--space-8) var(--space-8) 6vw;
+  }
+
+  /* ---- Carrusel de novedades (espacio publicitario) ---- */
+  .hero-slides { position: relative; z-index: 3; max-width: 600px; min-height: 300px; }
+  .hero-slide {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transform: translateY(10px);
+    pointer-events: none;
+    transition: opacity 0.6s var(--ease-out-expo), transform 0.6s var(--ease-out-expo);
+  }
+  .hero-slide.is-active {
+    position: relative;
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+  .hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 16px;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: white;
+    margin-bottom: var(--space-4);
+  }
+  .hero-slide--blue .hero-eyebrow   { background: var(--brand-blue); }
+  .hero-slide--lilac .hero-eyebrow  { background: var(--brand-violet); }
+  .hero-slide--green .hero-eyebrow  { background: var(--brand-green); }
+
+  .hero-slide h1 {
+    font-size: clamp(2.15rem, 1.7rem + 1.8vw, 3.15rem);
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: var(--gray-900);
+  }
+  .hero-slide p {
+    margin-top: var(--space-4);
+    font-size: 1.125rem;
+    line-height: 1.55;
+    color: var(--ink-soft);
+    max-width: 52ch;
+  }
+
+  .hero-chip {
+    margin-top: var(--space-5);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-3);
+    background: white;
+    padding: var(--space-2) var(--space-4) var(--space-2) var(--space-2);
+    border-radius: 999px;
+    box-shadow: var(--shadow-card);
+    width: fit-content;
+  }
+  .hero-chip .badge-icon {
+    height: 32px; width: 32px;
+    border-radius: 50%;
+    overflow: hidden;
+    background: var(--gray-900);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .hero-chip .badge-icon img { height: 100%; width: 100%; object-fit: cover; }
+  .hero-chip .badge-text { display: flex; flex-direction: column; line-height: 1.15; }
+  .hero-chip .badge-text small { font-size: 0.6875rem; color: var(--ink-faint); font-weight: 600; letter-spacing: 0.02em; }
+  .hero-chip .badge-text strong { font-size: 0.9375rem; font-weight: 800; color: var(--gray-900); }
+  .hero-chip--logo { padding: var(--space-3) var(--space-5); }
+  .hero-chip--logo img { height: 24px; width: auto; display: block; }
+
+  .hero-controls {
+    position: relative;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    margin-top: var(--space-6);
+  }
+  .hero-dots { display: flex; gap: var(--space-3); }
+  .hero-dot {
+    position: relative;
+    width: 40px; height: 3px;
+    border-radius: 2px;
+    background: rgb(17 24 39 / 0.14);
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    overflow: hidden;
+  }
+  .hero-dot .fill { position: absolute; inset: 0; width: 0%; background: var(--gray-900); border-radius: 2px; }
+  .hero-dot.is-active .fill { width: 100%; }
+  .hero-dot.is-filling .fill { width: 0%; animation: fillDot linear forwards; animation-duration: inherit; }
+  @keyframes fillDot { from { width: 0%; } to { width: 100%; } }
+
+  .hero-arrows { display: flex; gap: var(--space-2); }
+  .hero-arrow {
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    border: 1px solid rgb(17 24 39 / 0.12);
+    background: rgb(255 255 255 / 0.7);
+    color: var(--gray-900);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.18s var(--ease-out-expo), transform 0.18s var(--ease-out-expo);
+  }
+  .hero-arrow:hover { background: white; transform: translateY(-1px); }
+  .hero-arrow svg { width: 16px; height: 16px; }
+
+  /* ============ Lado derecho: login ============ */
+  .form-panel {
+    position: relative;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-6);
+  }
+
+  .login-card {
+    width: 100%;
+    max-width: 400px;
+    background: var(--surface-card);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-float);
+    padding: var(--space-7) var(--space-6);
+  }
+
+  .card-brand { display: flex; align-items: center; margin-bottom: var(--space-7); }
+  .card-brand img { height: 44px; width: auto; display: block; }
+
+  .login-card h2 {
+    font-size: 1.625rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    margin-bottom: var(--space-6);
+  }
+
+  form { display: flex; flex-direction: column; gap: var(--space-5); }
+
+  .field-box {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    border: 1.5px solid var(--gray-200);
+    border-radius: var(--radius-sm);
+    padding: 14px var(--space-4);
+    transition: border-color 0.2s var(--ease-out-expo), box-shadow 0.2s var(--ease-out-expo);
+  }
+  .field-box svg { color: var(--gray-400); flex-shrink: 0; transition: color 0.2s var(--ease-out-expo); }
+  .field-box:focus-within {
+    border-color: var(--brand-blue);
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--brand-blue) 14%, transparent);
+  }
+  .field-box:focus-within svg { color: var(--brand-blue); }
+  .field-box input {
+    width: 100%;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-family: inherit;
+    font-size: 1rem;
+    color: var(--ink);
+    padding: 0;
+  }
+  .field-box input::placeholder { color: var(--ink-faint); }
+
+  .toggle-visibility {
+    position: absolute; right: 6px;
+    height: 34px; width: 34px;
+    display: flex; align-items: center; justify-content: center;
+    background: none; border: none; border-radius: var(--radius-sm);
+    color: var(--ink-faint); cursor: pointer;
+    transition: color 0.18s var(--ease-out-expo), background-color 0.18s var(--ease-out-expo);
+  }
+  .toggle-visibility:hover { color: var(--ink-soft); background: var(--gray-100); }
+  .toggle-visibility svg { width: 20px; height: 20px; }
+  .toggle-visibility .icon-off { display: none; }
+  .toggle-visibility.is-visible .icon-on { display: none; }
+  .toggle-visibility.is-visible .icon-off { display: block; }
+  .card-forgot {
+    display: block;
+    text-align: right;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--ink-soft);
+    text-decoration: none;
+  }
+  .card-forgot:hover { color: var(--brand-green); text-decoration: underline; }
+
+  .btn-primary {
+    width: 100%; padding: 15px var(--space-5);
+    border-radius: var(--radius-sm);
+    font-weight: 700; font-size: 0.9375rem;
+    border: 1px solid transparent;
+    background: var(--brand-green); color: white;
+    cursor: pointer;
+    box-shadow: 0 8px 20px -8px color-mix(in srgb, var(--brand-green) 55%, transparent);
+    transition: transform 0.18s var(--ease-out-expo), background-color 0.18s var(--ease-out-expo);
+  }
+  .btn-primary:hover { background: var(--brand-green-hover); transform: translateY(-1px); }
+  .btn-primary:active { transform: translateY(0); }
+
+  @media (max-width: 980px) {
+    .layout { grid-template-columns: 1fr; }
+    .hero { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page-blobs">
+  <div class="blob blob--violet"></div>
+  <div class="blob blob--green"></div>
+  <div class="blob blob--blue"></div>
+</div>
+
+<div class="layout">
+
+  <section class="hero" id="hero">
+    <div class="hero-slides" id="heroSlides">
+      <article class="hero-slide hero-slide--blue is-active">
+        <span class="hero-eyebrow">Novedad</span>
+        <h1>Kiboo ahora es partner<br>de Tiendanube.</h1>
+        <p>Sincronizá stock, precios y pedidos sin salir de Kiboo.</p>
+        <div class="hero-chip">
+          <span class="badge-icon"><img src="../Assets/integraciones/integracion-tn.png" alt="" /></span>
+          <span class="badge-text"><small>Integración oficial</small><strong>Tienda Nube</strong></span>
+        </div>
+      </article>
+      <article class="hero-slide hero-slide--lilac">
+        <span class="hero-eyebrow">Integración</span>
+        <h1>Vendé también en<br>Mercado Libre.</h1>
+        <p>Publicá tu catálogo y gestioná tus pedidos, todo en un solo lugar.</p>
+        <div class="hero-chip">
+          <span class="badge-icon"><img src="../Assets/integraciones/integracion-ml.png" alt="" /></span>
+          <span class="badge-text"><small>Integración oficial</small><strong>Mercado Libre</strong></span>
+        </div>
+      </article>
+      <article class="hero-slide hero-slide--green">
+        <span class="hero-eyebrow">Evento</span>
+        <h1>Kiboo va a estar<br>presente en Efica.</h1>
+        <p>Sumate a nuestro stand y conocé de cerca las novedades de Kiboo. Demos en vivo: 28, 29 y 30 de julio.</p>
+        <div class="hero-chip hero-chip--logo">
+          <img src="../Assets/logo%20efica.png" alt="Efica" />
+        </div>
+      </article>
+    </div>
+
+    <div class="hero-controls">
+      <div class="hero-dots" id="heroDots"></div>
+      <div class="hero-arrows">
+        <button class="hero-arrow" id="heroPrev" aria-label="Novedad anterior">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+        </button>
+        <button class="hero-arrow" id="heroNext" aria-label="Siguiente novedad">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <section class="form-panel">
+    <div class="login-card">
+      <div class="card-brand"><img src="../Logo/Logo%20Kiboo.svg" alt="Kiboo" /></div>
+
+      <h2>Iniciar sesión</h2>
+
+      <form autocomplete="off">
+        <div class="field-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><path d="M20 21a8 8 0 0 0-16 0"/><circle cx="12" cy="7" r="4"/></svg>
+          <input type="text" placeholder="Usuario o email" />
+        </div>
+
+        <div class="field-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          <input id="password" type="password" placeholder="Contraseña" />
+          <button type="button" class="toggle-visibility" id="togglePassword" aria-label="Mostrar contraseña">
+            <svg class="icon-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8Z"/><circle cx="12" cy="12" r="3"/></svg>
+            <svg class="icon-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.94 10.94 0 0 1 12 20c-7 0-11-8-11-8a21.86 21.86 0 0 1 5.06-6.06M9.9 4.24A10.94 10.94 0 0 1 12 4c7 0 11 8 11 8a21.82 21.82 0 0 1-3.22 4.56M14.12 14.12a3 3 0 1 1-4.24-4.24"/><path d="M1 1l22 22"/></svg>
+          </button>
+        </div>
+
+        <a class="card-forgot" href="#">¿Olvidaste tu contraseña?</a>
+
+        <button type="submit" class="btn-primary">Iniciar sesión</button>
+      </form>
+    </div>
+  </section>
+
+</div>
+
+<script>
+  // Toggle contraseña
+  const toggle = document.getElementById('togglePassword');
+  const password = document.getElementById('password');
+  toggle.addEventListener('click', () => {
+    const isVisible = password.type === 'text';
+    password.type = isVisible ? 'password' : 'text';
+    toggle.classList.toggle('is-visible', !isVisible);
+    toggle.setAttribute('aria-label', isVisible ? 'Mostrar contraseña' : 'Ocultar contraseña');
+  });
+
+  const hero = document.getElementById('hero');
+
+  // --- Carrusel de novedades (espacio publicitario) ---
+  const AUTOPLAY_MS = 7000;
+  const heroSlides = Array.from(document.querySelectorAll('.hero-slide'));
+  const heroDotsWrap = document.getElementById('heroDots');
+  let heroCurrent = 0;
+  let heroTimer = null;
+
+  heroSlides.forEach((_, i) => {
+    const dot = document.createElement('button');
+    dot.className = 'hero-dot';
+    dot.setAttribute('aria-label', `Ir a novedad ${i + 1}`);
+    dot.innerHTML = '<span class="fill"></span>';
+    dot.addEventListener('click', () => heroGoTo(i, true));
+    heroDotsWrap.appendChild(dot);
+  });
+  const heroDots = Array.from(heroDotsWrap.children);
+
+  function heroGoTo(index, userTriggered) {
+    heroCurrent = (index + heroSlides.length) % heroSlides.length;
+    heroSlides.forEach((s, i) => s.classList.toggle('is-active', i === heroCurrent));
+    heroDots.forEach((d, i) => {
+      d.classList.toggle('is-active', i === heroCurrent);
+      d.classList.remove('is-filling');
+      d.querySelector('.fill').style.animation = 'none';
+      void d.offsetWidth;
+      d.querySelector('.fill').style.animation = '';
+      if (i === heroCurrent) {
+        d.classList.add('is-filling');
+        d.querySelector('.fill').style.animationDuration = AUTOPLAY_MS + 'ms';
+      }
+    });
+    if (userTriggered) heroRestart();
+  }
+
+  function heroNext() { heroGoTo(heroCurrent + 1); }
+  function heroRestart() {
+    clearInterval(heroTimer);
+    heroTimer = setInterval(heroNext, AUTOPLAY_MS);
+  }
+
+  document.getElementById('heroNext').addEventListener('click', () => heroGoTo(heroCurrent + 1, true));
+  document.getElementById('heroPrev').addEventListener('click', () => heroGoTo(heroCurrent - 1, true));
+  hero.addEventListener('mouseenter', () => clearInterval(heroTimer));
+  hero.addEventListener('mouseleave', heroRestart);
+
+  heroGoTo(0, false);
+  heroRestart();
+</script>
+
+</body>
+</html>

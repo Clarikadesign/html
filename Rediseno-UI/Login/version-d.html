@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Kiboo · Iniciar sesión</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --brand-green:  #22C55E;
+    --brand-green-hover: #16A34A;
+    --brand-blue:   #3A8DFF;
+    --brand-violet: #9C73FB;
+
+    --tag-eventos:       #9C73FB;
+    --tag-integraciones: #3A8DFF;
+    --tag-novedades:     #2FBF5B;
+
+    --circle-top:    #434340;
+    --circle-bottom: #FFFFFF;
+
+    --gray-50:  #F9FAFB;
+    --gray-100: #F3F4F6;
+    --gray-200: #E5E7EB;
+    --gray-300: #D1D5DB;
+    --gray-400: #9CA3AF;
+    --gray-500: #6B7280;
+    --gray-900: #111827;
+
+    --ink:            var(--gray-900);
+    --ink-soft:       var(--gray-500);
+    --ink-faint:      var(--gray-400);
+    --surface-card:   #FFFFFF;
+
+    --space-2: 8px;  --space-3: 12px; --space-4: 16px;
+    --space-5: 24px; --space-6: 32px; --space-7: 48px; --space-8: 64px;
+
+    --radius-sm: 10px;
+    --radius-lg: 24px;
+    --radius-xl: 28px;
+
+    --shadow-card: 0 1px 2px rgb(17 24 39 / 0.04), 0 8px 24px -12px rgb(17 24 39 / 0.14);
+    --shadow-float: 0 24px 60px -20px rgb(17 24 39 / 0.35);
+
+    --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+
+    --stage-color: var(--brand-blue);
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; font-family: "Inter", "Segoe UI", sans-serif; }
+  h1, h2, h3 { font-family: "Manrope", "Segoe UI", sans-serif; margin: 0; }
+  button { font-family: inherit; }
+
+  .stage {
+    position: relative;
+    min-height: 100vh;
+    overflow: hidden;
+    padding: var(--space-7);
+    display: flex;
+    flex-direction: column;
+    background: var(--stage-color);
+    transition: background-color 0.7s var(--ease-out-expo);
+  }
+  .stage.theme-blue   { --stage-color: var(--brand-blue); }
+  .stage.theme-lilac  { --stage-color: var(--brand-violet); }
+
+  .stage-decor { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+  .stage-decor .circle { position: absolute; border-radius: 50%; }
+  .stage-decor .circle--top {
+    width: 38vw; height: 38vw;
+    right: -6vw; top: -10vw;
+    background: var(--circle-top);
+    opacity: 0.15;
+  }
+  .stage-decor .circle--bottom {
+    width: 55vw; height: 55vw;
+    left: -12vw; bottom: -18vw;
+    background: var(--circle-bottom);
+    opacity: 0.15;
+  }
+
+  .stage-container {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 1140px;
+    margin: 0 auto;
+    flex: 1;
+    display: flex;
+  }
+
+  .stage-body {
+    flex: 1;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(340px, 500px);
+    align-items: center;
+    gap: var(--space-8);
+    min-height: 0;
+  }
+
+  .stage-slides { position: relative; max-width: 620px; }
+  .stage-slide {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transform: translateY(12px);
+    pointer-events: none;
+    transition: opacity 0.6s var(--ease-out-expo), transform 0.6s var(--ease-out-expo);
+  }
+  .stage-slide.is-active {
+    position: relative;
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+  .stage-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 16px;
+    border-radius: 999px;
+    color: white;
+    font-size: 0.8125rem;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    margin-bottom: var(--space-4);
+  }
+  .stage-eyebrow--eventos       { background: var(--tag-eventos); }
+  .stage-eyebrow--integraciones { background: var(--tag-integraciones); }
+  .stage-eyebrow--novedades     { background: var(--tag-novedades); }
+
+  .stage-slide h1 {
+    color: white;
+    font-size: clamp(1.875rem, 1.3rem + 1.6vw, 2.75rem);
+    font-weight: 800;
+    line-height: 1.12;
+    letter-spacing: -0.02em;
+  }
+  .stage-slide p {
+    margin-top: var(--space-4);
+    color: rgb(255 255 255 / 0.82);
+    font-size: 1.125rem;
+    line-height: 1.5;
+    max-width: 48ch;
+  }
+
+  .stage-cta {
+    margin-top: var(--space-6);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    background: white;
+    color: var(--gray-900);
+    font-weight: 700;
+    font-size: 0.9375rem;
+    padding: 14px 20px;
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+    box-shadow: var(--shadow-card);
+    transition: transform 0.18s var(--ease-out-expo), box-shadow 0.18s var(--ease-out-expo);
+  }
+  .stage-cta:hover { transform: translateY(-1px); box-shadow: var(--shadow-float); }
+  .stage-cta svg { color: var(--gray-900); flex-shrink: 0; }
+
+  /* ============ Card de login ============ */
+  .login-card {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 500px;
+    margin-right: var(--space-6);
+    background: var(--surface-card);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-float);
+    padding: var(--space-7) var(--space-6);
+  }
+
+  .card-brand { display: flex; align-items: center; margin-bottom: var(--space-5); }
+  .card-brand img { height: 38px; width: auto; display: block; }
+
+  .login-card h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: var(--gray-900);
+    margin-bottom: var(--space-5);
+  }
+
+  .field-box {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    border: 1.5px solid var(--gray-200);
+    border-radius: var(--radius-sm);
+    padding: 14px var(--space-4);
+    transition: border-color 0.2s var(--ease-out-expo), box-shadow 0.2s var(--ease-out-expo);
+  }
+  .field-box + .field-box { margin-top: var(--space-5); }
+  .field-box svg { color: var(--gray-400); flex-shrink: 0; transition: color 0.2s var(--ease-out-expo); }
+  .field-box:focus-within {
+    border-color: var(--brand-green);
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--brand-green) 14%, transparent);
+  }
+  .field-box:focus-within svg { color: var(--brand-green); }
+
+  .field-box input {
+    flex: 1;
+    min-width: 0;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-family: inherit;
+    font-size: 1rem;
+    color: var(--ink);
+    padding: 0;
+  }
+  .field-box input::placeholder { color: var(--ink-faint); }
+
+  .pw-toggle {
+    background: none;
+    border: none;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    color: var(--gray-400);
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+  .pw-toggle:hover { color: var(--gray-500); }
+
+  .card-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: var(--space-4);
+  }
+  .remember {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: 0.875rem;
+    color: var(--ink-soft);
+    cursor: pointer;
+    user-select: none;
+  }
+  .remember input { width: 16px; height: 16px; accent-color: var(--brand-green); cursor: pointer; }
+
+  .card-forgot {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--ink-soft);
+    text-decoration: none;
+  }
+  .card-forgot:hover { color: var(--brand-green); text-decoration: underline; }
+
+  .btn-pill {
+    width: 100%;
+    margin-top: var(--space-5);
+    padding: 19px var(--space-5);
+    border-radius: var(--radius-sm);
+    border: none;
+    background: var(--brand-green);
+    color: white;
+    font-weight: 700;
+    font-size: 0.9375rem;
+    cursor: pointer;
+    box-shadow: 0 8px 20px -8px color-mix(in srgb, var(--brand-green) 55%, transparent);
+    transition: transform 0.18s var(--ease-out-expo), background-color 0.18s var(--ease-out-expo);
+  }
+  .btn-pill:hover { background: var(--brand-green-hover); transform: translateY(-1px); }
+  .btn-pill:active { transform: translateY(0); }
+
+  @media (max-width: 900px) {
+    .stage-body { grid-template-columns: 1fr; }
+    .stage-slides { max-width: 100%; }
+    .login-card { max-width: 100%; margin-right: 0; }
+  }
+</style>
+</head>
+<body>
+
+<div class="stage theme-blue" id="stage">
+  <div class="stage-decor">
+    <div class="circle circle--top"></div>
+    <div class="circle circle--bottom"></div>
+  </div>
+
+  <div class="stage-container">
+    <div class="stage-body">
+      <div>
+        <div class="stage-slides" id="stageSlides">
+          <article class="stage-slide is-active" data-theme="blue">
+            <span class="stage-eyebrow stage-eyebrow--eventos">Eventos</span>
+            <h1>Kiboo va a estar en Efica<br>del 28 al 30 de julio.</h1>
+            <p>Kiboo va a estar presente haciendo demos en vivo para que puedas conocer cómo gestionar stock, ventas, sucursales y mucho más desde un solo lugar.</p>
+            <a class="stage-cta" href="#">
+              Quiero más info
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M9 18l6-6-6-6"/></svg>
+            </a>
+          </article>
+          <article class="stage-slide" data-theme="lilac">
+            <span class="stage-eyebrow stage-eyebrow--novedades">Novedades</span>
+            <h1>Recomendá Kiboo<br>y ganá un beneficio.</h1>
+            <p>Invitá a un comercio a usar Kiboo. Si contrata, te bonificamos tu próxima licencia.</p>
+            <a class="stage-cta" href="#">
+              Quiero más info
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M9 18l6-6-6-6"/></svg>
+            </a>
+          </article>
+        </div>
+      </div>
+
+      <div class="login-card">
+        <div class="card-brand"><img src="../Logo/Logo%20Kiboo.svg" alt="Kiboo" /></div>
+        <h2>Iniciar sesión</h2>
+
+        <form autocomplete="off">
+          <div class="field-box">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 6-10 7L2 6"/></svg>
+            <input type="text" placeholder="Usuario" />
+          </div>
+          <div class="field-box">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            <input type="password" id="pwInput" placeholder="Contraseña" />
+            <button type="button" class="pw-toggle" id="pwToggle" aria-label="Mostrar contraseña">
+              <svg class="icon-eye" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8Z"/><circle cx="12" cy="12" r="3"/></svg>
+              <svg class="icon-eye-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18" style="display:none"><path d="M17.94 17.94A10.94 10.94 0 0 1 12 20c-7 0-11-8-11-8a21.8 21.8 0 0 1 5.06-6.06M9.9 4.24A10.94 10.94 0 0 1 12 4c7 0 11 8 11 8a21.8 21.8 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+            </button>
+          </div>
+          <div class="card-row">
+            <label class="remember">
+              <input type="checkbox" />
+              <span>Recordarme</span>
+            </label>
+            <a class="card-forgot" href="#">¿Olvidaste tu contraseña?</a>
+          </div>
+          <button type="submit" class="btn-pill">Iniciar sesión</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const stage = document.getElementById('stage');
+  const AUTOPLAY_MS = 7000;
+  const slides = Array.from(document.querySelectorAll('.stage-slide'));
+  let current = 0;
+  let timer = null;
+
+  function goTo(index) {
+    current = (index + slides.length) % slides.length;
+    slides.forEach((s, i) => s.classList.toggle('is-active', i === current));
+    stage.className = 'stage theme-' + slides[current].dataset.theme;
+  }
+
+  function next() { goTo(current + 1); }
+  function restart() {
+    clearInterval(timer);
+    timer = setInterval(next, AUTOPLAY_MS);
+  }
+
+  stage.addEventListener('mouseenter', () => clearInterval(timer));
+  stage.addEventListener('mouseleave', restart);
+
+  goTo(0);
+  restart();
+
+  const pwToggle = document.getElementById('pwToggle');
+  const pwInput = document.getElementById('pwInput');
+  pwToggle.addEventListener('click', () => {
+    const showing = pwInput.type === 'text';
+    pwInput.type = showing ? 'password' : 'text';
+    pwToggle.querySelector('.icon-eye').style.display = showing ? '' : 'none';
+    pwToggle.querySelector('.icon-eye-off').style.display = showing ? 'none' : '';
+  });
+</script>
+
+</body>
+</html>

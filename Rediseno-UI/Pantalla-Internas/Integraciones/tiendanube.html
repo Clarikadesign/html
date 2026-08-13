@@ -1,0 +1,1632 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Kiboo · Integraciones · Tiendanube</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --brand-green: #22C55E;
+    --brand-green-hover: #16A34A;
+    --brand-green-bg: #E9FBF0;
+    --brand-blue: #3b82f6;
+    --brand-blue-bg: #EAF2FE;
+    --brand-violet: #8b5cf6;
+    --brand-violet-bg: #F1EBFE;
+    --brand-pink: #EC4899;
+    --brand-pink-bg: #FCE7F3;
+    --brand-pink-dark: #BE185D;
+
+    --tn-blue: #0050C3;
+    --tn-blue-light: #1863DB;
+
+    --warning: #F59E0B;
+    --warning-dark: #B45309;
+    --warning-bg: #FEF3E2;
+
+    --danger: #EF4444;
+    --danger-dark: #B91C1C;
+    --danger-bg: #FDEBEB;
+
+    --gray-50:  #F9FAFB;
+    --gray-100: #F3F4F6;
+    --gray-150: #EEF0F3;
+    --gray-200: #E5E7EB;
+    --gray-300: #D1D5DB;
+    --gray-400: #858A8C;
+    --gray-500: #6B7280;
+    --gray-600: #4B5563;
+    --gray-900: #3F3F3F;
+
+    --ink: var(--gray-900);
+    --ink-soft: var(--gray-500);
+    --ink-faint: var(--gray-400);
+
+    --surface-page: #F8F9FC;
+    --surface-sunken: #F2F3F7;
+    --surface-card: #FFFFFF;
+    --border-soft: var(--gray-200);
+    --border-softer: var(--gray-150);
+    --heading-ink: #3F3F3F;
+
+    --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px;
+    --space-5: 24px; --space-6: 32px; --space-7: 48px;
+
+    --radius-sm: 8px;
+    --radius-md: 16px;
+    --radius-lg: 20px;
+
+    --shadow-card: 0 1px 2px rgb(17 24 39 / 0.04), 0 8px 24px -12px rgb(17 24 39 / 0.12);
+    --shadow-pop: 0 12px 32px -8px rgb(17 24 39 / 0.18);
+
+    --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  /* ===================== TEMA OSCURO ===================== */
+  :root[data-theme="dark"] {
+    --brand-green-hover: #34D399;
+    --brand-green-bg: #123420;
+    --brand-blue-bg: #142544;
+    --brand-violet-bg: #241C40;
+    --brand-pink-bg: #3A1830;
+    --brand-pink-dark: #F472B6;
+
+    --warning-dark: #FBBF24;
+    --warning-bg: #3A2B0E;
+
+    --danger-dark: #F87171;
+    --danger-bg: #3A1616;
+
+    --gray-50:  #1B1F29;
+    --gray-100: #20242F;
+    --gray-150: #262B37;
+    --gray-200: #2E3440;
+    --gray-300: #3C4250;
+    --gray-400: #7C8494;
+    --gray-500: #9AA1B0;
+    --gray-600: #B5BBC8;
+    --gray-900: #F3F4F6;
+
+    --surface-page: #0A0C11;
+    --surface-sunken: #12141C;
+    --surface-card: #171A22;
+    --heading-ink: #F5F6F8;
+
+    --shadow-card: 0 0 0 1px rgb(255 255 255 / 0.04), 0 8px 24px -12px rgb(0 0 0 / 0.5);
+    --shadow-pop: 0 0 0 1px rgb(255 255 255 / 0.06), 0 16px 40px -12px rgb(0 0 0 / 0.6);
+  }
+  :root[data-theme="dark"] .bar-col .bar { background: color-mix(in srgb, var(--brand-green) 30%, black); }
+  :root[data-theme="dark"] .period-filter button.is-active { background: var(--brand-green); color: #06210F; box-shadow: none; }
+  :root[data-theme="dark"] .status-chip.is-active { border-color: var(--brand-green); background: var(--brand-green); color: #06210F; }
+  :root[data-theme="dark"] .status-chip.is-active strong { color: #06210F; }
+  :root[data-theme="dark"] .header-bell .dot { border-color: var(--surface-card); }
+  :root[data-theme="dark"] .theme-icon-sun { display: block; }
+  :root[data-theme="dark"] .theme-icon-moon { display: none; }
+  .theme-icon-sun { display: none; }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: var(--surface-page); }
+  body { font-family: "Roboto", "Segoe UI", sans-serif; color: var(--ink); -webkit-font-smoothing: antialiased; background: var(--surface-page); }
+  .nav-primary, .app-header, .nav-channels, .card, .channel-header { transition: background-color 0.25s var(--ease-out-expo), border-color 0.25s var(--ease-out-expo), box-shadow 0.25s var(--ease-out-expo); }
+  h1, h2, h3 { font-family: "Roboto", "Segoe UI", sans-serif; margin: 0; letter-spacing: -0.01em; font-weight: 700; color: var(--heading-ink); }
+  button { font-family: inherit; cursor: pointer; }
+  a { color: inherit; }
+  ul { list-style: none; margin: 0; padding: 0; }
+  .icon { width: 18px; height: 18px; flex-shrink: 0; }
+  svg { display: block; }
+  :focus-visible { outline: 2px solid var(--brand-blue); outline-offset: 2px; border-radius: 4px; }
+
+  /* ===================== APP SHELL ===================== */
+  .app { display: flex; align-items: flex-start; gap: var(--space-4); min-height: 100vh; padding: var(--space-4); }
+
+  /* ---- Nav primaria: bloque flotante con bordes redondeados (respeta el sidebar real de Kiboo) ---- */
+  .nav-primary {
+    width: 76px; flex-shrink: 0;
+    background: var(--surface-card);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
+    display: flex; flex-direction: column; align-items: center;
+    padding: var(--space-4) var(--space-2);
+    position: sticky; top: var(--space-4);
+    max-height: calc(100vh - var(--space-4) * 2);
+    overflow-y: auto;
+    transition: transform 0.3s var(--ease-out-expo);
+    z-index: 40;
+  }
+  .nav-brand { display: flex; align-items: center; justify-content: center; padding: var(--space-2) 0 var(--space-4); }
+  .nav-brand img { height: 26px; width: auto; }
+  .nav-brand span { display: none; }
+
+  .nav-group { display: flex; flex-direction: column; align-items: center; gap: 4px; width: 100%; }
+  .nav-item {
+    position: relative;
+    display: flex; align-items: center; justify-content: center;
+    width: 44px; height: 44px;
+    border-radius: var(--radius-sm);
+    color: var(--gray-600);
+    text-decoration: none;
+    transition: background-color 0.15s var(--ease-out-expo), color 0.15s var(--ease-out-expo);
+  }
+  .nav-item .icon { width: 20px; height: 20px; color: var(--gray-400); flex-shrink: 0; transition: color 0.15s var(--ease-out-expo); }
+  .nav-item .chevron { display: none; }
+  .nav-item span.label {
+    position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+  }
+  .nav-item:hover { background: var(--gray-50); color: var(--ink); }
+  .nav-item.is-active { background: var(--brand-green-bg); color: var(--brand-green-hover); }
+  .nav-item.is-active .icon { color: var(--brand-green); }
+
+  .nav-primary-footer { margin-top: auto; padding-top: var(--space-4); text-align: center; font-size: 0.6875rem; font-weight: 500; color: var(--ink-faint); }
+
+  .nav-scrim { display: none; }
+
+  /* ---- Header superior: bloque flotante con bordes redondeados ---- */
+  .app-main { flex: 1; display: flex; flex-direction: column; gap: var(--space-4); min-width: 0; }
+  .app-header {
+    height: 64px; flex-shrink: 0;
+    background: var(--surface-card);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 var(--space-5);
+    position: sticky; top: var(--space-4); z-index: 30;
+  }
+  .header-left { display: flex; align-items: center; gap: var(--space-4); min-width: 0; }
+  .branch-select {
+    display: flex; align-items: center; gap: var(--space-2);
+    border: 1px solid var(--border-soft); border-radius: var(--radius-sm);
+    padding: 7px var(--space-3);
+    background: var(--surface-card);
+    color: var(--ink); font-size: 0.8125rem; font-weight: 500;
+    cursor: pointer;
+  }
+  .branch-select:hover { border-color: var(--gray-400); }
+  .branch-select .icon { width: 15px; height: 15px; color: var(--ink-faint); }
+  .branch-select .chevron { width: 13px; height: 13px; color: var(--ink-faint); }
+  .icon-btn {
+    width: 38px; height: 38px; flex-shrink: 0;
+    border-radius: var(--radius-sm);
+    border: 1px solid transparent;
+    background: transparent;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--ink-soft);
+    transition: background-color 0.15s var(--ease-out-expo), border-color 0.15s var(--ease-out-expo);
+  }
+  .icon-btn:hover { background: var(--gray-50); border-color: var(--border-soft); }
+  .header-right { display: flex; align-items: center; gap: var(--space-2); }
+  .header-bell { position: relative; }
+  .header-bell .dot { position: absolute; top: 7px; right: 8px; width: 8px; height: 8px; border-radius: 50%; background: var(--danger); border: 2px solid white; }
+  .header-avatar {
+    width: 38px; height: 38px; border-radius: 50%;
+    background: var(--brand-violet); color: white;
+    display: flex; align-items: center; justify-content: center;
+    font-family: "Roboto", sans-serif; font-weight: 900; font-size: 0.8125rem;
+    margin-left: var(--space-2); border: none;
+  }
+
+  /* ---- Body: subnav de canales + contenido ---- */
+  .app-body { flex: 1; display: flex; align-items: flex-start; gap: var(--space-4); min-height: 0; }
+
+  .nav-channels {
+    width: 236px; flex-shrink: 0;
+    background: var(--surface-card);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
+    padding: var(--space-5) var(--space-4);
+    position: sticky; top: calc(var(--space-4) * 2 + 64px);
+    max-height: calc(100vh - var(--space-4) * 3 - 64px);
+    overflow-y: auto;
+  }
+  .nav-channels-label { font-size: 0.6875rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-faint); padding: 0 var(--space-2); margin-bottom: var(--space-3); }
+  .channel-item {
+    display: flex; align-items: center; gap: var(--space-3);
+    padding: 10px var(--space-3);
+    border-radius: var(--radius-sm);
+    text-decoration: none; color: var(--ink);
+    font-size: 0.875rem; font-weight: 600;
+    margin-bottom: 2px;
+    transition: background-color 0.15s var(--ease-out-expo);
+  }
+  .channel-item:hover { background: rgb(255 255 255 / 0.7); }
+  .channel-item.is-active { background: var(--surface-card); box-shadow: var(--shadow-card); }
+  .channel-logo { width: 26px; height: 26px; border-radius: 7px; object-fit: contain; background: white; border: 1px solid var(--border-softer); padding: 3px; flex-shrink: 0; }
+  .channel-info { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+  .channel-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .channel-status {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-size: 0.625rem; font-weight: 500;
+    padding: 2px 8px 2px 7px;
+    border-radius: 999px;
+    width: fit-content; max-width: 100%;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .channel-status .dot { width: 5px; height: 5px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
+  .channel-status.ok { background: var(--brand-green-bg); color: var(--brand-green-hover); }
+  .channel-status.warn { background: var(--warning-bg); color: var(--warning-dark); }
+  .channel-status.off { background: var(--gray-100); color: var(--ink-faint); }
+  .channel-status.danger { background: var(--danger-bg); color: var(--danger-dark); }
+
+  .channel-select-mobile { display: none; }
+
+  .channel-content { flex: 1; min-width: 0; padding-bottom: var(--space-6); }
+  .content-inner { max-width: 1120px; margin: 0 auto; display: flex; flex-direction: column; gap: var(--space-5); }
+
+  /* ===================== HEADER DE CANAL: cabecera de marca (azul Tiendanube) ===================== */
+  .channel-header {
+    position: relative; overflow: hidden;
+    background: linear-gradient(135deg, var(--tn-blue) 0%, var(--tn-blue-light) 100%);
+    border: none;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
+    padding: var(--space-6);
+    display: flex; align-items: center; justify-content: space-between; gap: var(--space-5); flex-wrap: wrap;
+  }
+  .channel-header::after {
+    content: ""; position: absolute; right: -60px; top: -70px;
+    width: 220px; height: 220px; border-radius: 50%;
+    background: rgb(255 255 255 / 0.10);
+  }
+  .channel-header-id { position: relative; z-index: 1; display: flex; align-items: center; gap: var(--space-4); }
+  .channel-header-id .channel-logo { width: 64px; height: 64px; border-radius: var(--radius-md); background: white; box-shadow: var(--shadow-card); padding: 10px; }
+  .channel-header h1 { font-size: 1.625rem; font-weight: 900; color: white; display: flex; align-items: center; gap: var(--space-3); }
+  .channel-header p { margin: 4px 0 0; color: rgb(255 255 255 / 0.85); font-size: 0.9375rem; }
+  .channel-header .account-line { margin-top: 6px; font-size: 0.8125rem; color: rgb(255 255 255 / 0.7); font-weight: 700; }
+  .channel-header-actions { position: relative; z-index: 1; display: flex; align-items: center; gap: var(--space-2); }
+  .channel-header .btn-ghost { background: white; color: var(--tn-blue); border-color: white; }
+  .channel-header .btn-ghost:hover { background: rgb(255 255 255 / 0.9); border-color: rgb(255 255 255 / 0.9); }
+
+  /* Selector de cuenta (para canales con más de una cuenta conectada) */
+  .account-switcher-wrap { position: relative; z-index: 1; }
+  .account-switcher {
+    display: flex; align-items: center; gap: var(--space-2);
+    background: white;
+    border: 1px solid white;
+    color: var(--tn-blue);
+    padding: 9px var(--space-4);
+    border-radius: var(--radius-sm);
+    font-size: 0.8125rem; font-weight: 700;
+    box-shadow: var(--shadow-card);
+  }
+  .account-switcher:hover { background: rgb(255 255 255 / 0.9); }
+  .account-switcher .chevron { margin-left: 2px; }
+  .account-dropdown {
+    position: fixed;
+    min-width: 250px;
+    background: var(--surface-card);
+    border: 1px solid var(--border-soft);
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-pop);
+    padding: var(--space-2);
+    display: none;
+    z-index: 100;
+  }
+  .account-dropdown.is-open { display: block; }
+  .account-dropdown-label { font-size: 0.6875rem; font-weight: 700; letter-spacing: 0.03em; text-transform: uppercase; color: var(--ink-faint); padding: var(--space-2) var(--space-3) 6px; }
+  .account-option {
+    display: flex; align-items: center; gap: var(--space-3);
+    padding: 9px var(--space-3); border-radius: 8px;
+    text-decoration: none; color: var(--ink);
+  }
+  .account-option:hover { background: var(--gray-50); }
+  .account-option.is-current { background: var(--brand-green-bg); }
+  .account-option-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .account-option-dot.ok { background: var(--brand-green); }
+  .account-option-dot.warn { background: var(--warning); }
+  .account-option-body { flex: 1; min-width: 0; }
+  .account-option-name { font-size: 0.8125rem; font-weight: 500; display: block; }
+  .account-option-status { font-size: 0.6875rem; color: var(--ink-faint); }
+  .account-option-check { width: 15px; height: 15px; color: var(--brand-green-hover); flex-shrink: 0; }
+
+  /* ===================== BOTONES ===================== */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2);
+    padding: 10px var(--space-5);
+    border-radius: var(--radius-sm);
+    font-weight: 500; font-size: 0.875rem;
+    border: 1px solid transparent;
+    white-space: nowrap;
+    transition: transform 0.15s var(--ease-out-expo), background-color 0.15s var(--ease-out-expo), box-shadow 0.15s var(--ease-out-expo);
+  }
+  .btn .icon { width: 16px; height: 16px; }
+  .btn-primary { background: var(--brand-green); color: white; box-shadow: 0 6px 16px -8px rgb(34 197 94 / 0.55); }
+  .btn-primary:hover { background: var(--brand-green-hover); transform: translateY(-1px); }
+  .btn-ghost { background: var(--surface-card); border-color: var(--border-soft); color: var(--ink); }
+  .btn-ghost:hover { border-color: var(--gray-400); transform: translateY(-1px); }
+  .btn-sm { padding: 7px var(--space-4); font-size: 0.8125rem; }
+
+  .btn-menu-wrap { position: relative; }
+  .btn-dropdown { position: absolute; top: calc(100% + 6px); right: 0; min-width: 220px; background: var(--surface-card); border: 1px solid var(--border-soft); border-radius: var(--radius-sm); box-shadow: var(--shadow-pop); padding: var(--space-2); display: none; z-index: 25; }
+  .btn-dropdown.is-open { display: block; }
+  .btn-dropdown a, .btn-dropdown button { display: flex; align-items: center; gap: var(--space-3); width: 100%; text-align: left; padding: 9px var(--space-3); border-radius: 8px; font-size: 0.8125rem; font-weight: 600; color: var(--ink); background: none; border: none; text-decoration: none; }
+  .btn-dropdown a:hover, .btn-dropdown button:hover { background: var(--gray-50); }
+  .btn-dropdown a.danger, .btn-dropdown button.danger { color: var(--danger-dark); }
+  .btn-dropdown hr { border: none; border-top: 1px solid var(--border-softer); margin: var(--space-2) 0; }
+
+  /* ===================== CARD BASE ===================== */
+  .card { background: var(--surface-card); border: 1px solid var(--border-softer); border-radius: var(--radius-lg); box-shadow: var(--shadow-card); }
+
+  /* ===================== ESTADO DE CONEXIÓN ===================== */
+  .connection-card { padding: var(--space-5) var(--space-6); }
+  .connection-top { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-4); flex-wrap: wrap; }
+  .connection-status { display: flex; align-items: flex-start; gap: var(--space-4); }
+  .status-icon { width: 46px; height: 46px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .status-icon.warn { background: var(--warning-bg); color: var(--warning-dark); }
+  .status-icon.ok { background: var(--brand-green-bg); color: var(--brand-green-hover); }
+  .status-icon.danger { background: var(--danger-bg); color: var(--danger-dark); }
+  .status-icon .icon { width: 22px; height: 22px; }
+  .connection-status h2 { font-size: 1.0625rem; font-weight: 500; display: flex; align-items: center; gap: var(--space-2); }
+  .status-pill { display: inline-flex; align-items: center; gap: 5px; font-size: 0.6875rem; font-weight: 800; letter-spacing: 0.03em; text-transform: uppercase; padding: 3px 9px; border-radius: 999px; }
+  .status-pill.warn { background: var(--warning-bg); color: var(--warning-dark); }
+  .status-pill.ok { background: var(--brand-green-bg); color: var(--brand-green-hover); }
+  .status-pill.danger { background: var(--danger-bg); color: var(--danger-dark); }
+  .connection-status p { margin: 4px 0 0; font-size: 0.875rem; color: var(--ink-soft); max-width: 52ch; }
+
+  .connection-meta { display: grid; grid-template-columns: repeat(2, 1fr); max-width: 480px; gap: var(--space-5); margin-top: var(--space-5); padding-top: var(--space-5); border-top: 1px solid var(--border-softer); }
+  .meta-item .label { font-size: 0.6875rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--ink-faint); }
+  .meta-item .value { margin-top: 4px; font-size: 0.875rem; font-weight: 700; color: var(--ink); display: flex; align-items: center; gap: 6px; }
+  .meta-item .value.warn { color: var(--warning-dark); }
+  .meta-item .value.ok { color: var(--brand-green-hover); }
+
+  /* ===================== ALERTAS ===================== */
+  .alerts { display: flex; flex-direction: column; gap: var(--space-3); }
+  .alert-row { display: flex; align-items: center; gap: var(--space-4); padding: var(--space-4) var(--space-5); border-radius: var(--radius-md); border: 1px solid var(--border-softer); background: var(--surface-card); box-shadow: var(--shadow-card); }
+  .alert-row .status-icon { width: 38px; height: 38px; }
+  .alert-row .status-icon .icon { width: 18px; height: 18px; }
+  .alert-text { flex: 1; min-width: 0; }
+  .alert-text strong { display: block; font-size: 0.875rem; font-weight: 500; color: var(--ink); }
+  .alert-text span { font-size: 0.8125rem; color: var(--ink-soft); }
+
+  /* ===================== MÉTRICAS ===================== */
+  .section-title-row { display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); flex-wrap: wrap; }
+  .section-title-row h2 { font-size: 1.125rem; font-weight: 500; }
+
+  .period-filter { display: inline-flex; background: var(--surface-sunken); padding: 3px; border-radius: var(--radius-sm); gap: 2px; }
+  .period-filter button { border: none; background: transparent; padding: 7px 14px; border-radius: 8px; font-size: 0.8125rem; font-weight: 500; color: var(--ink-soft); transition: background-color 0.15s var(--ease-out-expo), color 0.15s var(--ease-out-expo); }
+  .period-filter button.is-active { background: var(--surface-card); color: var(--ink); box-shadow: var(--shadow-card); }
+
+  .stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-4); margin-top: var(--space-4); }
+  .stat-card { padding: var(--space-5); }
+  .stat-icon { width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: var(--space-3); }
+  .stat-icon .icon { width: 20px; height: 20px; }
+  .stat-icon.green { background: var(--brand-green-bg); color: var(--brand-green-hover); }
+  .stat-icon.blue { background: var(--brand-blue-bg); color: var(--brand-blue); }
+  .stat-icon.violet { background: var(--brand-violet-bg); color: var(--brand-violet); }
+  .stat-icon.pink { background: var(--brand-pink-bg); color: var(--brand-pink-dark); }
+  .stat-card .label { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.02em; color: var(--ink-faint); text-transform: uppercase; }
+  .stat-card .value { margin-top: var(--space-2); font-family: "Roboto", sans-serif; font-size: 1.625rem; font-weight: 500; color: var(--ink); }
+  .stat-delta { display: inline-flex; align-items: center; gap: 4px; margin-top: 6px; font-size: 0.8125rem; font-weight: 700; }
+  .stat-delta .icon { width: 14px; height: 14px; }
+  .stat-delta.up { color: var(--brand-green-hover); }
+  .stat-delta.down { color: var(--danger-dark); }
+  .stat-delta span.muted { color: var(--ink-faint); font-weight: 500; }
+
+  .metrics-lower { display: grid; grid-template-columns: 1.6fr 1fr; gap: var(--space-4); margin-top: var(--space-4); align-items: stretch; }
+  .chart-card { padding: var(--space-5) var(--space-6); }
+  .chart-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--space-5); }
+  .chart-head h3 { font-size: 0.9375rem; font-weight: 500; }
+  .select-sm { border: 1px solid var(--border-soft); border-radius: 8px; padding: 6px 10px; font-size: 0.8125rem; font-weight: 500; color: var(--ink); background: var(--surface-card); }
+
+  .bar-chart { display: flex; align-items: flex-end; gap: var(--space-3); height: 160px; padding-top: var(--space-3); border-top: 1px dashed var(--border-soft); }
+  .bar-col { flex: 1; display: flex; flex-direction: column; align-items: center; gap: var(--space-2); height: 100%; justify-content: flex-end; }
+  .bar-col .bar { width: 100%; max-width: 34px; border-radius: 6px 6px 2px 2px; background: color-mix(in srgb, var(--brand-green) 22%, white); position: relative; transition: background-color 0.2s var(--ease-out-expo); }
+  .bar-col .bar.is-peak { background: var(--brand-green); }
+  .bar-col .day { font-size: 0.6875rem; font-weight: 700; color: var(--ink-faint); text-transform: uppercase; }
+
+  .top-products-card { padding: var(--space-5) var(--space-6); display: flex; flex-direction: column; }
+  .top-products-card .chart-head a { font-size: 0.8125rem; font-weight: 700; color: var(--brand-blue); text-decoration: none; }
+  .top-products-card .chart-head a:hover { text-decoration: underline; }
+  .top-row { display: flex; align-items: center; gap: var(--space-3); padding: var(--space-3) 0; border-bottom: 1px solid var(--border-softer); }
+  .top-row:last-child { border-bottom: none; padding-bottom: 0; }
+  .top-rank { width: 22px; height: 22px; border-radius: 6px; background: var(--surface-sunken); color: var(--ink-soft); font-size: 0.75rem; font-weight: 800; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .top-info { flex: 1; min-width: 0; }
+  .top-info strong { display: block; font-size: 0.8125rem; font-weight: 500; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .top-info span { font-size: 0.75rem; color: var(--ink-faint); }
+  .top-amount { text-align: right; flex-shrink: 0; }
+  .top-amount strong { display: block; font-size: 0.8125rem; font-weight: 800; color: var(--ink); }
+  .top-amount span { font-size: 0.75rem; color: var(--ink-faint); }
+
+  /* ===================== TABS ===================== */
+  .tabs-card { padding: 0; overflow: hidden; }
+  .tablist { display: flex; gap: var(--space-2); padding: 0 var(--space-6); border-bottom: 1px solid var(--border-softer); }
+  .tab-btn { position: relative; background: none; border: none; padding: var(--space-4) var(--space-3); font-size: 0.875rem; font-weight: 500; color: var(--ink-faint); }
+  .tab-btn:hover { color: var(--ink-soft); }
+  .tab-btn.is-active { color: var(--ink); }
+  .tab-btn.is-active::after { content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 2.5px; background: var(--brand-green); border-radius: 2px 2px 0 0; }
+  .tab-btn .count-badge { margin-left: 6px; font-size: 0.6875rem; padding: 1px 7px; border-radius: 999px; background: var(--brand-blue); color: white; font-weight: 700; }
+
+  .tab-panel { display: none; padding: var(--space-6); }
+  .tab-panel.is-active { display: block; }
+
+  /* Toolbar dentro de tabs */
+  .tab-toolbar { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); flex-wrap: wrap; margin-bottom: var(--space-5); }
+  .tab-toolbar-left { display: flex; align-items: center; gap: var(--space-2); flex: 1; min-width: 220px; }
+  .search-box { display: flex; align-items: center; gap: var(--space-2); border: 1.5px solid var(--border-soft); border-radius: var(--radius-sm); padding: 9px var(--space-3); max-width: 280px; flex: 1; transition: border-color 0.15s var(--ease-out-expo); }
+  .search-box:focus-within { border-color: var(--brand-green); box-shadow: 0 0 0 3px color-mix(in srgb, var(--brand-green) 14%, transparent); }
+  .search-box .icon { color: var(--gray-400); width: 16px; height: 16px; }
+  .search-box input { border: none; outline: none; background: none; font-size: 0.8125rem; width: 100%; color: var(--ink); font-family: inherit; }
+  .tab-toolbar-right { display: flex; align-items: center; gap: var(--space-2); }
+
+  /* Progreso */
+  /* Panel de estado de sincronización: progreso + filtros en un mismo bloque hundido */
+  .sync-status-panel { background: var(--surface-sunken); border-radius: var(--radius-md); padding: var(--space-4) var(--space-5); margin-bottom: var(--space-5); }
+  .sync-status-top { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: var(--space-2); }
+  .sync-status-label { font-size: 0.8125rem; font-weight: 500; color: var(--ink-soft); }
+  .sync-status-pct { font-size: 0.8125rem; font-weight: 700; color: var(--ink); font-variant-numeric: tabular-nums; }
+  .progress-track { height: 6px; border-radius: 999px; background: var(--border-soft); overflow: hidden; }
+  .progress-fill { height: 100%; background: var(--brand-green); border-radius: 999px; transition: width 0.6s var(--ease-out-expo); }
+  .sync-status-panel .chip-row { margin: var(--space-4) 0 0; padding-top: var(--space-4); border-top: 1px solid var(--border-soft); }
+
+  /* Chips de estado clicables */
+  .chip-row { display: flex; gap: var(--space-2); flex-wrap: wrap; margin-bottom: var(--space-5); }
+  .status-chip {
+    display: flex; align-items: center; gap: 7px;
+    border: 1px solid var(--border-soft); border-radius: 999px;
+    padding: 7px var(--space-3) 7px 10px;
+    background: var(--surface-card);
+    font-size: 0.8125rem; font-weight: 500; color: var(--ink-soft);
+    transition: border-color 0.15s var(--ease-out-expo), background-color 0.15s var(--ease-out-expo), color 0.15s var(--ease-out-expo);
+  }
+  .status-chip:hover { border-color: var(--gray-300); color: var(--ink); }
+  .status-chip.is-active { border-color: var(--ink); background: var(--ink); color: white; }
+  .status-chip.is-active strong { color: white; }
+  .status-chip .dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+  .status-chip .dot.ok { background: var(--brand-green); }
+  .status-chip .dot.warn { background: var(--warning); }
+  .status-chip .dot.danger { background: var(--danger); }
+  .status-chip .dot.neutral { background: var(--gray-400); }
+  .status-chip .dot.info { background: var(--brand-blue); }
+  .status-chip strong { color: var(--ink); font-family: "Roboto", sans-serif; font-weight: 700; }
+
+  /* Botón dividido (acción principal + variantes) */
+  .btn-split { display: flex; }
+  .btn-split .btn:first-child { border-radius: var(--radius-sm) 0 0 var(--radius-sm); }
+  .btn-split-trigger { border-radius: 0 var(--radius-sm) var(--radius-sm) 0 !important; padding-left: 9px; padding-right: 9px; border-left: 1px solid rgb(255 255 255 / 0.35); }
+  .chevron-mini { width: 12px; height: 12px; }
+
+  /* Tablas */
+  .table-scroll { overflow-x: auto; border: 1px solid var(--border-softer); border-radius: var(--radius-md); }
+  table { width: 100%; border-collapse: collapse; min-width: 640px; }
+  thead th { text-align: left; font-size: 0.6875rem; font-weight: 800; letter-spacing: 0.04em; text-transform: uppercase; color: var(--ink-faint); background: var(--surface-sunken); padding: var(--space-3) var(--space-4); white-space: nowrap; }
+  tbody td { padding: var(--space-3) var(--space-4); font-size: 0.8125rem; color: var(--ink); border-top: 1px solid var(--border-softer); vertical-align: middle; }
+  tbody tr { transition: background-color 0.15s var(--ease-out-expo); }
+  tbody tr:hover { background: var(--surface-sunken); }
+  tbody tr.is-hidden { display: none; }
+  .cell-main { font-weight: 500; }
+  .cell-sub { display: block; font-size: 0.75rem; color: var(--ink-faint); font-weight: 500; margin-top: 2px; }
+  .cell-observacion { font-size: 0.75rem; color: var(--ink-faint); white-space: normal; max-width: 320px; line-height: 1.4; }
+  .cell-observacion.has-error { color: var(--danger-dark); }
+  .cell-comentario { font-size: 0.75rem; color: var(--ink-faint); white-space: normal; max-width: 190px; line-height: 1.4; }
+  .cell-nowrap { white-space: nowrap; }
+  #ordenTableBody td:nth-child(2), #ordenTableBody td:nth-child(5), #ordenTableBody td:nth-child(6) { white-space: nowrap; }
+  #ordenTableBody td:nth-child(4) { min-width: 182px; padding-left: var(--space-3); padding-right: var(--space-3); }
+  #ordenTableBody td:nth-child(5), #ordenTableBody td:nth-child(6) { width: 1%; }
+  .cell-comentario.is-ok { color: var(--brand-green-hover); }
+  .cell-comentario.has-error { color: var(--danger-dark); }
+  .comentario-icon { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; border-radius: 50%; cursor: default; }
+  .comentario-icon .icon { width: 13px; height: 13px; }
+  .comentario-icon.ok { background: var(--brand-green-bg); color: var(--brand-green-hover); }
+
+  /* Filtros de la grilla de productos */
+  .filter-bar {
+    display: flex; flex-direction: column; gap: var(--space-4);
+    background: var(--surface-sunken);
+    border-radius: var(--radius-md);
+    padding: var(--space-4) var(--space-5);
+    margin-bottom: var(--space-5);
+  }
+  .filter-bar-label { font-size: 0.6875rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--ink-faint); }
+  .filter-select-row { display: flex; gap: var(--space-3); flex-wrap: wrap; align-items: flex-start; }
+  .filter-field { display: flex; flex-direction: column; gap: 5px; min-width: 150px; flex: 1 1 150px; max-width: 190px; }
+  .filter-field-label { font-size: 0.6875rem; font-weight: 600; color: var(--ink-soft); padding-left: 2px; }
+  .filter-field .select-sm { width: 100%; background: var(--surface-card); }
+  .filter-search-row { display: flex; align-items: center; gap: var(--space-4); flex-wrap: wrap; justify-content: space-between; padding-top: var(--space-4); border-top: 1px solid var(--border-soft); }
+  .filter-search-left { display: flex; align-items: center; gap: var(--space-3); flex: 1; min-width: 280px; }
+  .filter-search-left .search-box { max-width: 320px; flex: 1; background: var(--surface-card); }
+  .filter-clear-link { font-size: 0.8125rem; font-weight: 500; color: var(--ink-soft); text-decoration: none; background: none; border: none; padding: 0; }
+  .filter-clear-link:hover { color: var(--ink); text-decoration: underline; }
+  .filter-results-count { font-size: 0.75rem; color: var(--ink-faint); white-space: nowrap; }
+  .cell-error { color: var(--danger-dark); font-size: 0.75rem; font-weight: 600; margin-top: 2px; display: flex; align-items: center; gap: 4px; }
+  .cell-error { color: var(--danger-dark); font-size: 0.75rem; font-weight: 600; margin-top: 2px; display: flex; align-items: center; gap: 4px; }
+  .cell-error .icon { width: 12px; height: 12px; }
+
+  .badge { display: inline-flex; align-items: center; gap: 5px; font-size: 0.75rem; font-weight: 700; padding: 4px 10px; border-radius: 999px; }
+  .badge.ok { background: var(--brand-green-bg); color: var(--brand-green-hover); }
+  .badge.warn { background: var(--warning-bg); color: var(--warning-dark); }
+  .badge.danger { background: var(--danger-bg); color: var(--danger-dark); }
+  .badge.neutral { background: var(--gray-100); color: var(--ink-soft); }
+  .badge .dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+
+  .row-action { width: 30px; height: 30px; border-radius: 8px; border: 1px solid var(--border-soft); background: var(--surface-card); display: inline-flex; align-items: center; justify-content: center; color: var(--ink-soft); }
+  .row-action:hover { border-color: var(--gray-400); color: var(--ink); }
+  .row-action .icon { width: 14px; height: 14px; }
+  .cell-link { color: var(--brand-blue); font-weight: 500; text-decoration: none; }
+  .cell-link:hover { text-decoration: underline; }
+  .cell-dni { display: block; font-size: 0.75rem; color: var(--ink-faint); font-weight: 500; margin-top: 2px; }
+
+  .table-footer { display: flex; justify-content: flex-end; margin-top: var(--space-4); }
+  .table-footer a { font-size: 0.8125rem; font-weight: 700; color: var(--brand-blue); text-decoration: none; display: flex; align-items: center; gap: 4px; }
+  .table-footer a:hover { text-decoration: underline; }
+
+  /* Actividad */
+  /* Resumen por proceso: franja con divisores, no cajas repetidas */
+  .sync-overview { display: grid; grid-template-columns: repeat(4, 1fr); border: 1px solid var(--border-softer); border-radius: var(--radius-md); margin-bottom: var(--space-6); overflow: hidden; }
+  .sync-overview-item { display: flex; align-items: flex-start; gap: var(--space-3); padding: var(--space-4); border-left: 1px solid var(--border-softer); }
+  .sync-overview-item:first-child { border-left: none; }
+  .sync-overview-icon { width: 32px; height: 32px; border-radius: 9px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .sync-overview-icon .icon { width: 16px; height: 16px; }
+  .sync-overview-icon.ok { background: var(--brand-green-bg); color: var(--brand-green-hover); }
+  .sync-overview-icon.danger { background: var(--danger-bg); color: var(--danger-dark); }
+  .sync-overview-name { font-size: 0.6875rem; font-weight: 700; letter-spacing: 0.03em; text-transform: uppercase; color: var(--ink-faint); }
+  .sync-overview-status { font-size: 0.875rem; font-weight: 500; margin-top: 3px; }
+  .sync-overview-status.ok { color: var(--brand-green-hover); }
+  .sync-overview-status.danger { color: var(--danger-dark); }
+  .sync-overview-time { font-size: 0.75rem; color: var(--ink-faint); margin-top: 3px; }
+
+  /* Línea de tiempo de actividad */
+  .activity-list { display: flex; flex-direction: column; }
+  .activity-item { position: relative; display: flex; gap: var(--space-4); padding-bottom: var(--space-6); }
+  .activity-item:last-child { padding-bottom: 0; }
+  .activity-item:not(:last-child)::after {
+    content: ""; position: absolute; left: 17.5px; top: 40px; bottom: 4px;
+    width: 1.5px; background: var(--border-soft);
+  }
+  .activity-icon { position: relative; z-index: 1; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .activity-icon .icon { width: 17px; height: 17px; }
+  .activity-body { flex: 1; min-width: 0; }
+  .activity-top { display: flex; align-items: center; gap: var(--space-2); flex-wrap: wrap; }
+  .activity-top strong { font-size: 0.875rem; font-weight: 500; color: var(--ink); }
+  .activity-time { font-size: 0.75rem; color: var(--ink-faint); font-weight: 600; }
+  .activity-count { font-size: 0.75rem; color: var(--ink-faint); }
+  .activity-desc { margin-top: 4px; font-size: 0.8125rem; color: var(--ink-soft); max-width: 68ch; }
+  .activity-link { margin-top: 6px; display: inline-block; font-size: 0.8125rem; font-weight: 700; color: var(--brand-blue); text-decoration: none; }
+  .activity-link:hover { text-decoration: underline; }
+
+  .activity-toolbar { margin-bottom: var(--space-5); }
+  .activity-group + .activity-group { margin-top: var(--space-3); }
+  .activity-group-label {
+    font-size: 0.75rem; font-weight: 700; letter-spacing: 0.03em; text-transform: uppercase;
+    color: var(--ink-faint);
+    padding-bottom: var(--space-3);
+    border-bottom: 1px solid var(--border-softer);
+    margin-bottom: var(--space-4);
+  }
+  .is-hidden { display: none !important; }
+
+  /* ===================== CONFIGURACIÓN ===================== */
+  .config-card {
+    padding: var(--space-5) var(--space-6);
+    background: var(--brand-blue-bg);
+    border-color: color-mix(in srgb, var(--brand-blue) 20%, var(--border-softer));
+  }
+  .config-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-5) var(--space-6); margin-top: var(--space-5); }
+  .config-item { display: flex; align-items: flex-start; gap: var(--space-3); }
+  .config-icon {
+    width: 30px; height: 30px; border-radius: 9px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--surface-card); color: var(--brand-blue);
+    box-shadow: 0 1px 2px rgb(17 24 39 / 0.06);
+  }
+  .config-icon .icon { width: 15px; height: 15px; }
+  .config-item .label { font-size: 0.6875rem; font-weight: 700; letter-spacing: 0.03em; text-transform: uppercase; color: var(--ink-faint); }
+  .config-item .value { margin-top: 3px; font-size: 0.875rem; font-weight: 400; color: var(--ink); }
+
+  /* ===================== RESPONSIVE ===================== */
+  @media (max-width: 1180px) {
+    .metrics-lower { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 1100px) {
+    .stat-grid { grid-template-columns: repeat(2, 1fr); }
+    .config-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 980px) {
+    #navToggle { display: flex !important; }
+    .nav-primary { position: fixed; left: 0; top: 0; height: 100vh; max-height: 100vh; border-radius: 0 var(--radius-lg) var(--radius-lg) 0; transform: translateX(-100%); box-shadow: var(--shadow-pop); }
+    .nav-primary.is-open { transform: translateX(0); }
+    .nav-scrim { display: block; position: fixed; inset: 0; background: rgb(17 24 39 / 0.35); z-index: 35; opacity: 0; pointer-events: none; transition: opacity 0.2s var(--ease-out-expo); }
+    .nav-scrim.is-open { opacity: 1; pointer-events: auto; }
+    .nav-channels { display: none; }
+    .channel-select-mobile { display: block; margin-bottom: var(--space-2); }
+    .channel-select-mobile select { width: 100%; padding: var(--space-3) var(--space-4); border-radius: var(--radius-sm); border: 1.5px solid var(--border-soft); font-size: 0.875rem; font-weight: 700; font-family: inherit; color: var(--ink); background: var(--surface-card); }
+  }
+  @media (max-width: 720px) {
+    .app { padding: var(--space-3); gap: var(--space-3); }
+    .app-main { gap: var(--space-3); }
+    .app-body { gap: var(--space-3); }
+    .channel-content { padding: 0 0 var(--space-7); }
+    .connection-meta { grid-template-columns: 1fr; gap: var(--space-3); }
+    .stat-grid { grid-template-columns: 1fr; }
+    .config-grid { grid-template-columns: 1fr; }
+    .channel-header { flex-direction: column; }
+    .sync-overview { grid-template-columns: repeat(2, 1fr); }
+    .sync-overview-item:nth-child(3) { border-left: none; }
+  }
+</style>
+</head>
+<body>
+<script>
+  if (localStorage.getItem('kiboo-theme') === 'dark') {
+    document.documentElement.setAttribute('data-theme', 'dark');
+  }
+</script>
+
+<div class="app">
+  <div class="nav-scrim" id="navScrim"></div>
+
+  <!-- ===== NAV PRIMARIA ===== -->
+  <aside class="nav-primary" id="navPrimary" aria-label="Navegación principal de Kiboo">
+    <div class="nav-brand">
+      <img src="../../Logo/Icono.svg" alt="" style="height:24px;" />
+      <span>Kiboo</span>
+    </div>
+    <nav class="nav-group">
+      <a class="nav-item" href="#" title="Mi Cuenta" aria-label="Mi Cuenta"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span class="label">Mi Cuenta</span></a>
+      <a class="nav-item" href="#" title="Ventas" aria-label="Ventas"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg><span class="label">Ventas</span><svg class="icon chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></a>
+      <a class="nav-item" href="#" title="Compras" aria-label="Compras"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg><span class="label">Compras</span><svg class="icon chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></a>
+      <a class="nav-item" href="#" title="Órdenes" aria-label="Órdenes"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg><span class="label">Órdenes</span><svg class="icon chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></a>
+      <a class="nav-item" href="#" title="Finanzas" aria-label="Finanzas"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="21" x2="21" y2="21"/><path d="M5 21V10l7-6 7 6v11"/><line x1="9" y1="21" x2="9" y2="14"/><line x1="15" y1="21" x2="15" y2="14"/></svg><span class="label">Finanzas</span><svg class="icon chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></a>
+      <a class="nav-item" href="#" title="Cuentas Corrientes" aria-label="Cuentas Corrientes"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg><span class="label">Cuentas Corrientes</span></a>
+      <a class="nav-item" href="#" title="Productos" aria-label="Productos"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg><span class="label">Productos</span><svg class="icon chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></a>
+      <a class="nav-item" href="#" title="Stock" aria-label="Stock"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8v13H3V8"/><path d="M1 3h22v5H1z"/><line x1="10" y1="12" x2="14" y2="12"/></svg><span class="label">Stock</span></a>
+      <a class="nav-item" href="#" title="Importador" aria-label="Importador"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg><span class="label">Importador</span></a>
+      <a class="nav-item" href="#" title="Contabilidad" aria-label="Contabilidad"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="10" y2="10"/><line x1="8" y1="14" x2="10" y2="14"/><line x1="8" y1="18" x2="10" y2="18"/><line x1="14" y1="10" x2="16" y2="10"/><line x1="14" y1="14" x2="16" y2="14"/><line x1="14" y1="18" x2="16" y2="18"/></svg><span class="label">Contabilidad</span><svg class="icon chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></a>
+      <a class="nav-item" href="#" title="Reportes" aria-label="Reportes"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg><span class="label">Reportes</span></a>
+      <a class="nav-item is-active" href="mercado-libre.html" aria-current="page" title="Integraciones" aria-label="Integraciones"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="6" r="3"/><circle cx="5" cy="18" r="3"/><circle cx="19" cy="12" r="3"/><path d="M7.5 7.5 16.5 11"/><path d="M7.5 16.5 16.5 13"/></svg><span class="label">Integraciones</span></a>
+      <a class="nav-item" href="#" title="Menú SuperAdmin" aria-label="Menú SuperAdmin"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg><span class="label">Menú SuperAdmin</span><svg class="icon chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></a>
+      <a class="nav-item" href="#" title="Seguridad" aria-label="Seguridad"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/></svg><span class="label">Seguridad</span></a>
+    </nav>
+    <div class="nav-primary-footer">v2.0</div>
+  </aside>
+
+  <div class="app-main">
+    <!-- ===== HEADER ===== -->
+    <header class="app-header">
+      <div class="header-left">
+        <button class="icon-btn" id="navToggle" aria-label="Abrir navegación" aria-expanded="false" style="display:none;">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="header-right">
+        <button class="branch-select" type="button">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V7l7-4 7 4v14"/><path d="M9 21v-6h6v6"/></svg>
+          Casa Central
+          <svg class="icon chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <button class="icon-btn" id="themeToggle" aria-label="Cambiar tema" aria-pressed="false">
+          <svg class="icon theme-icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          <svg class="icon theme-icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+        </button>
+        <button class="icon-btn header-bell" aria-label="Notificaciones, 3 sin leer">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+          <span class="dot" aria-hidden="true"></span>
+        </button>
+        <button class="header-avatar" aria-label="Cuenta de Luciano Soler">LS</button>
+        <button class="icon-btn" aria-label="Ayuda">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 2-3 4"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <div class="app-body">
+      <!-- ===== NAV DE CANALES ===== -->
+      <aside class="nav-channels" aria-label="Canales de integración">
+        <div class="nav-channels-label">Integraciones</div>
+        <a class="channel-item is-active" href="tiendanube.html" aria-current="page">
+          <img class="channel-logo" src="../../Assets/integraciones/integracion-tn.png" alt="" />
+          <span class="channel-info">
+            <span class="channel-name">Tiendanube</span>
+            <span class="channel-status ok"><span class="dot"></span>Conectado</span>
+          </span>
+        </a>
+        <a class="channel-item" href="mercado-libre.html">
+          <img class="channel-logo" src="../../Assets/integraciones/integracion-ml.png" alt="" />
+          <span class="channel-info">
+            <span class="channel-name">Mercado Libre</span>
+            <span class="channel-status warn"><span class="dot"></span>Requiere atención</span>
+          </span>
+        </a>
+        <a class="channel-item" href="woocommerce.html">
+          <img class="channel-logo" src="../../Assets/integraciones/integracion-woo.png" alt="" />
+          <span class="channel-info">
+            <span class="channel-name">WooCommerce</span>
+            <span class="channel-status off"><span class="dot"></span>Configuración pendiente</span>
+          </span>
+        </a>
+        <a class="channel-item" href="vtex.html">
+          <img class="channel-logo" src="../../Assets/integraciones/integracion-vtex.png" alt="" />
+          <span class="channel-info">
+            <span class="channel-name">VTEX</span>
+            <span class="channel-status danger"><span class="dot"></span>Desconectado</span>
+          </span>
+        </a>
+        <a class="channel-item" href="sitef.html">
+          <img class="channel-logo" src="../../Assets/integraciones/integracion-sitef.png" alt="" />
+          <span class="channel-info">
+            <span class="channel-name">Sitef</span>
+            <span class="channel-status ok"><span class="dot"></span>Conectado</span>
+          </span>
+        </a>
+      </aside>
+
+      <!-- ===== CONTENIDO ===== -->
+      <main class="channel-content">
+        <div class="content-inner">
+
+          <div class="channel-select-mobile">
+            <select aria-label="Cambiar de canal">
+              <option selected>Tiendanube — Conectado</option>
+              <option>Mercado Libre — Requiere atención</option>
+              <option>WooCommerce — Configuración pendiente</option>
+              <option>VTEX — Desconectado</option>
+              <option>Sitef — Conectado</option>
+            </select>
+          </div>
+
+          <!-- 4.1 Encabezado -->
+          <section class="channel-header">
+            <div class="channel-header-id">
+              <img class="channel-logo" src="../../Assets/integraciones/integracion-tn.png" alt="Tiendanube" />
+              <div>
+                <h1>Tiendanube</h1>
+                <p>Gestioná tu integración con Tiendanube.</p>
+                <div class="account-line">Cuenta conectada: kiboo-store.mitiendanube.com</div>
+              </div>
+            </div>
+            <div class="channel-header-actions">
+              <div class="account-switcher-wrap">
+                <button class="account-switcher" id="accountSwitcherBtn" type="button" aria-haspopup="true" aria-expanded="false">
+                  <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l1.5-5h15L21 9"/><path d="M3 9h18v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1Z"/><path d="M9 13h6"/></svg>
+                  Tienda Nube
+                  <svg class="icon chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div class="account-dropdown" id="accountDropdown">
+                  <div class="account-dropdown-label">Cuentas de Tiendanube</div>
+                  <a class="account-option is-current" href="tiendanube.html">
+                    <span class="account-option-dot ok"></span>
+                    <span class="account-option-body">
+                      <span class="account-option-name">Tienda Nube</span>
+                      <span class="account-option-status">Conectado</span>
+                    </span>
+                    <svg class="icon account-option-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                  </a>
+                  <a class="account-option" href="tiendanube-mayorista.html">
+                    <span class="account-option-dot warn"></span>
+                    <span class="account-option-body">
+                      <span class="account-option-name">Tienda Nube Mayorista</span>
+                      <span class="account-option-status">Requiere atención</span>
+                    </span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- 4.2 Estado de conexión -->
+          <section class="card connection-card">
+            <div class="connection-top">
+              <div class="connection-status">
+                <span class="status-icon ok"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></span>
+                <div>
+                  <h2>Estado de la conexión <span class="status-pill ok">Conectado</span></h2>
+                  <p>La integración está funcionando correctamente, sin pendientes ni errores.</p>
+                </div>
+              </div>
+              <div class="channel-header-actions">
+                <button class="btn btn-primary btn-sm">
+                  <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                  Administrar conexión
+                </button>
+                <div class="btn-menu-wrap">
+                  <button class="icon-btn" id="connKebab" aria-label="Más acciones" aria-haspopup="true" aria-expanded="false">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
+                  </button>
+                  <div class="btn-dropdown" id="connDropdown">
+                    <a href="#"><svg class="icon" style="width:15px;height:15px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>Renovar autorización</a>
+                    <a href="#"><svg class="icon" style="width:15px;height:15px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 2-3 4"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Ayuda de esta integración</a>
+                    <a href="#"><svg class="icon" style="width:15px;height:15px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>Ver datos técnicos</a>
+                    <hr />
+                    <button type="button" class="danger"><svg class="icon" style="width:15px;height:15px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2v6M15 2v6M6 8h12v4a6 6 0 0 1-6 6 6 6 0 0 1-6-6V8Z"/><line x1="4" y1="4" x2="20" y2="20"/></svg>Desconectar canal</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="connection-meta">
+              <div class="meta-item">
+                <div class="label">Última sincronización</div>
+                <div class="value">20/03/2026 · 09:47 hs</div>
+              </div>
+              <div class="meta-item">
+                <div class="label">Resultado</div>
+                <div class="value ok">
+                  <svg class="icon" style="width:15px;height:15px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                  Exitosa
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- 6. Métricas -->
+          <section>
+            <div class="section-title-row">
+              <h2>Rendimiento</h2>
+              <div class="period-filter" role="group" aria-label="Período de las métricas">
+                <button type="button">Hoy</button>
+                <button type="button" class="is-active">7 días</button>
+                <button type="button">30 días</button>
+                <button type="button">Personalizado</button>
+              </div>
+            </div>
+
+            <div class="stat-grid">
+              <div class="card stat-card">
+                <span class="stat-icon green"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span>
+                <div class="label">Ventas del período</div>
+                <div class="value">$612.480</div>
+                <div class="stat-delta up"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>+6,8% <span class="muted">vs. 7 días anteriores</span></div>
+              </div>
+              <div class="card stat-card">
+                <span class="stat-icon blue"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/></svg></span>
+                <div class="label">Órdenes</div>
+                <div class="value">178</div>
+                <div class="stat-delta up"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>+11,2% <span class="muted">vs. 7 días anteriores</span></div>
+              </div>
+              <div class="card stat-card">
+                <span class="stat-icon violet"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></span>
+                <div class="label">Unidades vendidas</div>
+                <div class="value">451</div>
+                <div class="stat-delta up"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>+9,4% <span class="muted">vs. 7 días anteriores</span></div>
+              </div>
+              <div class="card stat-card">
+                <span class="stat-icon pink"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-9-9c2.5 0 4.5 1 6 3"/><polyline points="21 3 21 9 15 9"/></svg></span>
+                <div class="label">Ticket promedio</div>
+                <div class="value">$3.441</div>
+                <div class="stat-delta up"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>+1,3% <span class="muted">vs. 7 días anteriores</span></div>
+              </div>
+            </div>
+
+            <div class="metrics-lower">
+              <div class="card chart-card">
+                <div class="chart-head">
+                  <h3>Ventas por día</h3>
+                  <select class="select-sm" aria-label="Métrica del gráfico">
+                    <option>Ventas ($)</option>
+                    <option>Órdenes</option>
+                    <option>Unidades</option>
+                  </select>
+                </div>
+                <div class="bar-chart">
+                  <div class="bar-col"><div class="bar" style="height:38%"></div><span class="day">Lun</span></div>
+                  <div class="bar-col"><div class="bar" style="height:47%"></div><span class="day">Mar</span></div>
+                  <div class="bar-col"><div class="bar" style="height:60%"></div><span class="day">Mié</span></div>
+                  <div class="bar-col"><div class="bar" style="height:55%"></div><span class="day">Jue</span></div>
+                  <div class="bar-col"><div class="bar" style="height:74%"></div><span class="day">Vie</span></div>
+                  <div class="bar-col"><div class="bar is-peak" style="height:100%"></div><span class="day">Sáb</span></div>
+                  <div class="bar-col"><div class="bar" style="height:62%"></div><span class="day">Dom</span></div>
+                </div>
+              </div>
+
+              <div class="card top-products-card">
+                <div class="chart-head">
+                  <h3>Productos más vendidos</h3>
+                  <a href="#">Ver reporte →</a>
+                </div>
+                <div class="top-row">
+                  <span class="top-rank">1</span>
+                  <div class="top-info"><strong>Zapatilla Urban Run</strong><span>Talle 41</span></div>
+                  <div class="top-amount"><strong>$168.400</strong><span>44 uds</span></div>
+                </div>
+                <div class="top-row">
+                  <span class="top-rank">2</span>
+                  <div class="top-info"><strong>Sandalia Trekk</strong><span>Negro · Talle 39</span></div>
+                  <div class="top-amount"><strong>$112.300</strong><span>31 uds</span></div>
+                </div>
+                <div class="top-row">
+                  <span class="top-rank">3</span>
+                  <div class="top-info"><strong>Botín Cuero Classic</strong><span>Talle 42</span></div>
+                  <div class="top-amount"><strong>$91.600</strong><span>24 uds</span></div>
+                </div>
+                <div class="top-row">
+                  <span class="top-rank">4</span>
+                  <div class="top-info"><strong>Ojota Summer Kids</strong><span>Celeste · Talle 34</span></div>
+                  <div class="top-amount"><strong>$48.150</strong><span>19 uds</span></div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- 7. Tabs de gestión -->
+          <section class="card tabs-card">
+            <div class="tablist" role="tablist" aria-label="Gestión de Tiendanube">
+              <button class="tab-btn is-active" role="tab" aria-selected="true" data-tab="productos">Productos</button>
+              <button class="tab-btn" role="tab" aria-selected="false" data-tab="ordenes">Órdenes <span class="count-badge">2 nuevas</span></button>
+              <button class="tab-btn" role="tab" aria-selected="false" data-tab="actividad">Actividad</button>
+            </div>
+
+            <!-- 7.1 Productos -->
+            <div class="tab-panel is-active" data-panel="productos" role="tabpanel">
+              <div class="sync-status-panel">
+                <div class="sync-status-top">
+                  <span class="sync-status-label">253 de 260 productos sincronizados</span>
+                  <span class="sync-status-pct">97%</span>
+                </div>
+                <div class="progress-track"><div class="progress-fill" style="width:97%"></div></div>
+              </div>
+
+              <div class="tab-toolbar" style="justify-content: flex-end;">
+                <div class="tab-toolbar-right">
+                  <div class="btn-menu-wrap">
+                    <button class="btn btn-ghost btn-sm" id="productActionsBtn" type="button" aria-haspopup="true" aria-expanded="false">
+                      Acciones
+                      <svg class="icon chevron-mini" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                    </button>
+                    <div class="btn-dropdown" id="productActionsDropdown">
+                      <button type="button">Publicar productos</button>
+                      <button type="button">Vincular productos</button>
+                      <button type="button">Reintentar errores</button>
+                    </div>
+                  </div>
+                  <div class="btn-split">
+                    <button class="btn btn-primary btn-sm" id="syncBtn" type="button">
+                      <svg class="icon" id="syncIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+                      Sincronizar todo
+                    </button>
+                    <div class="btn-menu-wrap">
+                      <button class="btn btn-primary btn-sm btn-split-trigger" id="syncOptionsBtn" type="button" aria-haspopup="true" aria-expanded="false" aria-label="Otras opciones de sincronización">
+                        <svg class="icon chevron-mini" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                      </button>
+                      <div class="btn-dropdown" id="syncOptionsDropdown" style="right: 0;">
+                        <button type="button">Sincronizar solo stock</button>
+                        <button type="button">Sincronizar solo precios</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="filter-bar">
+                <span class="filter-bar-label">Filtrar productos</span>
+                <div class="filter-select-row">
+                  <div class="filter-field">
+                    <label class="filter-field-label" for="filterEstado">Estado</label>
+                    <select class="select-sm" id="filterEstado">
+                      <option value="todos">Todos</option>
+                      <option value="sincronizado">Sincronizado</option>
+                      <option value="sin-sincronizar">Sin sincronizar</option>
+                      <option value="error">Error</option>
+                      <option value="pausado">Pausado</option>
+                    </select>
+                  </div>
+                  <div class="filter-field">
+                    <label class="filter-field-label" for="filterFecha">Actualizado</label>
+                    <select class="select-sm" id="filterFecha">
+                      <option value="todas">Cualquier fecha</option>
+                      <option value="hoy">Hoy</option>
+                      <option value="semana">Últimos 7 días</option>
+                      <option value="mes">Últimos 30 días</option>
+                    </select>
+                  </div>
+                  <div class="filter-field">
+                    <label class="filter-field-label" for="filterCategoria">Categoría</label>
+                    <select class="select-sm" id="filterCategoria">
+                      <option value="todas">Todas</option>
+                      <option value="zapatillas">Zapatillas</option>
+                      <option value="sandalias">Sandalias</option>
+                      <option value="ojotas">Ojotas</option>
+                      <option value="botines">Botines</option>
+                      <option value="combos">Combos</option>
+                    </select>
+                  </div>
+                  <div class="filter-field">
+                    <label class="filter-field-label" for="filterMarca">Marca</label>
+                    <select class="select-sm" id="filterMarca">
+                      <option value="todas">Todas</option>
+                      <option value="vans">Vans</option>
+                      <option value="ipanema">Ipanema</option>
+                      <option value="rider">Rider</option>
+                      <option value="topper">Topper</option>
+                    </select>
+                  </div>
+                  <div class="filter-field">
+                    <label class="filter-field-label" for="filterModelo">Modelo</label>
+                    <select class="select-sm" id="filterModelo">
+                      <option value="todos">Todos</option>
+                      <option value="urban-run">Urban Run</option>
+                      <option value="trekk">Trekk</option>
+                      <option value="summer-kids">Summer Kids</option>
+                      <option value="cuero-classic">Cuero Classic</option>
+                      <option value="combo-medias">Combo Medias</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="filter-search-row">
+                  <div class="filter-search-left">
+                    <div class="search-box">
+                      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                      <input type="text" id="filterSearch" placeholder="Buscar por nombre, SKU o ID..." />
+                    </div>
+                    <button class="btn btn-ghost btn-sm" id="filterSearchBtn" type="button">Buscar</button>
+                    <button class="filter-clear-link" id="filterClearBtn" type="button">Limpiar filtros</button>
+                  </div>
+                  <span class="filter-results-count" id="filterResultsCount">5 de 5 productos</span>
+                </div>
+              </div>
+
+              <div class="table-scroll">
+                <table>
+                  <thead>
+                    <tr><th>Producto</th><th>SKU / ID TN</th><th>Actualizado</th><th>Estado</th><th>Observación</th><th></th></tr>
+                  </thead>
+                  <tbody id="productTableBody">
+                    <tr data-status="sincronizado" data-categoria="zapatillas" data-marca="vans" data-modelo="urban-run" data-recency="hoy" data-search="zapatilla urban run vans tn-10432">
+                      <td>
+                        <span class="cell-main">Zapatilla Urban Run — Talle 41</span>
+                        <span class="cell-sub">Zapatillas · Vans · Urban Run</span>
+                      </td>
+                      <td>TN-10432</td>
+                      <td>Hace 5 min</td>
+                      <td><span class="badge ok"><span class="dot"></span>Sincronizado</span></td>
+                      <td class="cell-observacion">Sin novedades</td>
+                      <td></td>
+                    </tr>
+                    <tr data-status="sincronizado" data-categoria="sandalias" data-marca="ipanema" data-modelo="trekk" data-recency="hoy" data-search="sandalia trekk ipanema tn-10387">
+                      <td>
+                        <span class="cell-main">Sandalia Trekk — Talle 39</span>
+                        <span class="cell-sub">Sandalias · Ipanema · Trekk</span>
+                      </td>
+                      <td>TN-10387</td>
+                      <td>Hace 5 min</td>
+                      <td><span class="badge ok"><span class="dot"></span>Sincronizado</span></td>
+                      <td class="cell-observacion">Sin novedades</td>
+                      <td></td>
+                    </tr>
+                    <tr data-status="error" data-categoria="ojotas" data-marca="rider" data-modelo="summer-kids" data-recency="hoy" data-search="ojota summer kids rider tn-10501">
+                      <td>
+                        <span class="cell-main">Ojota Summer Kids — Celeste</span>
+                        <span class="cell-sub">Ojotas · Rider · Summer Kids</span>
+                      </td>
+                      <td>TN-10501</td>
+                      <td>Hace 1 h</td>
+                      <td><span class="badge danger"><span class="dot"></span>Error</span></td>
+                      <td class="cell-observacion has-error">Pago pendiente en Tiendanube: no se puede crear la categoría hasta regularizarlo.</td>
+                      <td><a class="activity-link" href="#" style="font-size:0.75rem; white-space:nowrap;">Ver detalle →</a></td>
+                    </tr>
+                    <tr data-status="sin-sincronizar" data-categoria="botines" data-marca="topper" data-modelo="cuero-classic" data-recency="hoy" data-search="botin cuero classic topper tn-10299">
+                      <td>
+                        <span class="cell-main">Botín Cuero Classic — Talle 42</span>
+                        <span class="cell-sub">Botines · Topper · Cuero Classic</span>
+                      </td>
+                      <td>TN-10299</td>
+                      <td>Hace 20 min</td>
+                      <td><span class="badge warn"><span class="dot"></span>Sin sincronizar</span></td>
+                      <td class="cell-observacion">Pendiente de primera sincronización</td>
+                      <td></td>
+                    </tr>
+                    <tr data-status="pausado" data-categoria="combos" data-marca="vans" data-modelo="combo-medias" data-recency="semana" data-search="combo zapatilla medias vans tn-10120">
+                      <td>
+                        <span class="cell-main">Combo Zapatilla + Medias</span>
+                        <span class="cell-sub">Combos · Vans · Combo Medias</span>
+                      </td>
+                      <td>TN-10120</td>
+                      <td>18/03/2026</td>
+                      <td><span class="badge neutral"><span class="dot"></span>Pausado</span></td>
+                      <td class="cell-observacion">Pausado manualmente</td>
+                      <td></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="table-footer"><a href="#">Ver todos los productos <svg class="icon" style="width:14px;height:14px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a></div>
+            </div>
+
+            <!-- 7.2 Órdenes -->
+            <div class="tab-panel" data-panel="ordenes" role="tabpanel" hidden>
+              <div class="chip-row">
+                <span class="status-chip"><span class="dot warn"></span>Pendientes <strong>1</strong></span>
+                <span class="status-chip"><span class="dot ok"></span>Notificadas <strong>3</strong></span>
+                <span class="status-chip"><span class="dot danger"></span>Con errores <strong>1</strong></span>
+              </div>
+              <div class="filter-bar">
+                <span class="filter-bar-label">Filtrar órdenes</span>
+                <div class="filter-select-row">
+                  <div class="filter-field">
+                    <label class="filter-field-label" for="filterOrdenDesde">Fecha desde</label>
+                    <input class="select-sm" type="date" id="filterOrdenDesde" />
+                  </div>
+                  <div class="filter-field">
+                    <label class="filter-field-label" for="filterOrdenHasta">Fecha hasta</label>
+                    <input class="select-sm" type="date" id="filterOrdenHasta" />
+                  </div>
+                  <div class="filter-field">
+                    <label class="filter-field-label" for="filterOrdenEstado">Estado</label>
+                    <select class="select-sm" id="filterOrdenEstado">
+                      <option value="todos">Todos</option>
+                      <option value="pendiente">Pendiente</option>
+                      <option value="notificado">Notificado</option>
+                      <option value="error">Error</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="filter-search-row">
+                  <div class="filter-search-left">
+                    <div class="search-box">
+                      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                      <input type="text" id="filterOrdenSearch" placeholder="Buscar por N° de orden, cliente o DNI..." />
+                    </div>
+                    <button class="btn btn-ghost btn-sm" id="filterOrdenSearchBtn" type="button">Buscar</button>
+                    <button class="filter-clear-link" id="filterOrdenClearBtn" type="button">Limpiar filtros</button>
+                  </div>
+                  <span class="filter-results-count" id="filterOrdenResultsCount">5 de 5 órdenes</span>
+                </div>
+              </div>
+              <div class="table-scroll">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Orden TN</th><th>N° Operación</th><th>Estado</th><th>Cliente</th>
+                      <th>Fecha</th><th>Fecha notif.</th><th>N° Factura</th><th>Comentarios</th>
+                    </tr>
+                  </thead>
+                  <tbody id="ordenTableBody">
+                    <tr data-estado="notificado" data-fecha="2026-03-20" data-search="tn-88452 op-459231 julieta nieva 32456789">
+                      <td><a class="cell-link cell-nowrap" href="#">#TN-88452</a></td>
+                      <td>OP-459231</td>
+                      <td><span class="badge ok"><span class="dot"></span>Notificado</span></td>
+                      <td>
+                        <span class="cell-main">Julieta Nieva</span>
+                        <span class="cell-dni">DNI 32.456.789</span>
+                      </td>
+                      <td><span class="cell-main">20/03/2026</span><span class="cell-sub">09:58</span></td>
+                      <td><span class="cell-main">20/03/2026</span><span class="cell-sub">10:02</span></td>
+                      <td><a class="cell-link cell-nowrap" href="#">FA-0002-000341</a></td>
+                      <td class="cell-comentario is-ok"><span class="comentario-icon ok" title="Registrada correctamente — ID 14656928 / Remoto 203674782"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span></td>
+                    </tr>
+                    <tr data-estado="notificado" data-fecha="2026-03-20" data-search="tn-88441 op-459198 federico salas 28901234">
+                      <td><a class="cell-link cell-nowrap" href="#">#TN-88441</a></td>
+                      <td>OP-459198</td>
+                      <td><span class="badge ok"><span class="dot"></span>Notificado</span></td>
+                      <td>
+                        <span class="cell-main">Federico Salas</span>
+                        <span class="cell-dni">DNI 28.901.234</span>
+                      </td>
+                      <td><span class="cell-main">20/03/2026</span><span class="cell-sub">09:20</span></td>
+                      <td><span class="cell-main">20/03/2026</span><span class="cell-sub">09:25</span></td>
+                      <td><a class="cell-link cell-nowrap" href="#">FA-0002-000340</a></td>
+                      <td class="cell-comentario is-ok"><span class="comentario-icon ok" title="Registrada correctamente — ID 14656901 / Remoto 203674755"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span></td>
+                    </tr>
+                    <tr data-estado="pendiente" data-fecha="2026-03-20" data-search="tn-88430 op-459150 rocio beltran 35678901">
+                      <td><a class="cell-link cell-nowrap" href="#">#TN-88430</a></td>
+                      <td>OP-459150</td>
+                      <td><span class="badge warn"><span class="dot"></span>Pendiente</span></td>
+                      <td>
+                        <span class="cell-main">Rocío Beltrán</span>
+                        <span class="cell-dni">DNI 35.678.901</span>
+                      </td>
+                      <td><span class="cell-main">20/03/2026</span><span class="cell-sub">08:05</span></td>
+                      <td>—</td>
+                      <td>—</td>
+                      <td class="cell-comentario">En cola para notificar.</td>
+                    </tr>
+                    <tr data-estado="error" data-fecha="2026-03-19" data-search="tn-88405 op-459050 camila ortiz 33789012">
+                      <td><a class="cell-link cell-nowrap" href="#">#TN-88405</a></td>
+                      <td>OP-459050</td>
+                      <td><span class="badge danger"><span class="dot"></span>Error</span></td>
+                      <td>
+                        <span class="cell-main">Camila Ortiz</span>
+                        <span class="cell-dni">DNI 33.789.012</span>
+                      </td>
+                      <td><span class="cell-main">19/03/2026</span><span class="cell-sub">19:15</span></td>
+                      <td>—</td>
+                      <td>—</td>
+                      <td class="cell-comentario has-error">No se pudo notificar: DNI del cliente inválido.</td>
+                    </tr>
+                    <tr data-estado="notificado" data-fecha="2026-03-19" data-search="tn-88412 op-459087 tomas achaval 30123456">
+                      <td><a class="cell-link cell-nowrap" href="#">#TN-88412</a></td>
+                      <td>OP-459087</td>
+                      <td><span class="badge ok"><span class="dot"></span>Notificado</span></td>
+                      <td>
+                        <span class="cell-main">Tomás Achával</span>
+                        <span class="cell-dni">DNI 30.123.456</span>
+                      </td>
+                      <td><span class="cell-main">19/03/2026</span><span class="cell-sub">21:40</span></td>
+                      <td><span class="cell-main">19/03/2026</span><span class="cell-sub">21:44</span></td>
+                      <td><a class="cell-link cell-nowrap" href="#">FA-0002-000338</a></td>
+                      <td class="cell-comentario is-ok"><span class="comentario-icon ok" title="Registrada correctamente — ID 14656844 / Remoto 203674690"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="table-footer"><a href="#">Ver todas las órdenes <svg class="icon" style="width:14px;height:14px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a></div>
+            </div>
+
+            <!-- 7.3 Actividad -->
+            <div class="tab-panel" data-panel="actividad" role="tabpanel" hidden>
+              <div class="sync-overview">
+                <div class="sync-overview-item">
+                  <span class="sync-overview-icon ok"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8v13H3V8"/><path d="M1 3h22v5H1z"/><line x1="10" y1="12" x2="14" y2="12"/></svg></span>
+                  <div>
+                    <div class="sync-overview-name">Stock</div>
+                    <div class="sync-overview-status ok">Correcto</div>
+                    <div class="sync-overview-time">Hace 5 minutos</div>
+                  </div>
+                </div>
+                <div class="sync-overview-item">
+                  <span class="sync-overview-icon ok"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span>
+                  <div>
+                    <div class="sync-overview-name">Precios</div>
+                    <div class="sync-overview-status ok">Correcto</div>
+                    <div class="sync-overview-time">Hace 5 minutos</div>
+                  </div>
+                </div>
+                <div class="sync-overview-item">
+                  <span class="sync-overview-icon danger"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg></span>
+                  <div>
+                    <div class="sync-overview-name">Productos</div>
+                    <div class="sync-overview-status danger">Con errores</div>
+                    <div class="sync-overview-time">Hace 1 hora</div>
+                  </div>
+                </div>
+                <div class="sync-overview-item">
+                  <span class="sync-overview-icon ok"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg></span>
+                  <div>
+                    <div class="sync-overview-name">Órdenes</div>
+                    <div class="sync-overview-status ok">Correcto</div>
+                    <div class="sync-overview-time">Hace 3 minutos</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="activity-toolbar">
+                <div class="chip-row" id="activityChips">
+                  <button type="button" class="status-chip is-active" data-filter="todos">Todos <strong>10</strong></button>
+                  <button type="button" class="status-chip" data-filter="stock">Stock <strong>3</strong></button>
+                  <button type="button" class="status-chip" data-filter="precios">Precios <strong>2</strong></button>
+                  <button type="button" class="status-chip" data-filter="productos">Productos <strong>2</strong></button>
+                  <button type="button" class="status-chip" data-filter="ordenes">Órdenes <strong>2</strong></button>
+                  <button type="button" class="status-chip" data-filter="autorizacion">Autorización <strong>1</strong></button>
+                </div>
+              </div>
+
+              <div class="activity-list" id="activityList">
+                <div class="activity-group" data-group="hoy">
+                  <div class="activity-group-label">Hoy</div>
+                  <div class="activity-item" data-type="ordenes">
+                    <span class="activity-icon" style="background:var(--brand-green-bg);color:var(--brand-green-hover);"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg></span>
+                    <div class="activity-body">
+                      <div class="activity-top"><strong>Importación de órdenes</strong><span class="activity-time">Hace 3 min</span><span class="activity-count">· 6 registros procesados</span></div>
+                      <p class="activity-desc">6 nuevas órdenes importadas correctamente.</p>
+                    </div>
+                  </div>
+                  <div class="activity-item" data-type="stock">
+                    <span class="activity-icon" style="background:var(--brand-green-bg);color:var(--brand-green-hover);"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8v13H3V8"/><path d="M1 3h22v5H1z"/><line x1="10" y1="12" x2="14" y2="12"/></svg></span>
+                    <div class="activity-body">
+                      <div class="activity-top"><strong>Sincronización de stock</strong><span class="activity-time">Hace 5 min</span><span class="activity-count">· 245 registros procesados</span></div>
+                      <p class="activity-desc">Stock actualizado correctamente para todos los productos publicados.</p>
+                    </div>
+                  </div>
+                  <div class="activity-item" data-type="precios">
+                    <span class="activity-icon" style="background:var(--brand-green-bg);color:var(--brand-green-hover);"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span>
+                    <div class="activity-body">
+                      <div class="activity-top"><strong>Sincronización de precios</strong><span class="activity-time">Hace 5 min</span><span class="activity-count">· 245 registros procesados</span></div>
+                      <p class="activity-desc">Precios actualizados sin novedades.</p>
+                    </div>
+                  </div>
+                  <div class="activity-item" data-type="productos">
+                    <span class="activity-icon" style="background:var(--danger-bg);color:var(--danger-dark);"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg></span>
+                    <div class="activity-body">
+                      <div class="activity-top"><strong>Sincronización de productos</strong><span class="activity-time">Hace 1 h</span><span class="activity-count">· 1 registro con error</span></div>
+                      <p class="activity-desc">No pudimos publicar 1 producto porque le falta la imagen principal.</p>
+                      <a class="activity-link" href="#">Ver detalle →</a>
+                    </div>
+                  </div>
+                  <div class="activity-item" data-type="stock">
+                    <span class="activity-icon" style="background:var(--brand-green-bg);color:var(--brand-green-hover);"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8v13H3V8"/><path d="M1 3h22v5H1z"/><line x1="10" y1="12" x2="14" y2="12"/></svg></span>
+                    <div class="activity-body">
+                      <div class="activity-top"><strong>Sincronización de stock</strong><span class="activity-time">Hace 6 h</span><span class="activity-count">· 240 registros procesados</span></div>
+                      <p class="activity-desc">Stock actualizado correctamente para todos los productos publicados.</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="activity-group" data-group="ayer">
+                  <div class="activity-group-label">Ayer</div>
+                  <div class="activity-item" data-type="autorizacion">
+                    <span class="activity-icon" style="background:var(--brand-green-bg);color:var(--brand-green-hover);"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="15" x2="12" y2="15"/></svg></span>
+                    <div class="activity-body">
+                      <div class="activity-top"><strong>Autorización</strong><span class="activity-time">Ayer · 10:05</span></div>
+                      <p class="activity-desc">Autorización renovada correctamente. Próximo vencimiento: 18 de setiembre.</p>
+                    </div>
+                  </div>
+                  <div class="activity-item" data-type="ordenes">
+                    <span class="activity-icon" style="background:var(--brand-green-bg);color:var(--brand-green-hover);"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg></span>
+                    <div class="activity-body">
+                      <div class="activity-top"><strong>Importación de órdenes</strong><span class="activity-time">Ayer · 19:40</span><span class="activity-count">· 18 registros procesados</span></div>
+                      <p class="activity-desc">18 órdenes importadas correctamente.</p>
+                    </div>
+                  </div>
+                  <div class="activity-item" data-type="productos">
+                    <span class="activity-icon" style="background:var(--brand-green-bg);color:var(--brand-green-hover);"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg></span>
+                    <div class="activity-body">
+                      <div class="activity-top"><strong>Sincronización de productos</strong><span class="activity-time">Ayer · 09:15</span><span class="activity-count">· 245 registros procesados</span></div>
+                      <p class="activity-desc">Catálogo publicado sin novedades.</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="activity-group" data-group="18-mar">
+                  <div class="activity-group-label">18 de marzo</div>
+                  <div class="activity-item" data-type="precios">
+                    <span class="activity-icon" style="background:var(--warning-bg);color:var(--warning-dark);"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span>
+                    <div class="activity-body">
+                      <div class="activity-top"><strong>Sincronización de precios</strong><span class="activity-time">18/03 · 08:30</span><span class="activity-count">· 245 registros procesados</span></div>
+                      <p class="activity-desc">3 precios no se actualizaron por estar fuera del rango permitido.</p>
+                      <a class="activity-link" href="#">Ver detalle →</a>
+                    </div>
+                  </div>
+                  <div class="activity-item" data-type="stock">
+                    <span class="activity-icon" style="background:var(--brand-green-bg);color:var(--brand-green-hover);"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8v13H3V8"/><path d="M1 3h22v5H1z"/><line x1="10" y1="12" x2="14" y2="12"/></svg></span>
+                    <div class="activity-body">
+                      <div class="activity-top"><strong>Sincronización de stock</strong><span class="activity-time">18/03 · 08:30</span><span class="activity-count">· 245 registros procesados</span></div>
+                      <p class="activity-desc">Stock actualizado correctamente para todos los productos publicados.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- 9. Configuración activa -->
+          <section class="card config-card">
+            <div class="section-title-row">
+              <h2>Configuración activa</h2>
+              <button class="btn btn-ghost btn-sm">Editar configuración</button>
+            </div>
+            <div class="config-grid">
+              <div class="config-item">
+                <span class="config-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>
+                <div><div class="label">Cuenta conectada</div><div class="value">kiboo-store.mitiendanube.com</div></div>
+              </div>
+              <div class="config-item">
+                <span class="config-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V7l7-4 7 4v14"/><path d="M9 21v-6h6v6"/></svg></span>
+                <div><div class="label">Sucursal Kiboo</div><div class="value">Casa Central</div></div>
+              </div>
+              <div class="config-item">
+                <span class="config-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8v13H3V8"/><path d="M1 3h22v5H1z"/><line x1="10" y1="12" x2="14" y2="12"/></svg></span>
+                <div><div class="label">Depósito</div><div class="value">Depósito Central</div></div>
+              </div>
+              <div class="config-item">
+                <span class="config-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41 11 3.83A2 2 0 0 0 9.59 3.24H4a1 1 0 0 0-1 1v5.59a2 2 0 0 0 .59 1.41l9.58 9.59a2 2 0 0 0 2.82 0l4.6-4.6a2 2 0 0 0 0-2.82Z"/><circle cx="7.5" cy="7.5" r="1.5"/></svg></span>
+                <div><div class="label">Lista de precios</div><div class="value">Lista Ecommerce</div></div>
+              </div>
+              <div class="config-item">
+                <span class="config-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/></svg></span>
+                <div><div class="label">Punto de venta</div><div class="value">PV 0001 · Factura B</div></div>
+              </div>
+              <div class="config-item">
+                <span class="config-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg></span>
+                <div><div class="label">Importación automática de órdenes</div><div class="value"><span class="badge ok"><span class="dot"></span>Activada</span></div></div>
+              </div>
+              <div class="config-item">
+                <span class="config-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg></span>
+                <div><div class="label">Sincronización de stock</div><div class="value">Tiempo real</div></div>
+              </div>
+              <div class="config-item">
+                <span class="config-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span>
+                <div><div class="label">Sincronización de precios</div><div class="value"><span class="badge ok"><span class="dot"></span>Activada</span></div></div>
+              </div>
+              <div class="config-item">
+                <span class="config-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></span>
+                <div><div class="label">Reglas particulares</div><div class="value">Categorías e imágenes se sincronizan junto con el catálogo</div></div>
+              </div>
+            </div>
+          </section>
+
+        </div>
+      </main>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Menú lateral en mobile
+  const navPrimary = document.getElementById('navPrimary');
+  const navToggle = document.getElementById('navToggle');
+  const navScrim = document.getElementById('navScrim');
+  function closeNav() { navPrimary.classList.remove('is-open'); navScrim.classList.remove('is-open'); navToggle.setAttribute('aria-expanded', 'false'); }
+  navToggle.addEventListener('click', () => {
+    const open = navPrimary.classList.toggle('is-open');
+    navScrim.classList.toggle('is-open', open);
+    navToggle.setAttribute('aria-expanded', String(open));
+  });
+  navScrim.addEventListener('click', closeNav);
+
+  // Tema oscuro
+  const themeToggle = document.getElementById('themeToggle');
+  function applyTheme(isDark) {
+    document.documentElement.toggleAttribute('data-theme', isDark);
+    if (isDark) document.documentElement.setAttribute('data-theme', 'dark');
+    themeToggle.setAttribute('aria-pressed', String(isDark));
+    localStorage.setItem('kiboo-theme', isDark ? 'dark' : 'light');
+  }
+  themeToggle.setAttribute('aria-pressed', String(document.documentElement.getAttribute('data-theme') === 'dark'));
+  themeToggle.addEventListener('click', () => {
+    applyTheme(document.documentElement.getAttribute('data-theme') !== 'dark');
+  });
+
+  // Selector de cuenta (position:fixed no alcanza: un ancestro con z-index propio
+  // igual atrapa el stacking context. Se saca del DOM del header y se cuelga
+  // directo de <body> para que siempre quede por encima de todo.)
+  const accountBtn = document.getElementById('accountSwitcherBtn');
+  const accountDropdown = document.getElementById('accountDropdown');
+  if (accountBtn && accountDropdown) {
+    document.body.appendChild(accountDropdown);
+    accountBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const willOpen = !accountDropdown.classList.contains('is-open');
+      if (willOpen) {
+        const rect = accountBtn.getBoundingClientRect();
+        accountDropdown.style.top = (rect.bottom + 6) + 'px';
+        accountDropdown.style.left = Math.min(rect.left, window.innerWidth - 266) + 'px';
+      }
+      accountDropdown.classList.toggle('is-open', willOpen);
+      accountBtn.setAttribute('aria-expanded', String(willOpen));
+    });
+    document.addEventListener('click', () => {
+      accountDropdown.classList.remove('is-open');
+      accountBtn.setAttribute('aria-expanded', 'false');
+    });
+  }
+
+  // Menús desplegables (conexión, acciones de productos, opciones de sync)
+  function initDropdown(btnId, dropdownId) {
+    const btn = document.getElementById(btnId);
+    const dropdown = document.getElementById(dropdownId);
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const wasOpen = dropdown.classList.contains('is-open');
+      document.querySelectorAll('.btn-dropdown.is-open').forEach(d => d.classList.remove('is-open'));
+      dropdown.classList.toggle('is-open', !wasOpen);
+      btn.setAttribute('aria-expanded', String(!wasOpen));
+    });
+    return { btn, dropdown };
+  }
+  const dropdowns = [
+    initDropdown('connKebab', 'connDropdown'),
+    initDropdown('productActionsBtn', 'productActionsDropdown'),
+    initDropdown('syncOptionsBtn', 'syncOptionsDropdown'),
+  ];
+  document.addEventListener('click', () => {
+    dropdowns.forEach(({ btn, dropdown }) => { dropdown.classList.remove('is-open'); btn.setAttribute('aria-expanded', 'false'); });
+  });
+
+  // Filtro de período
+  document.querySelectorAll('.period-filter button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.period-filter button').forEach(b => b.classList.remove('is-active'));
+      btn.classList.add('is-active');
+    });
+  });
+
+  // Tabs
+  document.querySelectorAll('.tab-btn').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.tab-btn').forEach(t => { t.classList.remove('is-active'); t.setAttribute('aria-selected', 'false'); });
+      document.querySelectorAll('.tab-panel').forEach(p => { p.classList.remove('is-active'); p.hidden = true; });
+      tab.classList.add('is-active');
+      tab.setAttribute('aria-selected', 'true');
+      const panel = document.querySelector('.tab-panel[data-panel="' + tab.dataset.tab + '"]');
+      panel.classList.add('is-active');
+      panel.hidden = false;
+    });
+  });
+
+  // Filtros de la grilla de productos (estado, fecha, categoría, marca, modelo + búsqueda)
+  (() => {
+    const selEstado = document.getElementById('filterEstado');
+    const selFecha = document.getElementById('filterFecha');
+    const selCategoria = document.getElementById('filterCategoria');
+    const selMarca = document.getElementById('filterMarca');
+    const selModelo = document.getElementById('filterModelo');
+    const searchInput = document.getElementById('filterSearch');
+    if (!selEstado) return;
+
+    function applyFilters() {
+      const estado = selEstado.value;
+      const fecha = selFecha.value;
+      const categoria = selCategoria.value;
+      const marca = selMarca.value;
+      const modelo = selModelo.value;
+      const term = searchInput.value.trim().toLowerCase();
+      const rows = document.querySelectorAll('#productTableBody tr');
+      let visibleCount = 0;
+      rows.forEach(row => {
+        const matches =
+          (estado === 'todos' || row.dataset.status === estado) &&
+          (fecha === 'todas' || row.dataset.recency === fecha) &&
+          (categoria === 'todas' || row.dataset.categoria === categoria) &&
+          (marca === 'todas' || row.dataset.marca === marca) &&
+          (modelo === 'todos' || row.dataset.modelo === modelo) &&
+          (term === '' || (row.dataset.search || '').includes(term));
+        row.classList.toggle('is-hidden', !matches);
+        if (matches) visibleCount++;
+      });
+      const countEl = document.getElementById('filterResultsCount');
+      if (countEl) countEl.textContent = visibleCount + ' de ' + rows.length + ' productos';
+    }
+
+    [selEstado, selFecha, selCategoria, selMarca, selModelo].forEach(sel => sel.addEventListener('change', applyFilters));
+    document.getElementById('filterSearchBtn').addEventListener('click', applyFilters);
+    searchInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') applyFilters(); });
+    document.getElementById('filterClearBtn').addEventListener('click', () => {
+      [selEstado, selFecha, selCategoria, selMarca, selModelo].forEach(sel => sel.value = sel.options[0].value);
+      searchInput.value = '';
+      applyFilters();
+    });
+  })();
+
+  // Filtros de la grilla de Órdenes (fecha desde/hasta, estado, búsqueda rápida)
+  (() => {
+    const selEstado = document.getElementById('filterOrdenEstado');
+    const inputDesde = document.getElementById('filterOrdenDesde');
+    const inputHasta = document.getElementById('filterOrdenHasta');
+    const searchInput = document.getElementById('filterOrdenSearch');
+    if (!selEstado) return;
+    function applyFilters() {
+      const estado = selEstado.value;
+      const desde = inputDesde.value;
+      const hasta = inputHasta.value;
+      const term = searchInput.value.trim().toLowerCase();
+      const rows = document.querySelectorAll('#ordenTableBody tr');
+      let visibleCount = 0;
+      rows.forEach(row => {
+        const fecha = row.dataset.fecha;
+        const matches = (estado === 'todos' || row.dataset.estado === estado) && (!desde || fecha >= desde) && (!hasta || fecha <= hasta) && (term === '' || (row.dataset.search || '').includes(term));
+        row.classList.toggle('is-hidden', !matches);
+        if (matches) visibleCount++;
+      });
+      const countEl = document.getElementById('filterOrdenResultsCount');
+      if (countEl) countEl.textContent = visibleCount + ' de ' + rows.length + ' órdenes';
+    }
+    [selEstado, inputDesde, inputHasta].forEach(el => el.addEventListener('change', applyFilters));
+    document.getElementById('filterOrdenSearchBtn').addEventListener('click', applyFilters);
+    searchInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') applyFilters(); });
+    document.getElementById('filterOrdenClearBtn').addEventListener('click', () => {
+      selEstado.value = selEstado.options[0].value;
+      inputDesde.value = '';
+      inputHasta.value = '';
+      searchInput.value = '';
+      applyFilters();
+    });
+  })();
+
+  // Chips de tipo de proceso (filtro del log de actividad, agrupado por día)
+  document.querySelectorAll('#activityChips .status-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      document.querySelectorAll('#activityChips .status-chip').forEach(c => c.classList.remove('is-active'));
+      chip.classList.add('is-active');
+      const filter = chip.dataset.filter;
+      document.querySelectorAll('#activityList .activity-item').forEach(item => {
+        item.classList.toggle('is-hidden', filter !== 'todos' && item.dataset.type !== filter);
+      });
+      document.querySelectorAll('#activityList .activity-group').forEach(group => {
+        const hasVisible = Array.from(group.querySelectorAll('.activity-item')).some(i => !i.classList.contains('is-hidden'));
+        group.classList.toggle('is-hidden', !hasVisible);
+      });
+    });
+  });
+
+  // Sincronizar: feedback de giro breve
+  const syncBtn = document.getElementById('syncBtn');
+  const syncIcon = document.getElementById('syncIcon');
+  syncBtn.addEventListener('click', () => {
+    syncIcon.style.transition = 'transform 0.6s var(--ease-out-expo)';
+    syncIcon.style.transform = 'rotate(360deg)';
+    setTimeout(() => { syncIcon.style.transform = 'rotate(0deg)'; }, 650);
+  });
+</script>
+
+</body>
+</html>

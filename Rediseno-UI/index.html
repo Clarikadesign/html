@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Kiboo · Integraciones · Preview</title>
+<style>
+  :root {
+    --brand-green: #22C55E;
+    --brand-green-hover: #16A34A;
+    --brand-green-bg: #E9FBF0;
+    --brand-blue: #3b82f6;
+    --brand-blue-bg: #EAF2FE;
+    --brand-violet: #8b5cf6;
+    --brand-violet-bg: #F1EBFE;
+    --brand-pink-dark: #BE185D;
+    --brand-pink-bg: #FCE7F3;
+    --ink: #111827;
+    --ink-soft: #4B5563;
+    --ink-faint: #858A8C;
+    --border-softer: #E5E7EB;
+    --surface-page: #F7F8FA;
+    --surface-card: #FFFFFF;
+    --radius-lg: 20px;
+    --radius-md: 14px;
+    --shadow-card: 0 1px 2px rgba(16,24,40,0.06), 0 1px 3px rgba(16,24,40,0.08);
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: "Roboto", "Segoe UI", sans-serif;
+    background: var(--surface-page);
+    color: var(--ink);
+    padding: var(--space-6, 40px) 24px 60px;
+  }
+  .wrap { max-width: 960px; margin: 0 auto; }
+  header { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+  header img { height: 28px; }
+  header span { font-weight: 800; font-size: 1.0625rem; letter-spacing: -0.01em; }
+  h1 { font-size: 1.75rem; font-weight: 700; letter-spacing: -0.01em; margin: 24px 0 4px; }
+  p.subtitle { color: var(--ink-soft); font-size: 0.9375rem; margin: 0 0 32px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 16px; }
+  a.card {
+    display: flex; align-items: center; gap: 14px;
+    background: var(--surface-card);
+    border: 1px solid var(--border-softer);
+    border-radius: var(--radius-md);
+    padding: 18px 20px;
+    text-decoration: none;
+    color: inherit;
+    box-shadow: var(--shadow-card);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  a.card:hover { transform: translateY(-2px); box-shadow: 0 8px 20px -8px rgba(16,24,40,0.18); }
+  .card-icon {
+    width: 44px; height: 44px; border-radius: 12px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: 0.9375rem; color: white;
+  }
+  .card-body strong { display: block; font-size: 0.9375rem; font-weight: 700; }
+  .card-body span { display: block; font-size: 0.8125rem; color: var(--ink-faint); margin-top: 2px; }
+  footer { margin-top: 40px; font-size: 0.75rem; color: var(--ink-faint); }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <img src="Logo/Icono.svg" alt="Kiboo" />
+      <span>Kiboo</span>
+    </header>
+    <h1>Rediseño · Integraciones</h1>
+    <p class="subtitle">Preview de las pantallas internas de canales de venta.</p>
+    <div class="grid">
+      <a class="card" href="Pantalla-Internas/Integraciones/tiendanube.html">
+        <span class="card-icon" style="background:#0050C3;">TN</span>
+        <span class="card-body"><strong>Tiendanube</strong><span>Conectado</span></span>
+      </a>
+      <a class="card" href="Pantalla-Internas/Integraciones/tiendanube-mayorista.html">
+        <span class="card-icon" style="background:#0050C3;">TN</span>
+        <span class="card-body"><strong>Tiendanube Mayorista</strong><span>Requiere atención</span></span>
+      </a>
+      <a class="card" href="Pantalla-Internas/Integraciones/mercado-libre.html">
+        <span class="card-icon" style="background:#FFE600;color:#111827;">ML</span>
+        <span class="card-body"><strong>Mercado Libre</strong><span>Requiere atención</span></span>
+      </a>
+      <a class="card" href="Pantalla-Internas/Integraciones/woocommerce.html">
+        <span class="card-icon" style="background:#7F54B3;">W</span>
+        <span class="card-body"><strong>WooCommerce</strong><span>Configuración pendiente</span></span>
+      </a>
+      <a class="card" href="Pantalla-Internas/Integraciones/vtex.html">
+        <span class="card-icon" style="background:#F71963;">VT</span>
+        <span class="card-body"><strong>VTEX</strong><span>Desconectado</span></span>
+      </a>
+      <a class="card" href="Pantalla-Internas/Integraciones/sitef.html">
+        <span class="card-icon" style="background:#0E7490;">ST</span>
+        <span class="card-body"><strong>Sitef</strong><span>Conectado</span></span>
+      </a>
+    </div>
+    <footer>Mockup estático — sin backend real.</footer>
+  </div>
+</body>
+</html>
