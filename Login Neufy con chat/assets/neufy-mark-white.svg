@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="133 165 700 590" width="700" height="590" role="img" aria-label="Neufy">
+  <defs>
+    <mask id="mask-diag-w">
+      <path d="M243 300 L700 612" stroke="#fff" stroke-width="210" stroke-linecap="round" fill="none"></path>
+    </mask>
+  </defs>
+  <path d="M243 300 L700 612" stroke="#ffffff" stroke-width="210" stroke-linecap="round" fill="none"></path>
+  <g mask="url(#mask-diag-w)">
+    <path d="M296 208 L660 460 L343 474 Z" fill="#ffffff" opacity="0.55"></path>
+  </g>
+  <path d="M243 300 L243 633" stroke="#ffffff" stroke-width="200" stroke-linecap="round" fill="none"></path>
+  <circle cx="719" cy="288" r="110" fill="#ffffff"></circle>
+</svg>

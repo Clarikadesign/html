@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="133 165 700 590" width="700" height="590" role="img" aria-label="Neufy">
+  <defs>
+    <linearGradient id="lg-bar" x1="180" y1="210" x2="300" y2="720" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#B389F7"></stop>
+      <stop offset="0.34" stop-color="#A277F3"></stop>
+      <stop offset="0.55" stop-color="#8B4CE8"></stop>
+      <stop offset="1" stop-color="#7A2CE0"></stop>
+    </linearGradient>
+    <linearGradient id="lg-diag" x1="300" y1="300" x2="740" y2="660" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#5C1FA6"></stop>
+      <stop offset="0.45" stop-color="#7430CE"></stop>
+      <stop offset="1" stop-color="#8A3AE6"></stop>
+    </linearGradient>
+    <linearGradient id="lg-fold" x1="330" y1="250" x2="660" y2="470" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#6A22B8"></stop>
+      <stop offset="0.55" stop-color="#4A1387"></stop>
+      <stop offset="1" stop-color="#2B0A50"></stop>
+    </linearGradient>
+    <linearGradient id="lg-dot" x1="640" y1="190" x2="800" y2="390" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#AE83F7"></stop>
+      <stop offset="1" stop-color="#9765F0"></stop>
+    </linearGradient>
+    <mask id="mask-diag">
+      <path d="M243 300 L700 612" stroke="#fff" stroke-width="210" stroke-linecap="round" fill="none"></path>
+    </mask>
+  </defs>
+  <path d="M243 300 L700 612" stroke="url(#lg-diag)" stroke-width="210" stroke-linecap="round" fill="none"></path>
+  <g mask="url(#mask-diag)">
+    <path d="M296 208 L660 460 L343 474 Z" fill="url(#lg-fold)"></path>
+  </g>
+  <path d="M243 300 L243 633" stroke="url(#lg-bar)" stroke-width="200" stroke-linecap="round" fill="none"></path>
+  <circle cx="719" cy="288" r="110" fill="url(#lg-dot)"></circle>
+</svg>

@@ -1,0 +1,31 @@
+/* Shared preview-card base. Each card is rendered as a 700px-wide HTML file
+   that gets pulled into the Design System tab. Cards are minimal — no titles,
+   no framing — the asset name is shown outside. */
+
+@import url('../colors_and_type.css');
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  width: 100%;
+  background: #000;
+  color: #fff;
+  font-family: 'Manrope', system-ui, sans-serif;
+  overflow: hidden;
+}
+
+.card-root {
+  width: 700px;
+  background: var(--clr-section);
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.row    { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+.col    { display: flex; flex-direction: column; gap: 12px; }
+.between{ display: flex; justify-content: space-between; align-items: center; }
+
+.meta { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.18em; color: var(--w-muted); }
+.mono { font-family: ui-monospace, 'SF Mono', Menlo, monospace; font-size: 11px; color: var(--w-secondary); }

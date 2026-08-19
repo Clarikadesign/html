@@ -1,0 +1,259 @@
+/* ------------------------------------------------------------------
+   CLARIKA — Design tokens
+   Import this file once at the root of any design. All variables are
+   scoped to :root so they cascade everywhere. Two layers:
+     1. Raw tokens   (--clr-..., --type-..., --space-..., --radius-...)
+     2. Semantic     (--bg, --fg, --fg-muted, --h1-size, --btn-..., etc)
+   ------------------------------------------------------------------ */
+
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
+
+:root {
+  /* --------------- 1. RAW TOKENS --------------- */
+
+  /* Brand */
+  --clr-teal:        #34CFBE;
+  --clr-teal-ink:    #0D1A2E;   /* text on teal */
+  --clr-blue:        #0D8BFF;
+  --clr-lilac:       #A78BFA;
+
+  /* Surfaces (near-black) */
+  --clr-black:       #000000;
+  --clr-dark:        #050505;
+  --clr-section:     #03080F;
+  --clr-hero-grad:   linear-gradient(160deg, #060e18 0%, #03080f 45%, #000000 100%);
+
+  /* White opacity scale */
+  --w-body:          rgba(255,255,255,0.62);
+  --w-secondary:     rgba(255,255,255,0.55);
+  --w-secondary-lo:  rgba(255,255,255,0.50);
+  --w-muted:         rgba(255,255,255,0.35);
+  --w-subtle:        rgba(255,255,255,0.09);
+  --w-subtle-lo:     rgba(255,255,255,0.07);
+  --w-hairline:      rgba(255,255,255,0.05);
+
+  /* Teal opacity scale */
+  --t-wash-lo:       rgba(52,207,190,0.06);
+  --t-wash:          rgba(52,207,190,0.10);
+  --t-border-lo:     rgba(52,207,190,0.20);
+  --t-border:        rgba(52,207,190,0.30);
+  --t-glow:          rgba(52,207,190,0.45);
+
+  /* Type — family + raw scale */
+  --font-sans:       'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+
+  --type-hero:       clamp(56px, 9vw, 88px);
+  --type-h2:         clamp(32px, 4vw, 50px);
+  --type-article-h1: clamp(30px, 4.2vw, 58px);
+  --type-subtitle:   clamp(15px, 1.4vw, 17px);
+  --type-eyebrow:    11px;
+  --type-card-title: 18px;
+  --type-card-body:  14px;
+  --type-button:     16px;
+  --type-pill:       11px;
+
+  --w-400: 400;
+  --w-500: 500;
+  --w-600: 600;
+  --w-700: 700;
+  --w-800: 800;
+  --w-900: 900;
+
+  /* Spacing (8pt scale) */
+  --space-1:  4px;
+  --space-2:  8px;
+  --space-3:  12px;
+  --space-4:  16px;
+  --space-5:  20px;
+  --space-6:  24px;
+  --space-8:  32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-20: 80px;
+  --space-24: 96px;
+
+  /* Radii */
+  --radius-lg:  8px;
+  --radius-xl:  12px;
+  --radius-2xl: 16px;
+  --radius-3xl: 24px;
+  --radius-pill: 999px;
+
+  /* Motion */
+  --ease:        cubic-bezier(0.22, 1, 0.36, 1);
+  --dur-micro:   150ms;
+  --dur-base:    250ms;
+  --dur-slow:    600ms;
+
+  /* Layout */
+  --container:   1280px;
+  --pad-x:       24px;
+  --pad-x-lg:    48px;
+  --section-py:  96px;
+
+  /* Shadows / glow (rare) */
+  --glow-primary: 0 0 56px rgba(52,207,190,0.45);
+
+
+  /* --------------- 2. SEMANTIC --------------- */
+
+  /* Background / foreground */
+  --bg:              var(--clr-black);
+  --bg-section:      var(--clr-section);
+  --bg-hero:         var(--clr-hero-grad);
+  --bg-glass:        rgba(255,255,255,0.03);
+  --bg-glass-strong: rgba(255,255,255,0.05);
+
+  --fg:              #FFFFFF;
+  --fg-body:         var(--w-body);
+  --fg-secondary:    var(--w-secondary);
+  --fg-muted:        var(--w-muted);
+
+  --border-hairline: var(--w-subtle);
+  --border-card:     var(--w-subtle);
+  --border-card-hov: var(--t-border);
+
+  --accent:          var(--clr-teal);
+  --accent-ink:      var(--clr-teal-ink);
+  --accent-wash:     var(--t-wash);
+  --accent-glow:     var(--t-glow);
+}
+
+/* --------- Base resets / page defaults --------- */
+html, body {
+  background: var(--bg);
+  color: var(--fg-body);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection { background: var(--t-border); color: #fff; }
+
+/* --------- Semantic type roles --------- */
+.t-hero {
+  font-size: var(--type-hero);
+  font-weight: 900;
+  letter-spacing: -2px;
+  line-height: 0.98;
+  color: var(--fg);
+}
+.t-h2 {
+  font-size: var(--type-h2);
+  font-weight: var(--w-800);
+  letter-spacing: -0.04em;
+  line-height: 1.05;
+  color: var(--fg);
+}
+.t-article-h1 {
+  font-size: var(--type-article-h1);
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  line-height: 1.05;
+  color: var(--fg);
+}
+.t-subtitle {
+  font-size: var(--type-subtitle);
+  font-weight: var(--w-400);
+  line-height: 1.65;
+  color: var(--fg-body);
+}
+.t-eyebrow {
+  font-size: var(--type-eyebrow);
+  font-weight: var(--w-700);
+  text-transform: uppercase;
+  letter-spacing: 0.20em;
+  color: var(--accent);
+}
+.t-card-title {
+  font-size: var(--type-card-title);
+  font-weight: var(--w-700);
+  letter-spacing: -0.025em;
+  line-height: 1.25;
+  color: var(--fg);
+}
+.t-card-body {
+  font-size: var(--type-card-body);
+  font-weight: var(--w-400);
+  line-height: 1.72;
+  color: var(--fg-body);
+}
+.t-pill {
+  font-size: var(--type-pill);
+  font-weight: var(--w-700);
+  text-transform: uppercase;
+  letter-spacing: 0.13em;
+  color: var(--fg-secondary);
+}
+
+/* --------- Buttons --------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-sans);
+  font-size: var(--type-button);
+  font-weight: var(--w-700);
+  letter-spacing: 0.03em;
+  padding: 16px 36px;
+  border-radius: var(--radius-xl);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: transform var(--dur-base) var(--ease),
+              background var(--dur-base) var(--ease),
+              border-color var(--dur-base) var(--ease),
+              color var(--dur-base) var(--ease);
+  text-decoration: none;
+  user-select: none;
+  white-space: nowrap;
+}
+.btn-primary {
+  background: var(--accent);
+  color: var(--accent-ink);
+  box-shadow: var(--glow-primary);
+}
+.btn-primary:hover  { transform: scale(1.05); }
+.btn-primary:active { transform: scale(0.95); }
+
+.btn-secondary {
+  background: rgba(255,255,255,0.05);
+  color: #FFFFFF;
+  border-color: rgba(255,255,255,0.40);
+}
+.btn-secondary:hover {
+  background: rgba(255,255,255,0.10);
+  border-color: rgba(255,255,255,0.70);
+}
+.btn-secondary:active { transform: scale(0.98); }
+
+.btn-ghost {
+  background: transparent;
+  color: var(--fg-secondary);
+  padding: 12px 16px;
+  box-shadow: none;
+}
+.btn-ghost:hover { color: var(--fg); }
+
+/* --------- Cards --------- */
+.card {
+  background: var(--bg-glass);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-2xl);
+  transition: border-color var(--dur-base) var(--ease),
+              transform var(--dur-base) var(--ease),
+              background var(--dur-base) var(--ease);
+}
+.card:hover {
+  border-color: var(--border-card-hov);
+  transform: translateY(-4px);
+}
+
+/* --------- Focus ring --------- */
+:focus-visible {
+  outline: 2px solid var(--t-border);
+  outline-offset: 2px;
+  border-radius: 6px;
+}

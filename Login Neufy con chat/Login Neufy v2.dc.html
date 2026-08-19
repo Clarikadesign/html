@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="_ds/clarika-design-system-b0d13d03-74b2-4f7c-8785-feb8181fc9ab/colors_and_type.css">
+  <script src="_ds/clarika-design-system-b0d13d03-74b2-4f7c-8785-feb8181fc9ab/_ds_bundle.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    html, body { margin: 0; padding: 0; background: #0B0620; }
+    * { box-sizing: border-box; }
+    a { color: #C4B5FD; text-decoration: none; }
+    a:hover { color: #ffffff; }
+    input::placeholder { color: rgba(255,255,255,0.34); }
+    @keyframes v2Dot { 0%, 60%, 100% { opacity: .3; transform: translateY(0); } 30% { opacity: 1; transform: translateY(-3px); } }
+    @keyframes v2In { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes v2Pulse { 0%, 100% { opacity: .5; } 50% { opacity: 1; } }
+    @media (max-width: 1020px) {
+      [data-pane="root"] { flex-direction: column !important; padding-inline: 0 !important; }
+      [data-pane="left"] { flex: 0 0 auto !important; width: 100% !important; padding: 40px 20px 44px !important; }
+      [data-pane="right"] { padding: 0 20px 48px !important; min-width: 0 !important; }
+      [data-el="claim"] { font-size: 34px !important; }
+    }
+  </style>
+</helmet>
+<div data-pane="root" data-screen-label="Login v2" style="position: relative; display: flex; align-items: stretch; min-height: 100vh; width: 100%; overflow: hidden; padding-inline: max(0px, calc((100% - 1400px) / 2)); font-family: 'Manrope', system-ui, sans-serif; color: #ffffff; background: linear-gradient(140deg, #050A30 0%, #2B0A50 42%, #5B21B6 78%, #7C3AED 100%);">
+  <div style="position: absolute; inset: 0; pointer-events: none; background: radial-gradient(760px 560px at 6% 4%, rgba(167,139,250,0.30), transparent 68%), radial-gradient(620px 520px at 96% 92%, rgba(124,58,237,0.36), transparent 70%);"></div>
+
+  <div data-pane="left" style="flex: 1 1 60%; min-width: 0; position: relative; padding: 48px 40px 44px 64px; display: flex; flex-direction: column; justify-content: space-between; gap: 32px;">
+    <div style="display: flex; align-items: center; gap: 11px;">
+      <img src="assets/neufy-mark-white.svg" alt="Neufy" style="width: 28px; height: 24px; display: block;">
+      <span style="font-size: 20px; font-weight: 800; letter-spacing: -0.03em;">Neufy</span>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 34px; max-width: 620px;">
+      <div style="display: flex; flex-direction: column; gap: 14px;">
+        <span style="font-size: 11px; font-weight: 700; letter-spacing: 0.20em; text-transform: uppercase; color: rgba(255,255,255,0.55);">Plataforma de agentes</span>
+        <h1 data-el="claim" style="margin: 0; font-size: 46px; line-height: 1.05; font-weight: 800; letter-spacing: -0.04em; text-wrap: pretty;">Conversaciones que trabajan por vos.</h1>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 16px; max-width: 560px;">
+        <div style="display: flex; align-items: center; gap: 11px;">
+          <div style="width: 34px; height: 34px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800; color: #ffffff; background: {{ cGrad }}; box-shadow: 0 0 0 1px rgba(255,255,255,0.18);">{{ cInitial }}</div>
+          <span style="font-size: 15px; font-weight: 700; letter-spacing: -0.015em;">{{ cName }}</span>
+          <span style="display: inline-flex; align-items: center; gap: 6px; padding: 4px 11px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.20); background: rgba(255,255,255,0.07); font-size: 11.5px; font-weight: 600; color: rgba(255,255,255,0.80);">
+            <span style="width: 5px; height: 5px; border-radius: 50%; background: #A78BFA; animation: v2Pulse 2.4s ease-in-out infinite;"></span>
+            {{ cChannel }}
+          </span>
+        </div>
+
+        <div style="display: flex; flex-direction: column; justify-content: flex-end; gap: 12px; min-height: 268px;">
+          <sc-for list="{{ msgs }}" as="m" hint-placeholder-count="3">
+            <sc-if value="{{ m.isUser }}" hint-placeholder-val="{{ true }}">
+              <div style="display: flex; justify-content: flex-start; animation: v2In 340ms cubic-bezier(0.22, 1, 0.36, 1) both;">
+                <div style="max-width: 74%; padding: 12px 16px 10px; border-radius: 18px 18px 18px 6px; border: 1px solid rgba(255,255,255,0.16); background: rgba(255,255,255,0.09); backdrop-filter: blur(10px); font-size: 14.5px; line-height: 1.5; color: rgba(255,255,255,0.92);">
+                  {{ m.text }}
+                  <div style="margin-top: 4px; text-align: right; font-size: 11px; color: rgba(255,255,255,0.45);">{{ m.time }}</div>
+                </div>
+              </div>
+            </sc-if>
+            <sc-if value="{{ m.isAgent }}" hint-placeholder-val="{{ false }}">
+              <div style="display: flex; justify-content: flex-end; animation: v2In 340ms cubic-bezier(0.22, 1, 0.36, 1) both;">
+                <div style="max-width: 78%; padding: 12px 16px 10px; border-radius: 18px 18px 6px 18px; background: #ffffff; color: #1B1035; font-size: 14.5px; line-height: 1.5; box-shadow: 0 18px 36px -18px rgba(5,10,48,0.75);">
+                  {{ m.text }}
+                  <div style="margin-top: 4px; text-align: right; font-size: 11px; color: #8A82A6;">{{ m.time }}</div>
+                </div>
+              </div>
+            </sc-if>
+            <sc-if value="{{ m.isSys }}" hint-placeholder-val="{{ false }}">
+              <div style="display: flex; justify-content: center; animation: v2In 340ms cubic-bezier(0.22, 1, 0.36, 1) both;">
+                <span style="display: inline-flex; align-items: center; gap: 7px; padding: 6px 14px; border-radius: 999px; border: 1px dashed rgba(196,181,253,0.55); font-size: 12px; font-weight: 600; color: #DDD3FE;">
+                  <span style="width: 4px; height: 4px; border-radius: 50%; background: #C4B5FD;"></span>
+                  {{ m.text }}
+                </span>
+              </div>
+            </sc-if>
+          </sc-for>
+
+          <sc-if value="{{ typing }}" hint-placeholder-val="{{ true }}">
+            <div style="display: flex; justify-content: flex-end;">
+              <div style="display: flex; align-items: center; gap: 5px; padding: 14px 17px; border-radius: 18px 18px 6px 18px; background: rgba(255,255,255,0.88);">
+                <span style="width: 6px; height: 6px; border-radius: 50%; background: #7C3AED; animation: v2Dot 1.2s ease-in-out infinite;"></span>
+                <span style="width: 6px; height: 6px; border-radius: 50%; background: #7C3AED; animation: v2Dot 1.2s ease-in-out .18s infinite;"></span>
+                <span style="width: 6px; height: 6px; border-radius: 50%; background: #7C3AED; animation: v2Dot 1.2s ease-in-out .36s infinite;"></span>
+              </div>
+            </div>
+          </sc-if>
+        </div>
+      </div>
+    </div>
+
+    <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px;">
+      <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="4">
+        <sc-if value="{{ t.active }}" hint-placeholder-val="{{ true }}">
+          <button type="button" onClick="{{ t.go }}" style="padding: 8px 15px; border: 1px solid rgba(255,255,255,0.9); border-radius: 999px; background: #ffffff; color: #2B0A50; font-family: inherit; font-size: 12.5px; font-weight: 700; letter-spacing: -0.01em; cursor: pointer; transition: all 240ms cubic-bezier(0.22, 1, 0.36, 1);">{{ t.label }}</button>
+        </sc-if>
+        <sc-if value="{{ t.idle }}" hint-placeholder-val="{{ false }}">
+          <button type="button" onClick="{{ t.go }}" style="padding: 8px 15px; border: 1px solid rgba(255,255,255,0.20); border-radius: 999px; background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.70); font-family: inherit; font-size: 12.5px; font-weight: 600; letter-spacing: -0.01em; cursor: pointer; transition: all 240ms cubic-bezier(0.22, 1, 0.36, 1);" style-hover="background: rgba(255,255,255,0.12); color: #ffffff">{{ t.label }}</button>
+        </sc-if>
+      </sc-for>
+    </div>
+  </div>
+
+  <div data-pane="right" style="position: relative; flex: 0 1 40%; min-width: 380px; display: flex; align-items: center; justify-content: center; padding: 48px 56px;">
+    <div style="width: 100%; max-width: 392px; display: flex; flex-direction: column; gap: 26px; padding: 36px 32px; border: 1px solid rgba(255,255,255,0.14); border-radius: 24px; background: rgba(255,255,255,0.07); backdrop-filter: blur(24px); box-shadow: 0 40px 80px -32px rgba(5,10,48,0.8);">
+      <div style="display: flex; flex-direction: column; gap: 7px;">
+        <h2 style="margin: 0; font-size: 27px; font-weight: 800; letter-spacing: -0.035em;">Bienvenido de nuevo</h2>
+        <p style="margin: 0; font-size: 14.5px; line-height: 1.5; color: rgba(255,255,255,0.62);">Ingresá a tu cuenta para continuar</p>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 16px;">
+        <label style="display: flex; flex-direction: column; gap: 7px;">
+          <span style="font-size: 12.5px; font-weight: 600; color: rgba(255,255,255,0.78);">Usuario</span>
+          <input type="text" placeholder="tu.usuario" style="width: 100%; height: 46px; padding: 0 14px; border: 1px solid rgba(255,255,255,0.18); border-radius: 12px; background: rgba(255,255,255,0.06); font-family: inherit; font-size: 15px; color: #ffffff; outline: none; transition: border-color 180ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 180ms cubic-bezier(0.22, 1, 0.36, 1);" style-focus="border-color: rgba(196,181,253,0.9); box-shadow: 0 0 0 4px rgba(167,139,250,0.22)">
+        </label>
+
+        <label style="display: flex; flex-direction: column; gap: 7px;">
+          <span style="font-size: 12.5px; font-weight: 600; color: rgba(255,255,255,0.78);">Contraseña</span>
+          <span style="position: relative; display: block;">
+            <input type="{{ pwType }}" placeholder="••••••••" style="width: 100%; height: 46px; padding: 0 46px 0 14px; border: 1px solid rgba(255,255,255,0.18); border-radius: 12px; background: rgba(255,255,255,0.06); font-family: inherit; font-size: 15px; color: #ffffff; outline: none; transition: border-color 180ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 180ms cubic-bezier(0.22, 1, 0.36, 1);" style-focus="border-color: rgba(196,181,253,0.9); box-shadow: 0 0 0 4px rgba(167,139,250,0.22)">
+            <button type="button" onClick="{{ togglePw }}" aria-label="Mostrar contraseña" style="position: absolute; top: 50%; right: 6px; transform: translateY(-50%); width: 34px; height: 34px; display: flex; align-items: center; justify-content: center; border: none; border-radius: 9px; background: transparent; color: rgba(255,255,255,0.55); cursor: pointer;" style-hover="background: rgba(255,255,255,0.10); color: #ffffff">
+              <sc-if value="{{ pwHidden }}" hint-placeholder-val="{{ true }}">
+                <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7Z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+              </sc-if>
+              <sc-if value="{{ pwShown }}" hint-placeholder-val="{{ false }}">
+                <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3l18 18"></path><path d="M10.6 5.2A9.9 9.9 0 0 1 12 5c6.4 0 10 7 10 7a17 17 0 0 1-2.4 3.3M6.3 6.9A17 17 0 0 0 2 12s3.6 7 10 7a9.6 9.6 0 0 0 4-.8"></path><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"></path></svg>
+              </sc-if>
+            </button>
+          </span>
+        </label>
+
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 14px;">
+          <label style="display: flex; align-items: center; gap: 9px; font-size: 13.5px; color: rgba(255,255,255,0.80); cursor: pointer;">
+            <input type="checkbox" style="width: 16px; height: 16px; accent-color: #A78BFA; cursor: pointer;">
+            Recordarme
+          </label>
+          <a href="#" style="font-size: 13.5px; font-weight: 600;">¿Olvidaste tu contraseña?</a>
+        </div>
+
+        <button type="button" style="height: 48px; width: 100%; border: none; border-radius: 12px; background: #ffffff; color: #2B0A50; font-family: inherit; font-size: 15px; font-weight: 700; letter-spacing: 0.01em; cursor: pointer; box-shadow: 0 0 46px rgba(167,139,250,0.45); transition: transform 200ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 200ms cubic-bezier(0.22, 1, 0.36, 1);" style-hover="transform: translateY(-1px); box-shadow: 0 0 60px rgba(196,181,253,0.6)" style-active="transform: translateY(0) scale(0.99)">Iniciar sesión</button>
+
+        <div style="display: flex; align-items: center; gap: 14px;">
+          <span style="flex: 1; height: 1px; background: rgba(255,255,255,0.14);"></span>
+          <span style="font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.45);">o</span>
+          <span style="flex: 1; height: 1px; background: rgba(255,255,255,0.14);"></span>
+        </div>
+
+        <button type="button" style="height: 48px; width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px; border: 1px solid rgba(255,255,255,0.20); border-radius: 12px; background: rgba(255,255,255,0.05); font-family: inherit; font-size: 14.5px; font-weight: 600; color: #ffffff; cursor: pointer; transition: background 200ms cubic-bezier(0.22, 1, 0.36, 1), border-color 200ms cubic-bezier(0.22, 1, 0.36, 1);" style-hover="background: rgba(255,255,255,0.12); border-color: rgba(255,255,255,0.34)">
+          <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M23 12.3c0-.9-.1-1.5-.2-2.2H12v4.1h6.3c-.1 1-.8 2.6-2.6 3.7l-.1.1 3.9 3 .3.1c2.5-2.3 3.2-5.6 3.2-8.8Z"></path><path fill="#34A853" d="M12 23.5c3.3 0 6-1.1 8-2.9l-3.8-3c-1 .7-2.4 1.2-4.2 1.2a6.4 6.4 0 0 1-6.1-4.4H2l-.1.1C3.9 20.6 7.6 23.5 12 23.5Z"></path><path fill="#FBBC05" d="M5.9 14.4a6.5 6.5 0 0 1 0-4.2v-.2L1.9 7A11.4 11.4 0 0 0 .6 12c0 1.8.4 3.5 1.3 5l4-2.6Z"></path><path fill="#EA4335" d="M12 5c2.2 0 3.7 1 4.6 1.8l3.4-3.3C17.9 1.5 15.3.5 12 .5 7.6.5 3.9 3.4 1.9 7l4 3.2A6.4 6.4 0 0 1 12 5Z"></path></svg>
+          Continuar con Google
+        </button>
+      </div>
+
+      <p style="margin: 0; font-size: 13.5px; color: rgba(255,255,255,0.62);">¿No tenés cuenta? <a href="#" style="font-weight: 700; color: #ffffff;">Crear cuenta</a></p>
+    </div>
+  </div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;speed&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:1,&quot;min&quot;:0.5,&quot;max&quot;:2,&quot;step&quot;:0.1,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Chat&quot;}}">
+const CASES = [
+  {
+    name: "Estudio Dental Sonría", channel: "Widget web", initial: "ED", label: "Turnos",
+    grad: "linear-gradient(140deg, #7C3AED 0%, #A78BFA 100%)",
+    msgs: [
+      { kind: "user", text: "Hola, ¿atienden mañana? Necesito un turno urgente, me duele una muela", time: "22:47" },
+      { kind: "agent", text: "¡Hola! Mañana atendemos desde las 9:00. Veo 9:30 con la Dra. Ríos. ¿Te lo reservo?", time: "22:47" },
+      { kind: "user", text: "Sí, porfa", time: "22:48" },
+      { kind: "sys", text: "Turno agendado · mañana 9:30" }
+    ]
+  },
+  {
+    name: "Pizzería Nápoli", channel: "WhatsApp", initial: "PN", label: "Pedidos",
+    grad: "linear-gradient(140deg, #5B21B6 0%, #7C3AED 100%)",
+    msgs: [
+      { kind: "user", text: "Hola! ¿Me mandás una muzzarella grande y una fainá?", time: "21:05" },
+      { kind: "agent", text: "¡Marchando! Muzza grande + fainá: $14.500. ¿Va con envío a Av. Roca 1240?", time: "21:05" },
+      { kind: "user", text: "Sí, porfa", time: "21:06" },
+      { kind: "sys", text: "Pedido #882 enviado a cocina" },
+      { kind: "agent", text: "Listo Juli, sale en 35–40 min. Te aviso cuando esté en camino", time: "21:06" },
+      { kind: "sys", text: "Pedido confirmado · entrega 21:45" }
+    ]
+  },
+  {
+    name: "Tienda Vela", channel: "WhatsApp", initial: "TV", label: "Ventas",
+    grad: "linear-gradient(140deg, #6D28D9 0%, #A78BFA 100%)",
+    msgs: [
+      { kind: "user", text: "Hola! ¿Tienen las zapatillas Nova en 38? ¿Cuánto salen?", time: "18:02" },
+      { kind: "sys", text: "Consultando catálogo · stock y precio" },
+      { kind: "agent", text: "¡Hola! Quedan 2 pares en 38. Salen $89.900 con el 15% de esta semana.", time: "18:02" },
+      { kind: "agent", text: "Te dejo el link de pago", time: "18:03" },
+      { kind: "sys", text: "pagos.tiendavela.com/nova-38" }
+    ]
+  },
+  {
+    name: "Clínica Vida", channel: "Modo sugerencia", initial: "CV", label: "Con revisión humana",
+    grad: "linear-gradient(140deg, #050A30 0%, #5B21B6 100%)",
+    msgs: [
+      { kind: "user", text: "Buenas, ¿la Dra. López atiende por OSDE? Necesito una consulta.", time: "10:12" },
+      { kind: "agent", text: "¡Hola! Sí, la Dra. López atiende OSDE en los planes 210, 310 y 410. ¿Querés que te agende una consulta esta semana?", time: "10:12" },
+      { kind: "sys", text: "Sugerencia aprobada y enviada" }
+    ]
+  }
+];
+
+class Component extends DCLogic {
+  state = { ci: 0, shown: 0, typing: false, pwHidden: true };
+  timers = [];
+
+  componentDidMount() { this.play(0); }
+  componentWillUnmount() { this.clear(); }
+
+  clear() { this.timers.forEach(clearTimeout); this.timers = []; }
+  at(ms, fn) { this.timers.push(setTimeout(fn, ms)); }
+  speed() { return Math.max(0.4, this.props.speed ?? 1); }
+
+  play(ci) {
+    this.clear();
+    this.setState({ ci: ci, shown: 0, typing: false });
+    const s = this.speed();
+    let t = 700 / s;
+    CASES[ci].msgs.forEach((m, i) => {
+      const pause = m.kind === "agent" ? 1300 : m.kind === "sys" ? 700 : 900;
+      if (m.kind === "agent") {
+        this.at(t, () => this.setState({ typing: true }));
+        t += pause / s;
+        this.at(t, () => this.setState({ typing: false, shown: i + 1 }));
+      } else {
+        t += pause / s;
+        this.at(t, () => this.setState({ shown: i + 1 }));
+      }
+    });
+    t += 3600 / s;
+    this.at(t, () => this.play((ci + 1) % CASES.length));
+  }
+
+  renderVals() {
+    const c = CASES[this.state.ci];
+    return {
+      cName: c.name,
+      cChannel: c.channel,
+      cInitial: c.initial,
+      cGrad: c.grad,
+      typing: this.state.typing,
+      msgs: c.msgs.slice(0, this.state.shown).map((m) => ({
+        text: m.text,
+        time: m.time || "",
+        isUser: m.kind === "user",
+        isAgent: m.kind === "agent",
+        isSys: m.kind === "sys"
+      })),
+      tabs: CASES.map((cc, i) => ({
+        label: cc.label,
+        active: i === this.state.ci,
+        idle: i !== this.state.ci,
+        go: () => this.play(i)
+      })),
+      pwHidden: this.state.pwHidden,
+      pwShown: !this.state.pwHidden,
+      pwType: this.state.pwHidden ? "password" : "text",
+      togglePw: () => this.setState((s) => ({ pwHidden: !s.pwHidden }))
+    };
+  }
+}
+
+</script>
+</body>
+</html>
