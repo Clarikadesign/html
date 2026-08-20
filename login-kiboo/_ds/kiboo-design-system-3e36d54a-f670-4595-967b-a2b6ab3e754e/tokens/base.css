@@ -1,0 +1,39 @@
+/* ============================================================
+   KIBOO · base element defaults (opt-in via linking styles.css)
+   Kept light — sets type, link colors, and the brand background.
+   ============================================================ */
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  line-height: var(--lh-normal);
+  color: var(--text-body);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1, h2, h3, h4, h5 {
+  font-family: var(--font-display);
+  color: var(--text-heading);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--ls-tight);
+  margin: 0 0 0.4em;
+  font-weight: var(--fw-bold);
+}
+
+p { margin: 0 0 1em; text-wrap: pretty; }
+
+a {
+  color: var(--link);
+  text-decoration: none;
+  transition: color var(--dur-fast) var(--ease-out);
+}
+a:hover { color: var(--link-hover); }
+
+strong { font-weight: var(--fw-bold); color: var(--text-heading); }
+code, kbd, samp { font-family: var(--font-mono); font-size: 0.92em; }
+
+/* Utility: the signature Kiboo pastel mesh background */
+.kiboo-bg { background: var(--bg-mesh); background-attachment: fixed; }
