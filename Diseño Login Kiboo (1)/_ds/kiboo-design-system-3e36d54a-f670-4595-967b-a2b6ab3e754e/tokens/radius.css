@@ -1,0 +1,43 @@
+/* ============================================================
+   KIBOO · RADII, SHADOWS, EFFECTS
+   Cards are generously rounded with a soft, diffuse, low-contrast
+   shadow — never a hard/dark drop shadow.
+   ============================================================ */
+:root {
+  /* Corner radii */
+  --radius-xs:   6px;
+  --radius-sm:   10px;
+  --radius-md:   14px;
+  --radius-lg:   20px;   /* default card */
+  --radius-xl:   28px;   /* large panels / hero cards */
+  --radius-2xl:  40px;
+  --radius-pill: 999px;  /* pills, chips, the logo lockup shape */
+
+  /* Soft diffuse shadows (cool navy tint, low alpha) */
+  --shadow-xs: 0 1px 2px rgba(45, 58, 74, 0.06);
+  --shadow-sm: 0 2px 8px rgba(45, 58, 74, 0.07);
+  --shadow-md: 0 8px 24px rgba(45, 58, 74, 0.09);
+  --shadow-lg: 0 16px 40px rgba(45, 58, 74, 0.11);
+  --shadow-xl: 0 28px 64px rgba(45, 58, 74, 0.14);
+
+  /* Colored glows (for brand emphasis / active CTAs) */
+  --glow-green:  0 8px 22px rgba(140, 198, 63, 0.35);
+  --glow-violet: 0 8px 22px rgba(123, 95, 196, 0.30);
+
+  /* Focus ring */
+  --ring: 0 0 0 3px rgba(145, 111, 208, 0.35);
+
+  /* Motion */
+  --ease-out:    cubic-bezier(0.16, 1, 0.3, 1);     /* @kind other */
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);    /* @kind other */
+  --dur-fast: 120ms;   /* @kind other */
+  --dur-base: 200ms;   /* @kind other */
+  --dur-slow: 340ms;   /* @kind other */
+
+  /* Signature background: soft pastel blob mesh on near-white */
+  --bg-mesh:
+    radial-gradient(46% 55% at 6% 4%,   rgba(231, 217, 252, 0.9) 0%, rgba(231, 217, 252, 0) 60%),
+    radial-gradient(40% 50% at 2% 96%,  rgba(224, 242, 204, 0.9) 0%, rgba(224, 242, 204, 0) 62%),
+    radial-gradient(46% 60% at 98% 88%, rgba(205, 222, 252, 0.95) 0%, rgba(205, 222, 252, 0) 60%),
+    linear-gradient(180deg, #fbfbff 0%, #f4f4fc 100%);
+}

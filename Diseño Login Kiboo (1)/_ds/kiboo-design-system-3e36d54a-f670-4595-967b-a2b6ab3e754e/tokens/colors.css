@@ -1,0 +1,109 @@
+/* ============================================================
+   KIBOO · COLORS
+   Sampled from the Kiboo logo, product UI and brand backgrounds.
+   Base ramps first, semantic aliases at the bottom.
+   ============================================================ */
+:root {
+  /* ---- Brand: Green (primary / the "go" of the brand, stat numbers) ---- */
+  --green-50:  #f2f9e6;
+  --green-100: #e2f1c9;
+  --green-200: #cbe79f;
+  --green-300: #b0da70;
+  --green-400: #9ccf4e;
+  --green-500: #8cc63f;  /* core Kiboo green (logo) */
+  --green-600: #6fa82e;  /* accessible on white for text/icons */
+  --green-700: #588724;  /* button-safe with white text */
+  --green-800: #45681d;
+  --green-900: #364f19;
+
+  /* ---- Brand: Blue (sky / links, info) ---- */
+  --blue-50:  #e7f5fd;
+  --blue-100: #c6e8fa;
+  --blue-200: #94d4f4;
+  --blue-300: #5cbdec;
+  --blue-400: #40b3e8;
+  --blue-500: #29a9e0;  /* core Kiboo blue (logo) */
+  --blue-600: #1e8cc4;
+  --blue-700: #196f9e;
+  --blue-800: #175a80;
+  --blue-900: #164a68;
+
+  /* ---- Brand: Violet (icons, sync, interactive accents) ---- */
+  --violet-50:  #f1ecfa;
+  --violet-100: #e0d5f4;
+  --violet-200: #c6b3ea;
+  --violet-300: #a98cdd;
+  --violet-400: #916fd0;
+  --violet-500: #7b5fc4;  /* core Kiboo violet (logo) */
+  --violet-600: #6a4bb0;
+  --violet-700: #573b93;
+  --violet-800: #453076;
+  --violet-900: #382861;
+
+  /* ---- Neutrals: cool navy/slate (text + surfaces) ---- */
+  --navy-950: #202b38;   /* darkest text / wordmark */
+  --navy-900: #2d3a4a;   /* headings */
+  --slate-800: #3d4c5e;
+  --slate-700: #4f6072;
+  --slate-600: #647587;  /* secondary text */
+  --slate-500: #8291a1;
+  --slate-400: #a3b0bd;  /* muted / placeholder */
+  --slate-300: #c6cfd8;  /* borders (strong) */
+  --slate-200: #e0e6ec;  /* borders / dividers */
+  --slate-100: #eef2f6;  /* subtle fills */
+  --slate-50:  #f6f8fa;  /* app background base */
+  --white: #ffffff;
+
+  /* ---- Pastel wash tints (the signature gradient blobs) ---- */
+  --wash-lilac: #e7d9fc;
+  --wash-mint:  #e0f2cc;
+  --wash-sky:   #cddefc;
+  --wash-cloud: #f4f4fc;
+
+  /* ---- Semantic status ---- */
+  --amber-100: #fdeecb;
+  --amber-500: #f5a623;
+  --amber-700: #b9741a;
+  --red-100:   #fbdcda;
+  --red-500:   #e5484d;
+  --red-700:   #b0272c;
+
+  /* ============================================================
+     SEMANTIC ALIASES  — reference these in components
+     ============================================================ */
+  --brand-primary:      var(--green-500);
+  --brand-primary-ink:  var(--green-700);   /* text/icon on light */
+  --brand-secondary:    var(--violet-500);
+  --brand-tertiary:     var(--blue-500);
+
+  --text-strong:   var(--navy-950);
+  --text-heading:  var(--navy-900);
+  --text-body:     var(--slate-700);
+  --text-muted:    var(--slate-600);
+  --text-subtle:   var(--slate-400);
+  --text-on-brand: var(--white);
+  --text-stat:     var(--green-600);        /* big emphasis numbers */
+
+  --surface-app:      var(--slate-50);
+  --surface-card:     var(--white);
+  --surface-sunken:   var(--slate-100);
+  --surface-hover:    var(--slate-100);
+
+  --border-subtle:  var(--slate-200);
+  --border-default: var(--slate-300);
+  --border-strong:  var(--slate-400);
+
+  --link:       var(--blue-600);
+  --link-hover: var(--blue-700);
+
+  --success:     var(--green-600);
+  --success-bg:  var(--green-50);
+  --info:        var(--blue-600);
+  --info-bg:     var(--blue-50);
+  --warning:     var(--amber-700);
+  --warning-bg:  var(--amber-100);
+  --danger:      var(--red-500);
+  --danger-bg:   var(--red-100);
+
+  --focus-ring: var(--violet-400);
+}
